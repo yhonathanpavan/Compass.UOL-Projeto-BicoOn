@@ -1,7 +1,6 @@
 package com.compass.bicoon.model;
 
 
-import com.compass.bicoon.constants.Sexo;
 import lombok.Data;
 
 import javax.persistence.*;
