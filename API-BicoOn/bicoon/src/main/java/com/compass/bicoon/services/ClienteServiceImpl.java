@@ -12,8 +12,10 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -51,11 +53,10 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public ClienteDto create(ClienteFormDto clienteFormDto, UriComponentsBuilder uriBuilder){
+    public URI create(ClienteFormDto clienteFormDto){
         Cliente cliente = mapper.map(clienteFormDto, Cliente.class);
         clienteRepository.save(cliente);
-
-
+        return ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(cliente.getId()).toUri();
     }
 
     @Override

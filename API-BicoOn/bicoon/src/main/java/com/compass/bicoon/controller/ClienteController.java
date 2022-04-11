@@ -41,9 +41,10 @@ public class ClienteController {
         return ResponseEntity.ok().body(clienteService.findById(id));
     }
 
+    @Transactional
     @PostMapping
-    public ResponseEntity<ClienteDto> cadastrarCliente(@RequestBody ClienteFormDto clienteFormDto, UriComponentsBuilder uriBuilder){
-        return ResponseEntity.ok().body(clienteService.create(clienteFormDto, uriBuilder));
+    public ResponseEntity<ClienteFormDto> cadastrarCliente(@RequestBody ClienteFormDto clienteFormDto){
+        return ResponseEntity.created(clienteService.create(clienteFormDto)).build();
     }
 
     @Transactional

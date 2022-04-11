@@ -8,12 +8,14 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
+
 public interface ClienteService {
     Page<ClienteDto> findAll(String cidade, Pageable paginacao);
 
     ClienteDto findById(Long id);
 
-    ClienteDto create(ClienteFormDto clienteFormDto, UriComponentsBuilder uriBuilder);
+    URI create(ClienteFormDto clienteFormDto);
 
     ClienteDto update(Long id, ClienteFormDto clienteFormDto);
 
