@@ -1,4 +1,4 @@
-package com.compass.bicoon.controller;
+package com.compass.bicoon.controllers;
 
 import com.compass.bicoon.dto.CategoriaDto;
 import com.compass.bicoon.dto.CategoriaFormDto;
