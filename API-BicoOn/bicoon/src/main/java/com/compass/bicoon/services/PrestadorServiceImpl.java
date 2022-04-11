@@ -108,11 +108,9 @@ public class PrestadorServiceImpl implements PrestadorService{
 
     @Override
     public ServicoDto cadastrarServico(Long id, ServicoFormDto servicoForm) {
+        
         Prestador prestador = verificaExistenciaPrestador(id);
-
-        Categoria categoria = new Categoria();
-        categoria.setNome(servicoForm.getCategoria());
-        categoriaRepository.save(categoria);
+        Categoria categoria = verificaExistenciaCategoria(servicoForm.getCategoria());
 
         Servico servico = new Servico();
         servico.setCategoria(categoria);
@@ -123,6 +121,15 @@ public class PrestadorServiceImpl implements PrestadorService{
         prestadorRepository.save(prestador);
 
         return modelMapper.map(servico, ServicoDto.class);
+    }
+
+    private Categoria verificaExistenciaCategoria(String categoria) {
+        Optional<Categoria> categoriaOptional = categoriaRepository.findByNome(categoria);
+        if(categoriaOptional.isPresent()){
+            return  categoriaOptional.get();
+        }else{
+            throw new RuntimeException();
+        }
     }
 
 

@@ -3,6 +3,7 @@ package com.compass.bicoon.services;
 import com.compass.bicoon.dto.ServicoDto;
 import com.compass.bicoon.dto.ServicoFormDto;
 import com.compass.bicoon.entities.Categoria;
+import com.compass.bicoon.entities.Prestador;
 import com.compass.bicoon.entities.Servico;
 import com.compass.bicoon.repository.CategoriaRepository;
 import com.compass.bicoon.repository.ServicoRepository;
@@ -93,4 +94,6 @@ public class ServicoServiceImpl implements ServicoService{
         }
         throw new RuntimeException("Não foi encontrado vínculo entre categoria eserviço selecionado!");
     }
+
+
 }
