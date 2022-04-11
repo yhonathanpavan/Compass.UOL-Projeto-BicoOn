@@ -1,13 +1,13 @@
 package com.compass.bicoon.services;
 
-import com.compass.bicoon.dto.AvaliacaoDto;
-import com.compass.bicoon.dto.PrestadorDto;
-import com.compass.bicoon.dto.PrestadorForm;
-import com.compass.bicoon.dto.ServicoDto;
+import com.compass.bicoon.dto.*;
 import com.compass.bicoon.entities.Avaliacao;
+import com.compass.bicoon.entities.Categoria;
 import com.compass.bicoon.entities.Prestador;
 import com.compass.bicoon.entities.Servico;
+import com.compass.bicoon.repository.CategoriaRepository;
 import com.compass.bicoon.repository.PrestadorRepository;
+import com.compass.bicoon.repository.ServicoRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -27,6 +27,12 @@ public class PrestadorServiceImpl implements PrestadorService{
 
     @Autowired
     ModelMapper modelMapper;
+
+    @Autowired
+    ServicoRepository servicoRepository;
+
+    @Autowired
+    CategoriaRepository categoriaRepository;
 
     @Override
     public PrestadorDto cadastrarPrestador(PrestadorForm prestadorForm) {
@@ -95,6 +101,25 @@ public class PrestadorServiceImpl implements PrestadorService{
                 .collect(Collectors.toList());
 
         return avaliacaoDto;
+    }
+
+    @Override
+    public ServicoDto cadastrarServico(Long id, ServicoFormDto servicoForm) {
+        Prestador prestador = verificaExistenciaPrestador(id);
+
+        Categoria categoria = new Categoria();
+        categoria.setNome(servicoForm.getCategoria());
+        categoriaRepository.save(categoria);
+
+        Servico servico = new Servico();
+        servico.setCategoria(categoria);
+        servico.setDescricao(servicoForm.getDescricao());
+        servicoRepository.save(servico);
+
+        prestador.getServico().add(servico);
+        prestadorRepository.save(prestador);
+
+        return modelMapper.map(servico, ServicoDto.class);
     }
 
 

@@ -1,9 +1,6 @@
 package com.compass.bicoon.services;
 
-import com.compass.bicoon.dto.AvaliacaoDto;
-import com.compass.bicoon.dto.PrestadorDto;
-import com.compass.bicoon.dto.PrestadorForm;
-import com.compass.bicoon.dto.ServicoDto;
+import com.compass.bicoon.dto.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -26,4 +23,6 @@ public interface PrestadorService {
     List<ServicoDto> listarServicosPrestador(Long id);
 
     List<AvaliacaoDto> listarAvaliacoesPrestador(Long id);
+
+    ServicoDto cadastrarServico(Long id, ServicoFormDto servicoForm);
 }

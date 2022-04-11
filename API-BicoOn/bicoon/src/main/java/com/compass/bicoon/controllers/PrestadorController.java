@@ -1,9 +1,6 @@
 package com.compass.bicoon.controllers;
 
-import com.compass.bicoon.dto.AvaliacaoDto;
-import com.compass.bicoon.dto.PrestadorDto;
-import com.compass.bicoon.dto.PrestadorForm;
-import com.compass.bicoon.dto.ServicoDto;
+import com.compass.bicoon.dto.*;
 import com.compass.bicoon.entities.Servico;
 import com.compass.bicoon.services.PrestadorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +11,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -50,7 +48,7 @@ public class PrestadorController {
         return ResponseEntity.ok().body(prestadorService.listarPorId(id));
     }
 
-    @GetMapping("{id}/servicos")
+    @GetMapping("/{id}/servico")
     public ResponseEntity<List<ServicoDto>> listarCategoriaPrestador(@PathVariable Long id){
         return ResponseEntity.ok().body(prestadorService.listarServicosPrestador(id));
     }
@@ -58,5 +56,11 @@ public class PrestadorController {
     @GetMapping("/{id}/avaliacoes")
     public ResponseEntity<List<AvaliacaoDto>> listarAvaliacoesPrestador(@PathVariable Long id){
         return ResponseEntity.ok().body(prestadorService.listarAvaliacoesPrestador(id));
+    }
+
+    @PostMapping("/{id}/servico")
+    public ResponseEntity<ServicoDto> cadastraServicosPrestador(@PathVariable Long id, @Valid @RequestBody ServicoFormDto servicoForm){
+        return ResponseEntity.ok().body(prestadorService.cadastrarServico(id,servicoForm));
+
     }
 }
