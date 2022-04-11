@@ -5,12 +5,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.net.URI;
 import java.util.List;
 
 @Service
 public interface PrestadorService {
 
-    PrestadorDto cadastrarPrestador(PrestadorForm prestadorForm);
+    URI cadastrarPrestador(PrestadorForm prestadorForm);
 
     PrestadorDto atualizarPrestador(Long id, PrestadorForm prestadorForm);
 

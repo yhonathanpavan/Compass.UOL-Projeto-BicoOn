@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -22,8 +23,8 @@ public class PrestadorController {
     PrestadorService prestadorService;
 
     @PostMapping
-    public ResponseEntity<PrestadorDto> cadastrarPrestador(@RequestBody PrestadorForm prestador){
-        return ResponseEntity.ok().body(prestadorService.cadastrarPrestador(prestador));
+    public ResponseEntity<URI> cadastrarPrestador(@RequestBody PrestadorForm prestador){
+        return ResponseEntity.created(prestadorService.cadastrarPrestador(prestador)).build();
     }
 
     @PutMapping("/{id}")
@@ -58,7 +59,7 @@ public class PrestadorController {
         return ResponseEntity.ok().body(prestadorService.listarAvaliacoesPrestador(id));
     }
 
-    @PostMapping("/{id}/servico")
+    @PutMapping ("/{id}/servico")
     public ResponseEntity<ServicoDto> cadastraServicosPrestador(@PathVariable Long id, @Valid @RequestBody ServicoFormDto servicoForm){
         return ResponseEntity.ok().body(prestadorService.cadastrarServico(id,servicoForm));
 

@@ -14,7 +14,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -35,9 +37,10 @@ public class PrestadorServiceImpl implements PrestadorService{
     CategoriaRepository categoriaRepository;
 
     @Override
-    public PrestadorDto cadastrarPrestador(PrestadorForm prestadorForm) {
+    public URI cadastrarPrestador(PrestadorForm prestadorForm) {
         Prestador prestador = prestadorRepository.save(modelMapper.map(prestadorForm, Prestador.class));
-        return modelMapper.map(prestador, PrestadorDto.class);
+        PrestadorDto prestadorDto = modelMapper.map(prestador, PrestadorDto.class);
+        return ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(prestadorDto.getId()).toUri();
     }
 
     @Override
