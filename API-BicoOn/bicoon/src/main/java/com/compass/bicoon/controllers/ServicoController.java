@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/bicoon/servico")
+@RequestMapping("/bicoon/servicos")
 public class ServicoController {
 
     @Autowired
@@ -21,11 +21,6 @@ public class ServicoController {
     @GetMapping
     public ResponseEntity<Page<ServicoDto>> listarServicos(@PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable paginacao){
         return ResponseEntity.ok().body(servicoService.listarServicos(paginacao));
-    }
-
-    @PostMapping
-    public ResponseEntity<ServicoDto> cadastrarServico(@RequestBody ServicoFormDto servicoFormDto){
-        return ResponseEntity.created(servicoService.cadastrarServico(servicoFormDto)).build();
     }
 
     @PutMapping("/{id}")
@@ -38,8 +33,4 @@ public class ServicoController {
         return ResponseEntity.ok().body(servicoService.deletarServico(id));
     }
 
-    @DeleteMapping("/{idServico}/categoria/{idCategoria}")
-    public ResponseEntity<String> deletarCategoriaDoServico(@PathVariable Long idServico, @PathVariable Long idCategoria){
-        return ResponseEntity.ok().body(servicoService.deletarCategoriaDoServico(idServico, idCategoria));
-    }
 }
