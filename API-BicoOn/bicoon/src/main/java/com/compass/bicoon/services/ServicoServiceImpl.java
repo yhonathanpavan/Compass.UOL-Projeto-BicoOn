@@ -5,7 +5,7 @@ import com.compass.bicoon.dto.ServicoFormDto;
 import com.compass.bicoon.entities.Categoria;
 import com.compass.bicoon.entities.Servico;
 import com.compass.bicoon.repository.ServicoRepository;
-import com.compass.bicoon.util.ValidaConsulta;
+import com.compass.bicoon.config.ValidaConsulta;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
