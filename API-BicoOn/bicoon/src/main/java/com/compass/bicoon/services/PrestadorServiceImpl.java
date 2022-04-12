@@ -64,16 +64,15 @@ public class PrestadorServiceImpl implements PrestadorService{
     }
 
     @Override
-    public Page<PrestadorDto> listarPrestadores(Pageable paginacao, String cidade){
+    public Page<PrestadorDto> listarPrestadores(Pageable paginacao, String cidade, String categoria){
 
+        Page<Prestador> prestador;
+        prestador = defineRetorno(paginacao, cidade, categoria);
 
-        Page<Prestador> associado = prestadorRepository.findByCidade(paginacao, cidade);
-        //Page<Prestador> associado = prestadorRepository.findAll(paginacao);
-
-
-        Page<PrestadorDto> associadoDTO = new PageImpl<>(associado.stream().map(element -> modelMapper.map(element
+        Page<PrestadorDto> prestadorDto = new PageImpl<>(prestador.stream().map(element -> modelMapper.map(element
                 , PrestadorDto.class)).collect(Collectors.toList()));
-        return associadoDTO;
+
+        return prestadorDto;
     }
 
     @Override
@@ -108,7 +107,7 @@ public class PrestadorServiceImpl implements PrestadorService{
 
     @Override
     public ServicoDto cadastrarServico(Long id, ServicoFormDto servicoForm) {
-        
+
         Prestador prestador = verificaExistenciaPrestador(id);
         Categoria categoria = verificaExistenciaCategoria(servicoForm.getCategoria());
 
@@ -140,8 +139,17 @@ public class PrestadorServiceImpl implements PrestadorService{
         }else {
             throw new RuntimeException();
         }
-
     }
 
-
+    private Page<Prestador> defineRetorno(Pageable paginacao, String cidade, String categoria) {
+        if(cidade==null && categoria==null){
+            return prestadorRepository.findAll(paginacao);
+        }else if(cidade != null && categoria == null){
+            return prestadorRepository.findByCidade(paginacao, cidade);
+        }else if(categoria != null && cidade == null){
+            return prestadorRepository.findByServicoCategoriaNome(paginacao, categoria);
+        }else{
+            return prestadorRepository.findByCidadeAndServicoCategoriaNome(paginacao, cidade, categoria);
+        }
+    }
 }

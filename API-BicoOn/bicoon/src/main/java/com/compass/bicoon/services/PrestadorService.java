@@ -17,7 +17,7 @@ public interface PrestadorService {
 
     void deletaPrestador(Long id);
 
-    Page<PrestadorDto> listarPrestadores(Pageable pageable, String cidade);
+    Page<PrestadorDto> listarPrestadores(Pageable pageable, String cidade,String nome);
 
     PrestadorDto listarPorId(Long id);
 

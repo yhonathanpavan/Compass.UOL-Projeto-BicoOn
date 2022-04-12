@@ -11,6 +11,7 @@ import java.util.List;
 public class Prestador extends Usuario {
 
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "prestador_id")
     private List<Servico> servico;
 
     @OneToMany(cascade = CascadeType.ALL)

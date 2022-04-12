@@ -28,7 +28,7 @@ public class PrestadorController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PrestadorDto> atualizarPrestador(@PathVariable Long id, @RequestBody PrestadorForm prestadorForm){
+    public ResponseEntity<PrestadorDto> atualizarPrestador(@PathVariable Long id, @Valid @RequestBody PrestadorForm prestadorForm){
         return ResponseEntity.ok().body(prestadorService.atualizarPrestador(id, prestadorForm));
     }
 
@@ -40,8 +40,8 @@ public class PrestadorController {
 
     @GetMapping
     public ResponseEntity<Page<PrestadorDto>> listarPrestadores(@PageableDefault(sort = "id", direction = Sort.Direction.ASC) Pageable paginacao
-            , @RequestParam(required = false) String cidade){
-        return ResponseEntity.ok().body(prestadorService.listarPrestadores(paginacao, cidade));
+            , @RequestParam(required = false) String cidade, @RequestParam(required = false) String categoria){
+        return ResponseEntity.ok().body(prestadorService.listarPrestadores(paginacao, cidade, categoria));
     }
 
     @GetMapping("/{id}")
@@ -64,4 +64,5 @@ public class PrestadorController {
         return ResponseEntity.ok().body(prestadorService.cadastrarServico(id,servicoForm));
 
     }
+
 }
