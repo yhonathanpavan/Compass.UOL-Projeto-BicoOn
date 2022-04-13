@@ -3,6 +3,7 @@ package com.compass.bicoon.config;
 import com.compass.bicoon.entities.Categoria;
 import com.compass.bicoon.entities.Prestador;
 import com.compass.bicoon.entities.Servico;
+import com.compass.bicoon.exceptions.ObjectNotFound.ObjectNotFoundException;
 import com.compass.bicoon.repository.CategoriaRepository;
 import com.compass.bicoon.repository.PrestadorRepository;
 import com.compass.bicoon.repository.ServicoRepository;
@@ -29,7 +30,16 @@ public class ValidaConsulta {
         if(categoriaOptional.isPresent()){
             return  categoriaOptional.get();
         }else{
-            throw new RuntimeException("Categoria não existe");
+            throw new ObjectNotFoundException("Categoria não encontrada");
+        }
+    }
+
+    public Categoria verificaExistenciaCategoria(Long id) {
+        Optional<Categoria> categoriaOptional = categoriaRepository.findById(id);
+        if(categoriaOptional.isPresent()){
+            return categoriaOptional.get();
+        }else {
+            throw new ObjectNotFoundException("Categoria não encontrada");
         }
     }
 
@@ -38,7 +48,7 @@ public class ValidaConsulta {
         if(servicoOptional.isPresent()){
             return servicoOptional.get();
         }else {
-            throw new RuntimeException();
+            throw new ObjectNotFoundException("Serviço não encontrado");
         }
     }
 
@@ -47,7 +57,7 @@ public class ValidaConsulta {
         if(prestadorOptional.isPresent()){
             return prestadorOptional.get();
         }else {
-            throw new RuntimeException();
+            throw new ObjectNotFoundException("Prestador não encontrado");
         }
 
     }
