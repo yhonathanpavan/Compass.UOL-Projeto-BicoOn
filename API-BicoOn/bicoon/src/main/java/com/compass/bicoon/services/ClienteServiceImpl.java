@@ -1,19 +1,16 @@
 package com.compass.bicoon.services;
 
-import ch.qos.logback.core.net.server.Client;
 import com.compass.bicoon.dto.ClienteDto;
 import com.compass.bicoon.dto.ClienteFormDto;
 import com.compass.bicoon.entities.Cliente;
-import com.compass.bicoon.repository.ClienteRespository;
+import com.compass.bicoon.repository.ClienteRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
 import java.util.Optional;
@@ -23,7 +20,7 @@ import java.util.stream.Collectors;
 public class ClienteServiceImpl implements ClienteService {
 
     @Autowired
-    ClienteRespository clienteRepository;
+    ClienteRepository clienteRepository;
 
     @Autowired
     ModelMapper mapper;

@@ -3,10 +3,8 @@ package com.compass.bicoon.dto;
 import lombok.Data;
 
 @Data
-public class AvaliacaoDto {
+public class AvaliacaoFormDto {
 
-    private Long id;
-    private Long clienteId;
     private String comentario;
     private int nota;
 }

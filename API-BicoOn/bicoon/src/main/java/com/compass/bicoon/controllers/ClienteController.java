@@ -1,24 +1,18 @@
-package com.compass.bicoon.controller;
+package com.compass.bicoon.controllers;
 
 import com.compass.bicoon.dto.ClienteDto;
 import com.compass.bicoon.dto.ClienteFormDto;
-import com.compass.bicoon.entities.Cliente;
-import com.compass.bicoon.repository.ClienteRespository;
-import com.compass.bicoon.services.ClienteService;
 import com.compass.bicoon.services.ClienteServiceImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.transaction.Transactional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/bicoon/cliente")
@@ -56,6 +50,7 @@ public class ClienteController {
     @Transactional
     @DeleteMapping("/{id}")
     public String deletarCliente(@PathVariable Long id){
+
         return clienteService.delete(id);
     }
 }
