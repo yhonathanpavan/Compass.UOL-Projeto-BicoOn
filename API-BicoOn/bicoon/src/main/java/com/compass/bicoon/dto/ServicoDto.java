@@ -1,5 +1,6 @@
 package com.compass.bicoon.dto;
 
+import com.compass.bicoon.entities.Categoria;
 import lombok.Data;
 
 
@@ -7,6 +8,6 @@ import lombok.Data;
 public class ServicoDto {
 
     private Long id;
-    private String categoria;
+    private Categoria categoria;
     private String descricao;
 }

@@ -1,15 +1,17 @@
 package com.compass.bicoon.services;
 
 import com.compass.bicoon.dto.*;
+import com.compass.bicoon.entities.Prestador;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
 import java.net.URI;
 
 public interface PrestadorService {
 
-    URI cadastrarPrestador(PrestadorForm prestadorForm);
+    URI cadastrarPrestador(PrestadorFormDto prestadorFormDto);
 
-    PrestadorDto atualizarPrestador(Long id, PrestadorForm prestadorForm);
+    PrestadorDto atualizarPrestador(Long id, PrestadorFormDto prestadorFormDto);
 
     void deletaPrestador(Long id);
 
@@ -22,4 +24,6 @@ public interface PrestadorService {
     Page<AvaliacaoDto> listarAvaliacoesPrestador(Long id);
 
     ServicoDto cadastrarServico(Long id, ServicoFormDto servicoForm);
+
+    Prestador verificaExistenciaPrestador(Long id);
 }

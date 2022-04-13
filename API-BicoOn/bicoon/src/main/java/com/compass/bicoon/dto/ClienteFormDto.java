@@ -3,14 +3,20 @@ package com.compass.bicoon.dto;
 import com.compass.bicoon.constants.Sexo;
 import lombok.Data;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Data
 public class ClienteFormDto {
 
+    @NotNull @NotEmpty
     private String nome;
+    @NotNull @NotEmpty
+    private String email;
+    @NotNull @NotEmpty
+    private String senha;
+    @NotNull @NotEmpty
     private String cidade;
-    @Enumerated(EnumType.STRING)
+    @NotNull
     private Sexo sexo;
 }

@@ -2,6 +2,7 @@ package com.compass.bicoon.services;
 
 import com.compass.bicoon.dto.CategoriaDto;
 import com.compass.bicoon.dto.CategoriaFormDto;
+import com.compass.bicoon.entities.Categoria;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -16,4 +17,8 @@ public interface CategoriaService {
     CategoriaDto atualizarCategoria(Long id, CategoriaFormDto categoriaForm);
 
     void deletarCategoria(Long id);
+
+    Categoria verificaExistenciaCategoria(String categoria);
+
+    Categoria verificaExistenciaCategoria(Long id);
 }

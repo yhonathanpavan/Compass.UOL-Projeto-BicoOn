@@ -1,10 +1,10 @@
 package com.compass.bicoon.services;
 
-import com.compass.bicoon.config.ValidaConsulta;
 import com.compass.bicoon.dto.AvaliacaoFormDto;
 import com.compass.bicoon.entities.Avaliacao;
 import com.compass.bicoon.entities.Cliente;
 import com.compass.bicoon.entities.Prestador;
+import com.compass.bicoon.exceptions.ObjectNotFound.ObjectNotFoundException;
 import com.compass.bicoon.repository.AvaliacaoRepository;
 import com.compass.bicoon.repository.ClienteRepository;
 import com.compass.bicoon.repository.PrestadorRepository;
@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.time.LocalDate;
+import java.util.Optional;
 
 @Service
 public class AvaliacaoServiceImpl implements AvaliacaoService{
@@ -22,25 +24,27 @@ public class AvaliacaoServiceImpl implements AvaliacaoService{
     PrestadorRepository prestadorRepository;
 
     @Autowired
-    ClienteRepository clienteRespository;
-
-    @Autowired
     AvaliacaoRepository avaliacaoRepository;
 
     @Autowired
     ModelMapper mapper;
 
     @Autowired
-    ValidaConsulta validaConsulta;
+    ClienteService clienteService;
+
+    @Autowired
+    PrestadorService prestadorService;
+
 
     @Override
     public URI criarAvaliacao(Long clienteId, Long prestadorId, AvaliacaoFormDto avaliacaoFormDto){
-        Cliente cliente = clienteRespository.getById(clienteId);
-        Prestador prestador = prestadorRepository.getById(prestadorId);
+        Cliente cliente = clienteService.verificaExistenciaCliente(clienteId);
+        Prestador prestador = prestadorService.verificaExistenciaPrestador(prestadorId);
 
         Avaliacao avaliacao = mapper.map(avaliacaoFormDto, Avaliacao.class);
-        avaliacaoRepository.save(avaliacao);
         avaliacao.setClienteId(cliente.getId());
+        avaliacao.setData(LocalDate.now());
+        avaliacaoRepository.save(avaliacao);
 
         prestador.getAvaliacao().add(avaliacao);
         prestadorRepository.save(prestador);
@@ -50,12 +54,11 @@ public class AvaliacaoServiceImpl implements AvaliacaoService{
 
     @Override
     public AvaliacaoFormDto atualizarAvaliacao(Long id, AvaliacaoFormDto avaliacaoFormDto){
-        Avaliacao avaliacao = validaConsulta.verificaExistenciaAvaliacao(id);
+        Avaliacao avaliacao = verificaExistenciaAvaliacao(id);
         Long clienteId = avaliacao.getClienteId();
 
         avaliacao = mapper.map(avaliacaoFormDto, Avaliacao.class);
         avaliacao.setId(id);
-
         avaliacao.setClienteId(clienteId);
 
         avaliacaoRepository.save(avaliacao);
@@ -65,8 +68,17 @@ public class AvaliacaoServiceImpl implements AvaliacaoService{
 
     @Override
     public void deletarAvaliacao(Long id){
-        Avaliacao avaliacao = validaConsulta.verificaExistenciaAvaliacao(id);
+        verificaExistenciaAvaliacao(id);
 
         avaliacaoRepository.deleteById(id);
+    }
+
+    @Override
+    public Avaliacao verificaExistenciaAvaliacao(Long id) {
+        Optional<Avaliacao> avaliacaoOptional = avaliacaoRepository.findById(id);
+        if(avaliacaoOptional.isPresent()){
+            return avaliacaoOptional.get();
+        }
+        throw new ObjectNotFoundException("Avaliação não encontrada");
     }
 }

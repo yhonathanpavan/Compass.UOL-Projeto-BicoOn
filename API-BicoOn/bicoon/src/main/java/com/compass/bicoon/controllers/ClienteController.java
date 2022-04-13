@@ -27,12 +27,12 @@ public class ClienteController {
     @GetMapping
     public ResponseEntity<Page<ClienteDto>> listarClientes(@RequestParam(required = false) String cidade,
                                                           @PageableDefault(sort = "id", direction = Sort.Direction.ASC, size = 100) Pageable paginacao){
-        return ResponseEntity.ok().body(clienteService.findAll(cidade, paginacao));
+        return ResponseEntity.ok().body(clienteService.listarClientes(cidade, paginacao));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ClienteDto> detalhesCliente(@PathVariable Long id){
-        return ResponseEntity.ok().body(clienteService.findById(id));
+        return ResponseEntity.ok().body(clienteService.listarPorId(id));
     }
 
     @Transactional

@@ -4,8 +4,8 @@ import com.compass.bicoon.dto.ServicoDto;
 import com.compass.bicoon.dto.ServicoFormDto;
 import com.compass.bicoon.entities.Categoria;
 import com.compass.bicoon.entities.Servico;
+import com.compass.bicoon.exceptions.ObjectNotFound.ObjectNotFoundException;
 import com.compass.bicoon.repository.ServicoRepository;
-import com.compass.bicoon.config.ValidaConsulta;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -13,6 +13,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,7 +26,7 @@ public class ServicoServiceImpl implements ServicoService{
     ModelMapper mapper;
 
     @Autowired
-    ValidaConsulta validaConsulta;
+    CategoriaService categoriaService;
 
     @Override
     public Page<ServicoDto> listarServicos(Pageable paginacao) {
@@ -37,8 +38,8 @@ public class ServicoServiceImpl implements ServicoService{
 
     @Override
     public ServicoDto atualizarServico(Long id, ServicoFormDto servicoForm) {
-        validaConsulta.verificaExistenciaServico(id);
-        Categoria categoria = validaConsulta.verificaExistenciaCategoria(servicoForm.getCategoria());
+        verificaExistenciaServico(id);
+        Categoria categoria = categoriaService.verificaExistenciaCategoria(servicoForm.getCategoria());
 
             Servico servico = mapper.map(servicoForm, Servico.class);
             servico.setCategoria(categoria);
@@ -50,8 +51,17 @@ public class ServicoServiceImpl implements ServicoService{
 
     @Override
     public void deletarServico(Long id) {
-        Servico servico = validaConsulta.verificaExistenciaServico(id);
+        verificaExistenciaServico(id);
         servicoRepository.deleteById(id);
+    }
+
+    @Override
+    public Servico verificaExistenciaServico(Long id) {
+        Optional<Servico> servicoOptional = servicoRepository.findById(id);
+        if(servicoOptional.isPresent()){
+            return servicoOptional.get();
+        }
+        throw new ObjectNotFoundException("Serviço não encontrado");
     }
 
 }

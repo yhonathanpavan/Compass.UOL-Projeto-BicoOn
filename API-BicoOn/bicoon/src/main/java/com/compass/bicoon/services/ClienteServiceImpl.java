@@ -1,9 +1,9 @@
 package com.compass.bicoon.services;
 
-import com.compass.bicoon.config.ValidaConsulta;
 import com.compass.bicoon.dto.ClienteDto;
 import com.compass.bicoon.dto.ClienteFormDto;
 import com.compass.bicoon.entities.Cliente;
+import com.compass.bicoon.exceptions.ObjectNotFound.ObjectNotFoundException;
 import com.compass.bicoon.repository.ClienteRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,11 +26,8 @@ public class ClienteServiceImpl implements ClienteService {
     @Autowired
     ModelMapper mapper;
 
-    @Autowired
-    ValidaConsulta validaConsulta;
-
     @Override
-    public Page<ClienteDto> findAll(String cidade, Pageable paginacao) {
+    public Page<ClienteDto> listarClientes(String cidade, Pageable paginacao) {
         Page<Cliente> cliente;
 
         if(cidade == null){
@@ -44,8 +42,8 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public ClienteDto findById(Long id){
-        Cliente cliente = validaConsulta.verificaExistenciaCliente(id);
+    public ClienteDto listarPorId(Long id){
+        Cliente cliente = verificaExistenciaCliente(id);
 
         return mapper.map(cliente, ClienteDto.class);
     }
@@ -59,7 +57,7 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public ClienteDto atualizarCliente(Long id, ClienteFormDto clienteFormDto) {
-        validaConsulta.verificaExistenciaCliente(id);
+        verificaExistenciaCliente(id);
 
         Cliente cliente = mapper.map(clienteFormDto, Cliente.class);
         cliente.setId(id);
@@ -70,8 +68,16 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public void deletarCliente(Long id){
-        Cliente cliente = validaConsulta.verificaExistenciaCliente(id);
+        verificaExistenciaCliente(id);
 
         clienteRepository.deleteById(id);
+    }
+
+    public Cliente verificaExistenciaCliente(Long id) {
+        Optional<Cliente> clienteOptional = clienteRepository.findById(id);
+        if(clienteOptional.isPresent()){
+            return clienteOptional.get();
+        }
+        throw new ObjectNotFoundException("Cliente não encontrado");
     }
 }

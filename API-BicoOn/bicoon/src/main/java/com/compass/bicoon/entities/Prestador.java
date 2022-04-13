@@ -19,6 +19,6 @@ public class Prestador extends Usuario {
     private List<Avaliacao> avaliacao;
 
     private String telefone;
-    private Boolean disponivel;
+    private Boolean disponivel = true;
 
 }

@@ -23,14 +23,14 @@ public class PrestadorController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<URI> cadastrarPrestador(@RequestBody PrestadorForm prestador){
+    public ResponseEntity<URI> cadastrarPrestador(@RequestBody PrestadorFormDto prestador){
         return ResponseEntity.created(prestadorService.cadastrarPrestador(prestador)).build();
     }
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<PrestadorDto> atualizarPrestador(@PathVariable Long id, @Valid @RequestBody PrestadorForm prestadorForm){
-        return ResponseEntity.ok().body(prestadorService.atualizarPrestador(id, prestadorForm));
+    public ResponseEntity<PrestadorDto> atualizarPrestador(@PathVariable Long id, @Valid @RequestBody PrestadorFormDto prestadorFormDto){
+        return ResponseEntity.ok().body(prestadorService.atualizarPrestador(id, prestadorFormDto));
     }
 
     @DeleteMapping("/{id}")

@@ -2,11 +2,13 @@ package com.compass.bicoon.dto;
 
 import lombok.Data;
 
+import java.time.LocalDate;
+
 @Data
 public class AvaliacaoDto {
 
     private Long id;
-    private Long clienteId;
     private String comentario;
     private int nota;
+    private LocalDate data;
 }

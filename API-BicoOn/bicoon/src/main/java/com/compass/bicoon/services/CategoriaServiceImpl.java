@@ -1,10 +1,10 @@
 package com.compass.bicoon.services;
 
-import com.compass.bicoon.config.ValidaConsulta;
 import com.compass.bicoon.dto.CategoriaDto;
 import com.compass.bicoon.dto.CategoriaFormDto;
 import com.compass.bicoon.entities.Categoria;
 import com.compass.bicoon.entities.Servico;
+import com.compass.bicoon.exceptions.ObjectNotFound.ObjectNotFoundException;
 import com.compass.bicoon.repository.CategoriaRepository;
 import com.compass.bicoon.repository.ServicoRepository;
 import org.modelmapper.ModelMapper;
@@ -17,6 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,9 +31,6 @@ public class CategoriaServiceImpl implements CategoriaService{
 
     @Autowired
     ModelMapper mapper;
-
-    @Autowired
-    ValidaConsulta validaConsulta;
 
     @Override
     public Page<CategoriaDto> listarCategorias(Pageable paginacao) {
@@ -50,7 +48,7 @@ public class CategoriaServiceImpl implements CategoriaService{
 
     @Override
     public CategoriaDto atualizarCategoria(Long id, CategoriaFormDto categoriaForm){
-            validaConsulta.verificaExistenciaCategoria(id);
+            verificaExistenciaCategoria(id);
 
             Categoria categoria = mapper.map(categoriaForm, Categoria.class);
             categoria.setId(id);
@@ -61,7 +59,7 @@ public class CategoriaServiceImpl implements CategoriaService{
     @Override
     public void deletarCategoria(Long id) {
 
-        Categoria categoria = validaConsulta.verificaExistenciaCategoria(id);
+        verificaExistenciaCategoria(id);
         List<Servico> servico = servicoRepository.findByCategoriaId(id);
 
         if(!servico.isEmpty()){ //Desvinculando categorias dos serviços
@@ -69,7 +67,24 @@ public class CategoriaServiceImpl implements CategoriaService{
         }
 
         categoriaRepository.deleteById(id);
+    }
 
+    @Override
+    public Categoria verificaExistenciaCategoria(String categoria) {
+        Optional<Categoria> categoriaOptional = categoriaRepository.findByNome(categoria);
+        if(categoriaOptional.isPresent()){
+            return  categoriaOptional.get();
+        }
+        throw new ObjectNotFoundException("Categoria não encontrada");
+    }
+
+    @Override
+    public Categoria verificaExistenciaCategoria(Long id) {
+        Optional<Categoria> categoriaOptional = categoriaRepository.findById(id);
+        if(categoriaOptional.isPresent()){
+            return categoriaOptional.get();
+        }
+        throw new ObjectNotFoundException("Categoria não encontrada");
     }
 
 }
