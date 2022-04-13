@@ -1,5 +1,6 @@
 package com.compass.bicoon.services;
 
+import com.compass.bicoon.config.ValidaConsulta;
 import com.compass.bicoon.dto.ClienteDto;
 import com.compass.bicoon.dto.ClienteFormDto;
 import com.compass.bicoon.entities.Cliente;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,6 +24,9 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Autowired
     ModelMapper mapper;
+
+    @Autowired
+    ValidaConsulta validaConsulta;
 
     @Override
     public Page<ClienteDto> findAll(String cidade, Pageable paginacao) {
@@ -42,44 +45,33 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public ClienteDto findById(Long id){
-        Optional<Cliente> cliente = clienteRepository.findById(id);
-        if(cliente.isPresent()){
-            return mapper.map(cliente.get(), ClienteDto.class);
-        }
-        throw new RuntimeException("Não foi possível encontrar o ID desejado");
+        Cliente cliente = validaConsulta.verificaExistenciaCliente(id);
+
+        return mapper.map(cliente, ClienteDto.class);
     }
 
     @Override
-    public URI create(ClienteFormDto clienteFormDto){
+    public URI cadastrarCliente(ClienteFormDto clienteFormDto){
         Cliente cliente = mapper.map(clienteFormDto, Cliente.class);
         clienteRepository.save(cliente);
         return ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(cliente.getId()).toUri();
     }
 
     @Override
-    public ClienteDto update(Long id, ClienteFormDto clienteFormDto) {
-        Optional<Cliente> clienteOpcional= clienteRepository.findById(id);
-        if(clienteOpcional.isPresent()){
-            Cliente cliente = mapper.map(clienteFormDto, Cliente.class);
-            cliente.setId(id);
-            clienteRepository.save(cliente);
+    public ClienteDto atualizarCliente(Long id, ClienteFormDto clienteFormDto) {
+        validaConsulta.verificaExistenciaCliente(id);
 
-            return mapper.map(cliente, ClienteDto.class);
-        }else{
-            throw new RuntimeException("Não foi possível encontrar o ID desejado");
-        }
+        Cliente cliente = mapper.map(clienteFormDto, Cliente.class);
+        cliente.setId(id);
+        clienteRepository.save(cliente);
+
+        return mapper.map(cliente, ClienteDto.class);
     }
 
     @Override
-    public String delete(Long id){
-        Optional<Cliente> clienteOpcional = clienteRepository.findById(id);
-        if(clienteOpcional.isPresent()){
-            clienteRepository.deleteById(id);
-            return("Cliente deletado com sucesso!");
-        }else{
-            return("Cliente não encontrado");
-        }
+    public void deletarCliente(Long id){
+        Cliente cliente = validaConsulta.verificaExistenciaCliente(id);
 
+        clienteRepository.deleteById(id);
     }
-
 }

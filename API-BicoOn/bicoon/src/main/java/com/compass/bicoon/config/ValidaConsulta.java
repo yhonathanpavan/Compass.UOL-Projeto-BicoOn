@@ -1,10 +1,12 @@
 package com.compass.bicoon.config;
 
 import com.compass.bicoon.entities.Categoria;
+import com.compass.bicoon.entities.Cliente;
 import com.compass.bicoon.entities.Prestador;
 import com.compass.bicoon.entities.Servico;
 import com.compass.bicoon.exceptions.ObjectNotFound.ObjectNotFoundException;
 import com.compass.bicoon.repository.CategoriaRepository;
+import com.compass.bicoon.repository.ClienteRepository;
 import com.compass.bicoon.repository.PrestadorRepository;
 import com.compass.bicoon.repository.ServicoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,8 @@ public class ValidaConsulta {
     @Autowired
     PrestadorRepository prestadorRepository;
 
+    @Autowired
+    ClienteRepository clienteRepository;
 
     public Categoria verificaExistenciaCategoria(String categoria) {
         Optional<Categoria> categoriaOptional = categoriaRepository.findByNome(categoria);
@@ -59,7 +63,15 @@ public class ValidaConsulta {
         }else {
             throw new ObjectNotFoundException("Prestador não encontrado");
         }
+    }
 
+    public Cliente verificaExistenciaCliente(Long id) {
+        Optional<Cliente> clienteOptional = clienteRepository.findById(id);
+        if(clienteOptional.isPresent()){
+            return clienteOptional.get();
+        }else {
+            throw new ObjectNotFoundException("Cliente não encontrado");
+        }
     }
 
 }

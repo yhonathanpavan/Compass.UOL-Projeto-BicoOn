@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.transaction.Transactional;
 
 @RestController
-@RequestMapping("/bicoon/cliente")
+@RequestMapping("/bicoon/clientes")
 public class ClienteController {
 
     @Autowired
@@ -38,19 +38,19 @@ public class ClienteController {
     @Transactional
     @PostMapping
     public ResponseEntity<ClienteFormDto> cadastrarCliente(@RequestBody ClienteFormDto clienteFormDto){
-        return ResponseEntity.created(clienteService.create(clienteFormDto)).build();
+        return ResponseEntity.created(clienteService.cadastrarCliente(clienteFormDto)).build();
     }
 
     @Transactional
     @PutMapping("/{id}")
     public ResponseEntity<ClienteDto> atualizarCliente(@PathVariable Long id, @RequestBody ClienteFormDto clienteFormDto){
-        return ResponseEntity.ok().body(clienteService.update(id, clienteFormDto));
+        return ResponseEntity.ok().body(clienteService.atualizarCliente(id, clienteFormDto));
     }
 
     @Transactional
     @DeleteMapping("/{id}")
-    public String deletarCliente(@PathVariable Long id){
-
-        return clienteService.delete(id);
+    public ResponseEntity<?> deletarCliente(@PathVariable Long id){
+        clienteService.deletarCliente(id);
+        return ResponseEntity.ok().build();
     }
 }
