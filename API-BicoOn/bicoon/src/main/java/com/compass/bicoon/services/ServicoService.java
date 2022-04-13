@@ -11,11 +11,7 @@ public interface ServicoService {
 
     Page<ServicoDto> listarServicos(Pageable paginacao);
 
-    URI cadastrarServico(ServicoFormDto servicoForm);
-
     ServicoDto atualizarServico(Long id, ServicoFormDto servicoForm);
 
-    String deletarServico(Long id);
-
-    String deletarCategoriaDoServico(Long idServico, Long idCategoria);
+    void deletarServico(Long id);
 }

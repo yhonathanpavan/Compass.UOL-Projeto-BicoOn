@@ -11,8 +11,10 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
+
 @RestController
-@RequestMapping("/bicoon/categoria")
+@RequestMapping("/bicoon/categorias")
 public class CategoriaController {
 
     @Autowired
@@ -24,18 +26,22 @@ public class CategoriaController {
     }
 
     @PostMapping
+    @Transactional
     public ResponseEntity<CategoriaDto> cadastrarCategoria(@RequestBody CategoriaFormDto categoriaForm){
         return ResponseEntity.created(categoriaService.cadastrarCategoria(categoriaForm)).build();
     }
 
     @PutMapping("/{id}")
+    @Transactional
     public ResponseEntity<CategoriaDto> atualizarCategoria(@PathVariable Long id, @RequestBody CategoriaFormDto categoriaForm){
         return ResponseEntity.ok().body(categoriaService.atualizarCategoria(id, categoriaForm));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletarCategoria(@PathVariable Long id){
-       return ResponseEntity.ok().body(categoriaService.deletarCategoria(id));
+    @Transactional
+    public ResponseEntity<?> deletarCategoria(@PathVariable Long id){
+        categoriaService.deletarCategoria(id);
+        return ResponseEntity.ok().build();
     }
 
 }
