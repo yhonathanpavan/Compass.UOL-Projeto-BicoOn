@@ -37,25 +37,21 @@ public class ServicoServiceImpl implements ServicoService{
 
     @Override
     public ServicoDto atualizarServico(Long id, ServicoFormDto servicoForm) {
-        Servico servico = validaConsulta.verificaExistenciaServico(id);
+        validaConsulta.verificaExistenciaServico(id);
         Categoria categoria = validaConsulta.verificaExistenciaCategoria(servicoForm.getCategoria());
 
-            servico = mapper.map(servicoForm, Servico.class);
+            Servico servico = mapper.map(servicoForm, Servico.class);
             servico.setCategoria(categoria);
             servico.setId(id);
             servicoRepository.save(servico);
 
             return mapper.map(servico, ServicoDto.class);
-
     }
 
     @Override
-    public String deletarServico(Long id) {
+    public void deletarServico(Long id) {
         Servico servico = validaConsulta.verificaExistenciaServico(id);
-
         servicoRepository.deleteById(id);
-
-        return "Serviço excluído com sucesso!";
     }
 
 }

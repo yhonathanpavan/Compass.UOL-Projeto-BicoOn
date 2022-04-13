@@ -13,5 +13,5 @@ public interface ServicoService {
 
     ServicoDto atualizarServico(Long id, ServicoFormDto servicoForm);
 
-    String deletarServico(Long id);
+    void deletarServico(Long id);
 }
