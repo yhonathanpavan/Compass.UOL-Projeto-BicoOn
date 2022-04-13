@@ -1,5 +1,6 @@
 package com.compass.bicoon.services;
 
+import com.compass.bicoon.config.ValidaConsulta;
 import com.compass.bicoon.dto.AvaliacaoFormDto;
 import com.compass.bicoon.entities.Avaliacao;
 import com.compass.bicoon.entities.Cliente;
@@ -13,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.Optional;
 
 @Service
 public class AvaliacaoServiceImpl implements AvaliacaoService{
@@ -29,6 +29,9 @@ public class AvaliacaoServiceImpl implements AvaliacaoService{
 
     @Autowired
     ModelMapper mapper;
+
+    @Autowired
+    ValidaConsulta validaConsulta;
 
     @Override
     public URI criarAvaliacao(Long clienteId, Long prestadorId, AvaliacaoFormDto avaliacaoFormDto){
@@ -47,24 +50,23 @@ public class AvaliacaoServiceImpl implements AvaliacaoService{
 
     @Override
     public AvaliacaoFormDto atualizarAvaliacao(Long id, AvaliacaoFormDto avaliacaoFormDto){
-        Optional<Avaliacao> avaliacaoOptional = avaliacaoRepository.findById(id);
-        if(avaliacaoOptional.isPresent()) {
-            Avaliacao avaliacao = mapper.map(avaliacaoFormDto, Avaliacao.class);
-            avaliacao.setId(id);
-            avaliacaoRepository.save(avaliacao);
+        Avaliacao avaliacao = validaConsulta.verificaExistenciaAvaliacao(id);
+        Long clienteId = avaliacao.getClienteId();
 
-            return mapper.map(avaliacao, AvaliacaoFormDto.class);
-        }
-        throw new RuntimeException();
+        avaliacao = mapper.map(avaliacaoFormDto, Avaliacao.class);
+        avaliacao.setId(id);
+
+        avaliacao.setClienteId(clienteId);
+
+        avaliacaoRepository.save(avaliacao);
+
+        return mapper.map(avaliacao, AvaliacaoFormDto.class);
     }
 
     @Override
     public void deletarAvaliacao(Long id){
-        Optional<Avaliacao> avaliacaoOptional = avaliacaoRepository.findById(id);
-        if(avaliacaoOptional.isPresent()){
-            avaliacaoRepository.deleteById(id);
-        }else{
-            throw new RuntimeException();
-        }
+        Avaliacao avaliacao = validaConsulta.verificaExistenciaAvaliacao(id);
+
+        avaliacaoRepository.deleteById(id);
     }
 }
