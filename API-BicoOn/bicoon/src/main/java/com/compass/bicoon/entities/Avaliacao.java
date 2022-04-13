@@ -13,4 +13,7 @@ public class Avaliacao {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    private Long clienteId;
+    private String comentario;
+    private int nota;
 }
