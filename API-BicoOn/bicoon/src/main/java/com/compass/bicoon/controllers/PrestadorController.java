@@ -9,6 +9,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
 
@@ -21,16 +22,19 @@ public class PrestadorController {
     PrestadorService prestadorService;
 
     @PostMapping
+    @Transactional
     public ResponseEntity<URI> cadastrarPrestador(@RequestBody PrestadorForm prestador){
         return ResponseEntity.created(prestadorService.cadastrarPrestador(prestador)).build();
     }
 
     @PutMapping("/{id}")
+    @Transactional
     public ResponseEntity<PrestadorDto> atualizarPrestador(@PathVariable Long id, @Valid @RequestBody PrestadorForm prestadorForm){
         return ResponseEntity.ok().body(prestadorService.atualizarPrestador(id, prestadorForm));
     }
 
     @DeleteMapping("/{id}")
+    @Transactional
     public  ResponseEntity deletarPrestador(@PathVariable Long id){
         prestadorService.deletaPrestador(id);
         return ResponseEntity.ok().build();
@@ -58,6 +62,7 @@ public class PrestadorController {
     }
 
     @PutMapping ("/{id}/servicos")
+    @Transactional
     public ResponseEntity<ServicoDto> cadastraServicosPrestador(@PathVariable Long id, @Valid @RequestBody ServicoFormDto servicoForm){
         return ResponseEntity.ok().body(prestadorService.cadastrarServico(id,servicoForm));
 

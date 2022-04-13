@@ -3,12 +3,8 @@ package com.compass.bicoon.services;
 import com.compass.bicoon.dto.*;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
 import java.net.URI;
-import java.util.List;
 
-@Service
 public interface PrestadorService {
 
     URI cadastrarPrestador(PrestadorForm prestadorForm);

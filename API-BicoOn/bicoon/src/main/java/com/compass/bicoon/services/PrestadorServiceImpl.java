@@ -6,7 +6,6 @@ import com.compass.bicoon.entities.Avaliacao;
 import com.compass.bicoon.entities.Categoria;
 import com.compass.bicoon.entities.Prestador;
 import com.compass.bicoon.entities.Servico;
-import com.compass.bicoon.repository.CategoriaRepository;
 import com.compass.bicoon.repository.PrestadorRepository;
 import com.compass.bicoon.repository.ServicoRepository;
 import org.modelmapper.ModelMapper;
@@ -27,7 +26,7 @@ public class PrestadorServiceImpl implements PrestadorService{
     PrestadorRepository prestadorRepository;
 
     @Autowired
-    ModelMapper modelMapper;
+    ModelMapper mapper;
 
     @Autowired
     ServicoRepository servicoRepository;
@@ -37,8 +36,8 @@ public class PrestadorServiceImpl implements PrestadorService{
 
     @Override
     public URI cadastrarPrestador(PrestadorForm prestadorForm) {
-        Prestador prestador = prestadorRepository.save(modelMapper.map(prestadorForm, Prestador.class));
-        PrestadorDto prestadorDto = modelMapper.map(prestador, PrestadorDto.class);
+        Prestador prestador = prestadorRepository.save(mapper.map(prestadorForm, Prestador.class));
+        PrestadorDto prestadorDto = mapper.map(prestador, PrestadorDto.class);
 
         return ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(prestadorDto.getId()).toUri();
     }
@@ -46,11 +45,11 @@ public class PrestadorServiceImpl implements PrestadorService{
     @Override
     public PrestadorDto atualizarPrestador(Long id,PrestadorForm prestadorForm) {
         Prestador prestador = valida.verificaExistenciaPrestador(id);
-        prestador = modelMapper.map(prestadorForm, Prestador.class);
+        prestador = mapper.map(prestadorForm, Prestador.class);
         prestador.setId(id);
         prestadorRepository.save(prestador);
 
-        return modelMapper.map(prestador, PrestadorDto.class);
+        return mapper.map(prestador, PrestadorDto.class);
     }
 
     @Override
@@ -63,7 +62,7 @@ public class PrestadorServiceImpl implements PrestadorService{
     public Page<PrestadorDto> listarPrestadores(Pageable paginacao, String cidade, String categoria){
         Page<Prestador> prestador;
         prestador = defineRetorno(paginacao, cidade, categoria);
-        Page<PrestadorDto> prestadorDto = new PageImpl<>(prestador.stream().map(element -> modelMapper.map(element
+        Page<PrestadorDto> prestadorDto = new PageImpl<>(prestador.stream().map(element -> mapper.map(element
                 , PrestadorDto.class)).collect(Collectors.toList()));
 
         return prestadorDto;
@@ -73,14 +72,14 @@ public class PrestadorServiceImpl implements PrestadorService{
     public PrestadorDto listarPorId(Long id) {
         Prestador prestador = valida.verificaExistenciaPrestador(id);
 
-        return modelMapper.map(prestador, PrestadorDto.class);
+        return mapper.map(prestador, PrestadorDto.class);
     }
 
     @Override
     public Page<ServicoDto> listarServicosPrestador(Long id) {
         Prestador prestador = valida.verificaExistenciaPrestador(id);
         List<Servico> servicos = prestador.getServico();
-        Page<ServicoDto> servicosDto = new PageImpl<>(servicos.stream().map(element -> modelMapper.map(element
+        Page<ServicoDto> servicosDto = new PageImpl<>(servicos.stream().map(element -> mapper.map(element
                 , ServicoDto.class)).collect(Collectors.toList()));
 
         return servicosDto;
@@ -90,7 +89,7 @@ public class PrestadorServiceImpl implements PrestadorService{
     public Page<AvaliacaoDto> listarAvaliacoesPrestador(Long id) {
         Prestador prestador = valida.verificaExistenciaPrestador(id);
         List<Avaliacao> avaliacoes = prestador.getAvaliacao();
-        Page<AvaliacaoDto> avaliacoesDto = new PageImpl<>(avaliacoes.stream().map(element -> modelMapper.map(element
+        Page<AvaliacaoDto> avaliacoesDto = new PageImpl<>(avaliacoes.stream().map(element -> mapper.map(element
                 , AvaliacaoDto.class)).collect(Collectors.toList()));
 
         return avaliacoesDto;
@@ -110,7 +109,7 @@ public class PrestadorServiceImpl implements PrestadorService{
         prestador.getServico().add(servico);
         prestadorRepository.save(prestador);
 
-        return modelMapper.map(servico, ServicoDto.class);
+        return mapper.map(servico, ServicoDto.class);
     }
 
     private Page<Prestador> defineRetorno(Pageable paginacao, String cidade, String categoria) {
