@@ -1,5 +1,6 @@
 package com.compass.bicoon.services;
 
+import com.compass.bicoon.config.ValidaConsulta;
 import com.compass.bicoon.dto.CategoriaDto;
 import com.compass.bicoon.dto.CategoriaFormDto;
 import com.compass.bicoon.entities.Categoria;
@@ -16,7 +17,6 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,6 +30,9 @@ public class CategoriaServiceImpl implements CategoriaService{
 
     @Autowired
     ModelMapper mapper;
+
+    @Autowired
+    ValidaConsulta validaConsulta;
 
     @Override
     public Page<CategoriaDto> listarCategorias(Pageable paginacao) {
@@ -47,36 +50,26 @@ public class CategoriaServiceImpl implements CategoriaService{
 
     @Override
     public CategoriaDto atualizarCategoria(Long id, CategoriaFormDto categoriaForm){
-        Optional<Categoria> categoriaOptional = categoriaRepository.findById(id);
+            validaConsulta.verificaExistenciaCategoria(id);
 
-        if(categoriaOptional.isPresent()){
             Categoria categoria = mapper.map(categoriaForm, Categoria.class);
             categoria.setId(id);
             categoriaRepository.save(categoria);
             return mapper.map(categoria, CategoriaDto.class);
-        }
-
-        //Jogar exception
-        return null;
     }
 
     @Override
-    public String deletarCategoria(Long id) {
-        Optional<Categoria> categoria = categoriaRepository.findById(id);
+    public void deletarCategoria(Long id) {
+
+        Categoria categoria = validaConsulta.verificaExistenciaCategoria(id);
         List<Servico> servico = servicoRepository.findByCategoriaId(id);
 
-        if(categoria.isPresent()){
-
-            if(!servico.isEmpty()){ //Desvinculando categorias dos serviços
-                servico.stream().forEach(e -> e.setCategoria(null));
-            }
-
-            categoriaRepository.deleteById(id);
-            return "Categoria " + categoria.get().getNome() + " foi excluída com sucesso!";
+        if(!servico.isEmpty()){ //Desvinculando categorias dos serviços
+            servico.stream().forEach(e -> e.setCategoria(null));
         }
 
-        //Jogar exception
-        return null;
+        categoriaRepository.deleteById(id);
+
     }
 
 }

@@ -11,6 +11,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
+
 @RestController
 @RequestMapping("/bicoon/servicos")
 public class ServicoController {
@@ -24,13 +26,16 @@ public class ServicoController {
     }
 
     @PutMapping("/{id}")
+    @Transactional
     public ResponseEntity<ServicoDto> atualizarServico(@PathVariable Long id, @RequestBody ServicoFormDto servicoFormDto){
         return ResponseEntity.ok().body(servicoService.atualizarServico(id, servicoFormDto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<String> deletarServico(@PathVariable Long id){
-        return ResponseEntity.ok().body(servicoService.deletarServico(id));
+    @Transactional
+    public ResponseEntity<?> deletarServico(@PathVariable Long id){
+        servicoService.deletarServico(id);
+        return ResponseEntity.ok().build();
     }
 
 }

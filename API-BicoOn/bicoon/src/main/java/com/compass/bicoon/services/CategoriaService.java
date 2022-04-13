@@ -15,5 +15,5 @@ public interface CategoriaService {
 
     CategoriaDto atualizarCategoria(Long id, CategoriaFormDto categoriaForm);
 
-    String deletarCategoria(Long id);
+    void deletarCategoria(Long id);
 }
