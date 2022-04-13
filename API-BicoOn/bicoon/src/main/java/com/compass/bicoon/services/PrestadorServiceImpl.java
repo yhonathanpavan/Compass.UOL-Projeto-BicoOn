@@ -1,5 +1,6 @@
 package com.compass.bicoon.services;
 
+import com.compass.bicoon.config.ValidaConsulta;
 import com.compass.bicoon.dto.*;
 import com.compass.bicoon.entities.Avaliacao;
 import com.compass.bicoon.entities.Categoria;
@@ -15,10 +16,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -34,41 +33,36 @@ public class PrestadorServiceImpl implements PrestadorService{
     ServicoRepository servicoRepository;
 
     @Autowired
-    CategoriaRepository categoriaRepository;
+    ValidaConsulta valida;
 
     @Override
     public URI cadastrarPrestador(PrestadorForm prestadorForm) {
         Prestador prestador = prestadorRepository.save(modelMapper.map(prestadorForm, Prestador.class));
         PrestadorDto prestadorDto = modelMapper.map(prestador, PrestadorDto.class);
+
         return ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(prestadorDto.getId()).toUri();
     }
 
     @Override
     public PrestadorDto atualizarPrestador(Long id,PrestadorForm prestadorForm) {
-        Prestador prestador = verificaExistenciaPrestador(id);
-        try {
-            prestador = modelMapper.map(prestadorForm, Prestador.class);
-            prestador.setId(id);
-            prestadorRepository.save(prestador);
-            return modelMapper.map(prestador, PrestadorDto.class);
+        Prestador prestador = valida.verificaExistenciaPrestador(id);
+        prestador = modelMapper.map(prestadorForm, Prestador.class);
+        prestador.setId(id);
+        prestadorRepository.save(prestador);
 
-        }catch (Exception e){
-            throw new RuntimeException();
-        }
+        return modelMapper.map(prestador, PrestadorDto.class);
     }
 
     @Override
     public void deletaPrestador(Long id) {
-        verificaExistenciaPrestador(id);
+        valida.verificaExistenciaPrestador(id);
         prestadorRepository.deleteById(id);
     }
 
     @Override
     public Page<PrestadorDto> listarPrestadores(Pageable paginacao, String cidade, String categoria){
-
         Page<Prestador> prestador;
         prestador = defineRetorno(paginacao, cidade, categoria);
-
         Page<PrestadorDto> prestadorDto = new PageImpl<>(prestador.stream().map(element -> modelMapper.map(element
                 , PrestadorDto.class)).collect(Collectors.toList()));
 
@@ -77,39 +71,36 @@ public class PrestadorServiceImpl implements PrestadorService{
 
     @Override
     public PrestadorDto listarPorId(Long id) {
-        Prestador prestador = verificaExistenciaPrestador(id);
+        Prestador prestador = valida.verificaExistenciaPrestador(id);
+
         return modelMapper.map(prestador, PrestadorDto.class);
     }
 
     @Override
-    public List<ServicoDto> listarServicosPrestador(Long id) {
-        Prestador prestador = verificaExistenciaPrestador(id);
+    public Page<ServicoDto> listarServicosPrestador(Long id) {
+        Prestador prestador = valida.verificaExistenciaPrestador(id);
         List<Servico> servicos = prestador.getServico();
+        Page<ServicoDto> servicosDto = new PageImpl<>(servicos.stream().map(element -> modelMapper.map(element
+                , ServicoDto.class)).collect(Collectors.toList()));
 
-        List<ServicoDto> servicoDto = servicos.stream()
-                .map(servico -> modelMapper.map(servico, ServicoDto.class))
-                .collect(Collectors.toList());
-
-        return servicoDto;
+        return servicosDto;
     }
 
     @Override
-    public List<AvaliacaoDto> listarAvaliacoesPrestador(Long id) {
-        Prestador prestador = verificaExistenciaPrestador(id);
+    public Page<AvaliacaoDto> listarAvaliacoesPrestador(Long id) {
+        Prestador prestador = valida.verificaExistenciaPrestador(id);
         List<Avaliacao> avaliacoes = prestador.getAvaliacao();
+        Page<AvaliacaoDto> avaliacoesDto = new PageImpl<>(avaliacoes.stream().map(element -> modelMapper.map(element
+                , AvaliacaoDto.class)).collect(Collectors.toList()));
 
-        List<AvaliacaoDto> avaliacaoDto = avaliacoes.stream()
-                .map(avaliacao -> modelMapper.map(avaliacao, AvaliacaoDto.class))
-                .collect(Collectors.toList());
-
-        return avaliacaoDto;
+        return avaliacoesDto;
     }
 
     @Override
     public ServicoDto cadastrarServico(Long id, ServicoFormDto servicoForm) {
 
-        Prestador prestador = verificaExistenciaPrestador(id);
-        Categoria categoria = verificaExistenciaCategoria(servicoForm.getCategoria());
+        Prestador prestador = valida.verificaExistenciaPrestador(id);
+        Categoria categoria = valida.verificaExistenciaCategoria(servicoForm.getCategoria());
 
         Servico servico = new Servico();
         servico.setCategoria(categoria);
@@ -120,25 +111,6 @@ public class PrestadorServiceImpl implements PrestadorService{
         prestadorRepository.save(prestador);
 
         return modelMapper.map(servico, ServicoDto.class);
-    }
-
-    private Categoria verificaExistenciaCategoria(String categoria) {
-        Optional<Categoria> categoriaOptional = categoriaRepository.findByNome(categoria);
-        if(categoriaOptional.isPresent()){
-            return  categoriaOptional.get();
-        }else{
-            throw new RuntimeException();
-        }
-    }
-
-
-    private Prestador verificaExistenciaPrestador(Long id) {
-        Optional<Prestador> prestadorOptional = prestadorRepository.findById(id);
-        if(prestadorOptional.isPresent()){
-            return prestadorOptional.get();
-        }else {
-            throw new RuntimeException();
-        }
     }
 
     private Page<Prestador> defineRetorno(Pageable paginacao, String cidade, String categoria) {

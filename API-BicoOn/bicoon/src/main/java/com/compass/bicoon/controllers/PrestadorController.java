@@ -1,7 +1,6 @@
 package com.compass.bicoon.controllers;
 
 import com.compass.bicoon.dto.*;
-import com.compass.bicoon.entities.Servico;
 import com.compass.bicoon.services.PrestadorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -10,13 +9,12 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.net.URI;
-import java.util.List;
+
 
 @RestController
-@RequestMapping("/bicoon/prestador")
+@RequestMapping("/bicoon/prestadores")
 public class PrestadorController {
 
     @Autowired
@@ -35,7 +33,7 @@ public class PrestadorController {
     @DeleteMapping("/{id}")
     public  ResponseEntity deletarPrestador(@PathVariable Long id){
         prestadorService.deletaPrestador(id);
-        return ResponseEntity.ok().body("Deletado Com Sucesso");
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping
@@ -49,17 +47,17 @@ public class PrestadorController {
         return ResponseEntity.ok().body(prestadorService.listarPorId(id));
     }
 
-    @GetMapping("/{id}/servico")
-    public ResponseEntity<List<ServicoDto>> listarCategoriaPrestador(@PathVariable Long id){
+    @GetMapping("/{id}/servicos")
+    public ResponseEntity<Page<ServicoDto>> listarCategoriaPrestador(@PathVariable Long id){
         return ResponseEntity.ok().body(prestadorService.listarServicosPrestador(id));
     }
 
     @GetMapping("/{id}/avaliacoes")
-    public ResponseEntity<List<AvaliacaoDto>> listarAvaliacoesPrestador(@PathVariable Long id){
+    public ResponseEntity<Page<AvaliacaoDto>> listarAvaliacoesPrestador(@PathVariable Long id){
         return ResponseEntity.ok().body(prestadorService.listarAvaliacoesPrestador(id));
     }
 
-    @PutMapping ("/{id}/servico")
+    @PutMapping ("/{id}/servicos")
     public ResponseEntity<ServicoDto> cadastraServicosPrestador(@PathVariable Long id, @Valid @RequestBody ServicoFormDto servicoForm){
         return ResponseEntity.ok().body(prestadorService.cadastrarServico(id,servicoForm));
 

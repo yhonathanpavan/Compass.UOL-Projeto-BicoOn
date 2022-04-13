@@ -21,9 +21,9 @@ public interface PrestadorService {
 
     PrestadorDto listarPorId(Long id);
 
-    List<ServicoDto> listarServicosPrestador(Long id);
+    Page<ServicoDto> listarServicosPrestador(Long id);
 
-    List<AvaliacaoDto> listarAvaliacoesPrestador(Long id);
+    Page<AvaliacaoDto> listarAvaliacoesPrestador(Long id);
 
     ServicoDto cadastrarServico(Long id, ServicoFormDto servicoForm);
 }
