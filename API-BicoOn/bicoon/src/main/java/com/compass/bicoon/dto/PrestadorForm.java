@@ -22,8 +22,5 @@ public class PrestadorForm {
     private Sexo sexo;
     @NotNull
     private String telefone;
-    @NotNull
-    private Boolean disponivel;
-    private List<Servico> servico;
 
 }
