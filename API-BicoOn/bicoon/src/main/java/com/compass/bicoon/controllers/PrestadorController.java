@@ -23,7 +23,7 @@ public class PrestadorController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<URI> cadastrarPrestador(@RequestBody PrestadorFormDto prestador){
+    public ResponseEntity<URI> cadastrarPrestador(@Valid @RequestBody PrestadorFormDto prestador){
         return ResponseEntity.created(prestadorService.cadastrarPrestador(prestador)).build();
     }
 
@@ -35,7 +35,7 @@ public class PrestadorController {
 
     @DeleteMapping("/{id}")
     @Transactional
-    public  ResponseEntity deletarPrestador(@PathVariable Long id){
+    public  ResponseEntity<?> deletarPrestador(@PathVariable Long id){
         prestadorService.deletaPrestador(id);
         return ResponseEntity.ok().build();
     }
@@ -66,6 +66,12 @@ public class PrestadorController {
     public ResponseEntity<ServicoDto> cadastraServicosPrestador(@PathVariable Long id, @Valid @RequestBody ServicoFormDto servicoForm){
         return ResponseEntity.ok().body(prestadorService.cadastrarServico(id,servicoForm));
 
+    }
+
+    @PutMapping ("/{id}/disponibilidade")
+    @Transactional
+    public ResponseEntity<PrestadorDto> atualizarDisponibilidadePrestador(@PathVariable Long id, @Valid @RequestBody PrestadorDisponibilidadeFormDto prestadorDispForm){
+        return ResponseEntity.ok().body(prestadorService.atualizarDisponibilidadePrestador(id, prestadorDispForm));
     }
 
 }

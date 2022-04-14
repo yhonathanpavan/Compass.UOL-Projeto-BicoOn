@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/bicoon/categorias")
@@ -27,13 +28,13 @@ public class CategoriaController {
 
     @PostMapping
     @Transactional
-    public ResponseEntity<CategoriaDto> cadastrarCategoria(@RequestBody CategoriaFormDto categoriaForm){
+    public ResponseEntity<CategoriaDto> cadastrarCategoria(@Valid @RequestBody CategoriaFormDto categoriaForm){
         return ResponseEntity.created(categoriaService.cadastrarCategoria(categoriaForm)).build();
     }
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<CategoriaDto> atualizarCategoria(@PathVariable Long id, @RequestBody CategoriaFormDto categoriaForm){
+    public ResponseEntity<CategoriaDto> atualizarCategoria(@PathVariable Long id, @Valid @RequestBody CategoriaFormDto categoriaForm){
         return ResponseEntity.ok().body(categoriaService.atualizarCategoria(id, categoriaForm));
     }
 

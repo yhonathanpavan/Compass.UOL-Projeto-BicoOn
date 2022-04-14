@@ -14,8 +14,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -38,7 +41,9 @@ public class PrestadorServiceImpl implements PrestadorService{
 
     @Override
     public URI cadastrarPrestador(PrestadorFormDto prestadorFormDto) {
-        Prestador prestador = prestadorRepository.save(mapper.map(prestadorFormDto, Prestador.class));
+        Prestador prestador = mapper.map(prestadorFormDto, Prestador.class);
+        prestador.setDisponivel(true);
+        prestadorRepository.save(prestador);
         PrestadorDto prestadorDto = mapper.map(prestador, PrestadorDto.class);
 
         return ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(prestadorDto.getId()).toUri();
@@ -134,5 +139,14 @@ public class PrestadorServiceImpl implements PrestadorService{
             return prestadorOptional.get();
         }
         throw new ObjectNotFoundException("Prestador não encontrado");
+    }
+
+    @Override
+    public PrestadorDto atualizarDisponibilidadePrestador(@PathVariable Long id, @Valid @RequestBody PrestadorDisponibilidadeFormDto prestadorDispForm) {
+        Prestador prestador = verificaExistenciaPrestador(id);
+        prestador.setDisponivel(prestadorDispForm.getDisponivel());
+        prestadorRepository.save(prestador);
+
+        return mapper.map(prestador, PrestadorDto.class);
     }
 }

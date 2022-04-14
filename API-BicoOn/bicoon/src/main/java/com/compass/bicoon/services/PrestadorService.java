@@ -26,4 +26,7 @@ public interface PrestadorService {
     ServicoDto cadastrarServico(Long id, ServicoFormDto servicoForm);
 
     Prestador verificaExistenciaPrestador(Long id);
+
+    PrestadorDto atualizarDisponibilidadePrestador(Long id, PrestadorDisponibilidadeFormDto prestadorDispForm);
+
 }

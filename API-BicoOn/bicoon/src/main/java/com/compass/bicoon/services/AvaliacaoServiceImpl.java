@@ -41,6 +41,12 @@ public class AvaliacaoServiceImpl implements AvaliacaoService{
         Cliente cliente = clienteService.verificaExistenciaCliente(clienteId);
         Prestador prestador = prestadorService.verificaExistenciaPrestador(prestadorId);
 
+        if(avaliacaoFormDto.getNota() > 5){
+            avaliacaoFormDto.setNota(5);
+        }else if(avaliacaoFormDto.getNota() < 1){
+            avaliacaoFormDto.setNota(1);
+        }
+
         Avaliacao avaliacao = mapper.map(avaliacaoFormDto, Avaliacao.class);
         avaliacao.setClienteId(cliente.getId());
         avaliacao.setData(LocalDate.now());

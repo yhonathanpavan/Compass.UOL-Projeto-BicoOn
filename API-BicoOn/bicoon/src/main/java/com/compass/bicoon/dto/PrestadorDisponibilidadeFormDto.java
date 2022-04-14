@@ -6,10 +6,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class AvaliacaoFormDto {
-
-    @NotNull @NotEmpty
-    private String comentario;
+public class PrestadorDisponibilidadeFormDto {
     @NotNull
-    private int nota;
+    private Boolean disponivel;
 }

@@ -19,7 +19,7 @@ public class PrestadorFormDto {
     private String cidade;
     @NotNull
     private Sexo sexo;
-    @NotNull
+    @NotNull @NotEmpty
     private String telefone;
 
 }

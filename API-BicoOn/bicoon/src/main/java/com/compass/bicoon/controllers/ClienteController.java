@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/bicoon/clientes")
@@ -37,13 +38,13 @@ public class ClienteController {
 
     @Transactional
     @PostMapping
-    public ResponseEntity<ClienteFormDto> cadastrarCliente(@RequestBody ClienteFormDto clienteFormDto){
+    public ResponseEntity<ClienteFormDto> cadastrarCliente(@Valid  @RequestBody ClienteFormDto clienteFormDto){
         return ResponseEntity.created(clienteService.cadastrarCliente(clienteFormDto)).build();
     }
 
     @Transactional
     @PutMapping("/{id}")
-    public ResponseEntity<ClienteDto> atualizarCliente(@PathVariable Long id, @RequestBody ClienteFormDto clienteFormDto){
+    public ResponseEntity<ClienteDto> atualizarCliente(@PathVariable Long id, @Valid @RequestBody ClienteFormDto clienteFormDto){
         return ResponseEntity.ok().body(clienteService.atualizarCliente(id, clienteFormDto));
     }
 

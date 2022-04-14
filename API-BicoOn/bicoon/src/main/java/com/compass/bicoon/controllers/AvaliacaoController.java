@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/bicoon/avaliacoes")
@@ -18,14 +19,14 @@ public class AvaliacaoController {
     @Transactional
     @PostMapping("/clientes/{clienteId}/prestadores/{prestadorId}")
     public ResponseEntity<AvaliacaoFormDto> adicionarAvaliacao(@PathVariable Long clienteId, @PathVariable Long prestadorId,
-                                                           @RequestBody AvaliacaoFormDto avaliacaoFormDto){
+                                                               @Valid @RequestBody AvaliacaoFormDto avaliacaoFormDto){
 
         return ResponseEntity.created(avaliacaoService.criarAvaliacao(clienteId, prestadorId, avaliacaoFormDto)).build();
     }
 
     @Transactional
     @PutMapping("/{id}")
-    public ResponseEntity<AvaliacaoFormDto> atualizarAvaliacao(@PathVariable Long id, @RequestBody AvaliacaoFormDto avaliacaoFormDto){
+    public ResponseEntity<AvaliacaoFormDto> atualizarAvaliacao(@PathVariable Long id, @Valid @RequestBody AvaliacaoFormDto avaliacaoFormDto){
         return ResponseEntity.ok().body(avaliacaoService.atualizarAvaliacao(id, avaliacaoFormDto));
     }
 

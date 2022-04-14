@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/bicoon/servicos")
@@ -27,7 +28,7 @@ public class ServicoController {
 
     @PutMapping("/{id}")
     @Transactional
-    public ResponseEntity<ServicoDto> atualizarServico(@PathVariable Long id, @RequestBody ServicoFormDto servicoFormDto){
+    public ResponseEntity<ServicoDto> atualizarServico(@PathVariable Long id, @Valid @RequestBody ServicoFormDto servicoFormDto){
         return ResponseEntity.ok().body(servicoService.atualizarServico(id, servicoFormDto));
     }
 
