@@ -142,7 +142,7 @@ public class PrestadorServiceImpl implements PrestadorService{
     }
 
     @Override
-    public PrestadorDto atualizarDisponibilidadePrestador(@PathVariable Long id, @Valid @RequestBody PrestadorDisponibilidadeFormDto prestadorDispForm) {
+    public PrestadorDto atualizarDisponibilidadePrestador(Long id, PrestadorDisponibilidadeFormDto prestadorDispForm) {
         Prestador prestador = verificaExistenciaPrestador(id);
         prestador.setDisponivel(prestadorDispForm.getDisponivel());
         prestadorRepository.save(prestador);
