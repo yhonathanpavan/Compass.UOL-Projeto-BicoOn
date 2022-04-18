@@ -65,6 +65,7 @@ public class AvaliacaoServiceImpl implements AvaliacaoService{
 
         avaliacao = mapper.map(avaliacaoFormDto, Avaliacao.class);
         avaliacao.setId(id);
+        avaliacao.setData(LocalDate.now());
         avaliacao.setClienteId(clienteId);
 
         avaliacaoRepository.save(avaliacao);
