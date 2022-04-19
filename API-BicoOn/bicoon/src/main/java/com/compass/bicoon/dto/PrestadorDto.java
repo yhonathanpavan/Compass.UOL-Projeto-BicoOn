@@ -2,11 +2,18 @@ package com.compass.bicoon.dto;
 
 import com.compass.bicoon.constants.Sexo;
 import com.compass.bicoon.entities.Servico;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class PrestadorDto {
 
     private Long id;

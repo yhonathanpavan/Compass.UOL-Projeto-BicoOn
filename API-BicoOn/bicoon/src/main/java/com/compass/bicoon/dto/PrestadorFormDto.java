@@ -1,12 +1,19 @@
 package com.compass.bicoon.dto;
 
 import com.compass.bicoon.constants.Sexo;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class PrestadorFormDto {
 
     @NotNull @NotEmpty
