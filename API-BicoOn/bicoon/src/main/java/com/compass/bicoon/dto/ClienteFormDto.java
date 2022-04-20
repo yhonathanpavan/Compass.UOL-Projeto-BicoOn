@@ -2,7 +2,6 @@ package com.compass.bicoon.dto;
 
 import com.compass.bicoon.constants.Sexo;
 import lombok.Data;
-
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 

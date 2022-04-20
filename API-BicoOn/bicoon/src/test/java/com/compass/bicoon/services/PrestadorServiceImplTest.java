@@ -7,9 +7,7 @@ import com.compass.bicoon.entities.Categoria;
 import com.compass.bicoon.entities.Prestador;
 import com.compass.bicoon.entities.Servico;
 import com.compass.bicoon.exceptions.ObjectNotFound.ObjectNotFoundException;
-import com.compass.bicoon.repository.CategoriaRepository;
 import com.compass.bicoon.repository.PrestadorRepository;
-import com.compass.bicoon.repository.ServicoRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -42,17 +40,8 @@ class PrestadorServiceImplTest {
     @InjectMocks
     PrestadorServiceImpl service;
 
-    @Spy
-    CategoriaServiceImpl categoriaService;
-
     @Mock
     PrestadorRepository prestadorRepository;
-
-    @Mock
-    CategoriaRepository categoriaRepository;
-
-    @Mock
-    ServicoRepository servicoRepository;
 
     @Spy
     ModelMapper mapper;
@@ -225,16 +214,6 @@ class PrestadorServiceImplTest {
         Assertions.assertEquals(avaliacaoResponse.getTotalElements(), 1);
         Assertions.assertEquals(avaliacaoResponse.stream().findFirst().get().getData(), avaliacao.getData());
     }
-
-
-//    @Test
-//    void deveriaCadastrarUmServicoNoPrestadorPeloId(){
-//        Mockito.when(prestadorRepository.findById(Mockito.anyLong())).thenReturn(prestadorOptional);
-//        Mockito.when(categoriaRepository.findByNome(Mockito.anyString())).thenReturn(optionalCategoria);
-//        Mockito.when(servicoRepository.save(Mockito.any(Servico.class))).thenReturn(Mockito.any(Servico.class));
-//        ServicoDto servicoRespose = service.cadastrarServico(ID, servicoForm);
-//
-//    }
 
     private void iniciaPrestador() {
         prestador = new Prestador(ID, NOME, EMAIL, CIDADE

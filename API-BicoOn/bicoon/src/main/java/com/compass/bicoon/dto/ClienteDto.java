@@ -1,11 +1,7 @@
 package com.compass.bicoon.dto;
 
-
 import com.compass.bicoon.constants.Sexo;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 
