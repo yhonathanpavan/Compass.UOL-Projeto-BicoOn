@@ -3,11 +3,13 @@ package com.compass.bicoon.dto;
 import com.compass.bicoon.serializer.DataSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.DateSerializer;
+import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
 
 @Data
+@Builder
 public class AvaliacaoDto {
 
     private Long id;
