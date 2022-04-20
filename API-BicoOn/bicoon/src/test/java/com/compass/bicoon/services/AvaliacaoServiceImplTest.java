@@ -45,8 +45,6 @@ class AvaliacaoServiceImplTest {
     private static final String CIDADE  = "Limeira";
     private static final Sexo SEXO      = Sexo.MASCULINO;
 
-
-
     @InjectMocks
     private AvaliacaoServiceImpl service;
 
