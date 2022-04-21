@@ -8,7 +8,7 @@ import com.compass.bicoon.entities.Prestador;
 import com.compass.bicoon.entities.Servico;
 import com.compass.bicoon.exceptions.ObjectNotFound.ObjectNotFoundException;
 import com.compass.bicoon.repository.PrestadorRepository;
-import org.junit.jupiter.api.Assertions;
+import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
@@ -22,6 +22,8 @@ import org.springframework.data.domain.Pageable;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Optional;
+
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class PrestadorServiceImplTest {
@@ -72,19 +74,19 @@ class PrestadorServiceImplTest {
     }
     @Test
     void deveriaCadastrarUmPrestador(){
-        Mockito.when(prestadorRepository.save(Mockito.any(Prestador.class))).thenReturn(prestador);
+        when(prestadorRepository.save(any(Prestador.class))).thenReturn(prestador);
         service.cadastrarPrestador(prestadorForm);
-        Mockito.verify(prestadorRepository, Mockito.times(1)).save(Mockito.any(Prestador.class));
+        verify(prestadorRepository, times(1)).save(any(Prestador.class));
     }
 
     @Test
     void deveriaTrazerUmUsuarioPeloId() {
-        Mockito.when(prestadorRepository.findById(Mockito.anyLong())).thenReturn(prestadorOptional);
+        when(prestadorRepository.findById(anyLong())).thenReturn(prestadorOptional);
         PrestadorDto resposta = service.listarPorId(ID);
 
-        Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(PrestadorDto.class, resposta.getClass());
-        Assertions.assertEquals(ID, resposta.getId());
+        assertNotNull(resposta);
+        assertEquals(PrestadorDto.class, resposta.getClass());
+        assertEquals(ID, resposta.getId());
     }
 
     @Test
@@ -92,35 +94,35 @@ class PrestadorServiceImplTest {
         try{
             service.listarPorId(999L);
         }catch (Exception ex){
-            Assertions.assertEquals(ObjectNotFoundException.class, ex.getClass());
-            Assertions.assertEquals(PRESTADOR_NÃO_ENCONTRADO, ex.getMessage());
+            assertEquals(ObjectNotFoundException.class, ex.getClass());
+            assertEquals(PRESTADOR_NÃO_ENCONTRADO, ex.getMessage());
         }
     }
 
     @Test
     void deletadoComSucesso(){
-        Mockito.when(prestadorRepository.findById(Mockito.anyLong())).thenReturn(prestadorOptional);
-        Mockito.doNothing().when(prestadorRepository).deleteById(Mockito.anyLong());
+        when(prestadorRepository.findById(anyLong())).thenReturn(prestadorOptional);
+        doNothing().when(prestadorRepository).deleteById(anyLong());
         service.deletaPrestador(ID);
-        Mockito.verify(prestadorRepository, Mockito.times(1)).deleteById(Mockito.anyLong());
+        verify(prestadorRepository, times(1)).deleteById(anyLong());
     }
     @Test
     void deveriaDarErroAoDeletarPorIdInexistente(){
         try {
             service.deletaPrestador(999L);
         }catch(Exception ex){
-            Assertions.assertEquals(ObjectNotFoundException.class, ex.getClass());
-            Assertions.assertEquals(PRESTADOR_NÃO_ENCONTRADO, ex.getMessage());
+            assertEquals(ObjectNotFoundException.class, ex.getClass());
+            assertEquals(PRESTADOR_NÃO_ENCONTRADO, ex.getMessage());
         }
     }
 
     @Test
     void deveriaAtualizarUmPrestadorPeloId(){
-        Mockito.when(prestadorRepository.findById(Mockito.anyLong())).thenReturn(prestadorOptional);
+        when(prestadorRepository.findById(anyLong())).thenReturn(prestadorOptional);
         PrestadorDto resposta = service.atualizarPrestador(ID, prestadorForm);
-        Assertions.assertNotNull(resposta);
-        Assertions.assertEquals(resposta.getClass(), PrestadorDto.class);
-        Assertions.assertEquals(resposta.getNome(), prestadorForm.getNome());
+        assertNotNull(resposta);
+        assertEquals(resposta.getClass(), PrestadorDto.class);
+        assertEquals(resposta.getNome(), prestadorForm.getNome());
     }
 
     @Test
@@ -128,91 +130,91 @@ class PrestadorServiceImplTest {
         try {
             service.atualizarPrestador(999L, prestadorForm);
         }catch (Exception ex){
-            Assertions.assertEquals(ex.getClass(), ObjectNotFoundException.class);
-            Assertions.assertEquals(PRESTADOR_NÃO_ENCONTRADO, ex.getMessage());
+            assertEquals(ex.getClass(), ObjectNotFoundException.class);
+            assertEquals(PRESTADOR_NÃO_ENCONTRADO, ex.getMessage());
         }
     }
 
     @Test
     void naoDeveriaAtualizarPrestadorComInformacoesIncorretas(){
-        Mockito.when(prestadorRepository.findById(Mockito.anyLong())).thenReturn(prestadorOptional);
+        when(prestadorRepository.findById(anyLong())).thenReturn(prestadorOptional);
         try {
             prestadorForm.setSexo(Sexo.valueOf("NASCULINO"));
             service.atualizarPrestador(ID, prestadorForm);
         }catch (Exception ex){
-            Assertions.assertEquals(ex.getClass(), IllegalArgumentException.class);
+            assertEquals(ex.getClass(), IllegalArgumentException.class);
         }
 
     }
 
     @Test
     void deveriaListarTodosPrestadoresSemFiltro (){
-        Mockito.when(prestadorRepository.findAll((Pageable) Mockito.any())).thenReturn(page);
+        when(prestadorRepository.findAll((Pageable) any())).thenReturn(page);
         Page<PrestadorDto> paginaResposta = service.listarPrestadores(Mockito.any(),null,null);
-        Assertions.assertEquals(paginaResposta.getTotalElements(), page.getTotalElements());
-        Assertions.assertEquals(paginaResposta.stream().findFirst(), Optional.of(prestadorDto));
+        assertEquals(paginaResposta.getTotalElements(), page.getTotalElements());
+        assertEquals(paginaResposta.stream().findFirst(), Optional.of(prestadorDto));
     }
 
     @Test
     void deveriaListarOsPrestadoresFiltrandoPorCidade(){
-        Mockito.when(prestadorRepository.findByCidade((Pageable)Mockito.any(),Mockito.anyString())).thenReturn(page);
+        when(prestadorRepository.findByCidade((Pageable)any(),anyString())).thenReturn(page);
         Page<PrestadorDto> paginaResposta = service.listarPrestadores(pageable,CIDADE,null);
-        Assertions.assertNotNull(paginaResposta);
-        Assertions.assertEquals(paginaResposta.stream().findFirst().get().getCidade(), CIDADE);
+        assertNotNull(paginaResposta);
+        assertEquals(paginaResposta.stream().findFirst().get().getCidade(), CIDADE);
     }
 
     @Test
     void deveriaListarOsPrestadoresFiltrandoPorCategoria(){
-        Mockito.when(prestadorRepository.findByServicoCategoriaNome((Pageable)Mockito.any(),Mockito.anyString())).thenReturn(page);
+        when(prestadorRepository.findByServicoCategoriaNome((Pageable)any(),anyString())).thenReturn(page);
         Page<PrestadorDto> paginaResposta = service.listarPrestadores(pageable,null,BABÁ);
-        Assertions.assertNotNull(paginaResposta);
-        Assertions.assertEquals(paginaResposta.stream().findFirst().get().getServico().get(0).getCategoria().getNome(), BABÁ);
+        assertNotNull(paginaResposta);
+        assertEquals(paginaResposta.stream().findFirst().get().getServico().get(0).getCategoria().getNome(), BABÁ);
     }
 
     @Test
     void deveriaListarPrestadoresFiltrandoPorCidadeECategoria(){
-        Mockito.when(prestadorRepository.findByCidadeAndServicoCategoriaNome((Pageable)Mockito.any(),Mockito.anyString()
-                ,Mockito.anyString())).thenReturn(page);
+        when(prestadorRepository.findByCidadeAndServicoCategoriaNome((Pageable)any(),anyString()
+                ,anyString())).thenReturn(page);
         Page<PrestadorDto> paginaResposta = service.listarPrestadores(pageable,CIDADE, BABÁ);
-        Assertions.assertNotNull(paginaResposta);
-        Assertions.assertEquals(paginaResposta.stream().findFirst().get().getServico().get(0).getCategoria().getNome(), BABÁ);
-        Assertions.assertEquals(paginaResposta.stream().findFirst().get().getCidade(), CIDADE);
+        assertNotNull(paginaResposta);
+        assertEquals(paginaResposta.stream().findFirst().get().getServico().get(0).getCategoria().getNome(), BABÁ);
+        assertEquals(paginaResposta.stream().findFirst().get().getCidade(), CIDADE);
     }
 
     @Test
     void deveriaListarOsServicosDeUmPrestadorPeloId(){
-        Mockito.when(prestadorRepository.findById(Mockito.anyLong())).thenReturn(prestadorOptional);
+        when(prestadorRepository.findById(anyLong())).thenReturn(prestadorOptional);
         Page<ServicoDto> paginaResposta = service.listarServicosPrestador(ID);
-        Assertions.assertNotNull(paginaResposta);
+        assertNotNull(paginaResposta);
     }
 
     @Test
     void naoDeveriaListarOsServicosDeUmPrestadorPorIdInvalido(){
-        Mockito.when(prestadorRepository.findById(Mockito.anyLong())).thenReturn(prestadorOptional);
+        when(prestadorRepository.findById(anyLong())).thenReturn(prestadorOptional);
         try {
             service.listarServicosPrestador(999L);
         }catch (Exception ex){
-            Assertions.assertEquals(ex.getMessage(), PRESTADOR_NÃO_ENCONTRADO);
-            Assertions.assertEquals(ex.getClass(), ObjectNotFoundException.class);
+            assertEquals(ex.getMessage(), PRESTADOR_NÃO_ENCONTRADO);
+            assertEquals(ex.getClass(), ObjectNotFoundException.class);
         }
     }
 
     @Test
     void deveriaAlterarADisponibilidadeDeUmPrestador(){
-        Mockito.when(prestadorRepository.findById(Mockito.anyLong())).thenReturn(prestadorOptional);
+        when(prestadorRepository.findById(anyLong())).thenReturn(prestadorOptional);
         PrestadorDto prestadorResposta = service.atualizarDisponibilidadePrestador(ID, dispForm);
-        Assertions.assertNotNull(prestadorResposta);
-        Assertions.assertEquals(prestadorResposta.getDisponivel(), dispForm.getDisponivel());
+        assertNotNull(prestadorResposta);
+        assertEquals(prestadorResposta.getDisponivel(), dispForm.getDisponivel());
     }
 
     @Test
     void deveriaListarAsAvaliacoesDeUmPrestadorPeloId(){
         prestador.setAvaliacao(Arrays.asList(avaliacao));
-        Mockito.when(prestadorRepository.findById(Mockito.anyLong())).thenReturn(prestadorOptional);
+        when(prestadorRepository.findById(anyLong())).thenReturn(prestadorOptional);
         Page<AvaliacaoDto> avaliacaoResposta = service.listarAvaliacoesPrestador(ID);
-        Assertions.assertNotNull(avaliacaoResposta);
-        Assertions.assertEquals(avaliacaoResposta.getTotalElements(), 1);
-        Assertions.assertEquals(avaliacaoResposta.stream().findFirst().get().getData(), avaliacao.getData());
+        assertNotNull(avaliacaoResposta);
+        assertEquals(avaliacaoResposta.getTotalElements(), 1);
+        assertEquals(avaliacaoResposta.stream().findFirst().get().getData(), avaliacao.getData());
     }
 
     private void iniciaPrestador() {
