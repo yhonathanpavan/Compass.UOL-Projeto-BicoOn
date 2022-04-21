@@ -47,12 +47,12 @@ public class PrestadorController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PrestadorDto> listarPrestadores(@PathVariable Long id){
+    public ResponseEntity<PrestadorDto> listarPrestadorPeloId(@PathVariable Long id){
         return ResponseEntity.ok().body(prestadorService.listarPorId(id));
     }
 
     @GetMapping("/{id}/servicos")
-    public ResponseEntity<Page<ServicoDto>> listarCategoriaPrestador(@PathVariable Long id){
+    public ResponseEntity<Page<ServicoDto>> listarServicosPrestador(@PathVariable Long id){
         return ResponseEntity.ok().body(prestadorService.listarServicosPrestador(id));
     }
 

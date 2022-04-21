@@ -2,7 +2,9 @@ package com.compass.bicoon.model;
 
 
 import com.compass.bicoon.constants.Sexo;
+import lombok.Builder;
 import lombok.Data;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 

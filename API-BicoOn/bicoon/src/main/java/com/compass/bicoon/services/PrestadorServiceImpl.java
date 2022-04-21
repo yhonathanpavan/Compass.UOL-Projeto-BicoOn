@@ -15,7 +15,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
@@ -75,7 +74,6 @@ public class PrestadorServiceImpl implements PrestadorService{
     @Override
     public PrestadorDto listarPorId(Long id) {
         Prestador prestador = verificaExistenciaPrestador(id);
-
         return mapper.map(prestador, PrestadorDto.class);
     }
 
@@ -104,11 +102,9 @@ public class PrestadorServiceImpl implements PrestadorService{
 
         Prestador prestador = verificaExistenciaPrestador(id);
         Categoria categoria = categoriaService.verificaExistenciaCategoria(servicoForm.getCategoria());
-        System.out.println("Categoria da validacao: " + categoria);
 
         Servico servico = mapper.map(servicoForm, Servico.class);
         servico.setCategoria(categoria);
-        System.out.println("Categoria: " + servico.getCategoria());
         servicoRepository.save(servico);
 
         prestador.getServico().add(servico); //Adicionando na lista
