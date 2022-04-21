@@ -6,6 +6,7 @@ import com.compass.bicoon.dto.ClienteFormDto;
 import com.compass.bicoon.entities.Cliente;
 import com.compass.bicoon.exceptions.ObjectNotFound.ObjectNotFoundException;
 import com.compass.bicoon.repository.ClienteRepository;
+import com.compass.bicoon.services.ClienteServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
