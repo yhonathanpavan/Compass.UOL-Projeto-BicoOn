@@ -1,6 +1,7 @@
 package com.compass.bicoon.controllers;
 
 import com.compass.bicoon.constants.Sexo;
+import com.compass.bicoon.controllers.ClienteController;
 import com.compass.bicoon.dto.ClienteDto;
 import com.compass.bicoon.dto.ClienteFormDto;
 import com.compass.bicoon.entities.Cliente;
@@ -18,8 +19,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -103,16 +108,20 @@ class ClienteControllerTest {
 
     @Test
     void cadastrarCliente_Sucesso() {
-        when(service.cadastrarCliente(any())).thenReturn(
-                ServletUriComponentsBuilder.fromCurrentRequest()
-                        .path("/{id}")
-                        .buildAndExpand(cliente.getId()).toUri());
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("bicoon/clientes/{id}")
+                .buildAndExpand(cliente.getId()).toUri();
+
+        when(service.cadastrarCliente(any())).thenReturn(uri);
 
         ResponseEntity<ClienteFormDto> resposta = clienteController.cadastrarCliente(clienteFormDto);
 
         assertNotNull(resposta);
+        assertEquals(uri.toString(), "http://localhost/bicoon/clientes/1");
         assertEquals(HttpStatus.CREATED, resposta.getStatusCode());
-        assertNotNull(resposta.getHeaders().get("Location"));
     }
 
     @Test

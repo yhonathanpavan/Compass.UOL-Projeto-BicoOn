@@ -1,5 +1,6 @@
 package com.compass.bicoon.controllers;
 
+import com.compass.bicoon.controllers.AvaliacaoController;
 import com.compass.bicoon.dto.AvaliacaoDto;
 import com.compass.bicoon.dto.AvaliacaoFormDto;
 import com.compass.bicoon.dto.ClienteDto;
@@ -66,16 +67,17 @@ class AvaliacaoControllerTest {
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}")
+                .path("bicoon/avaliacoes/{id}")
                 .buildAndExpand(avaliacao.getId()).toUri();
 
         when(service.criarAvaliacao(any(), any(), any())).thenReturn(uri);
 
         ResponseEntity<AvaliacaoFormDto> resposta = avaliacaoController.adicionarAvaliacao(CLIENTE_ID, PRESTADOR_ID, avaliacaoFormDto);
 
+
         assertNotNull(resposta);
+        assertEquals(uri.toString(), "http://localhost/bicoon/avaliacoes/1");
         assertEquals(HttpStatus.CREATED, resposta.getStatusCode());
-        assertNotNull(resposta.getHeaders().get("Location"));
     }
 
     @Test

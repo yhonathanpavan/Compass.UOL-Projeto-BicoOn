@@ -55,7 +55,7 @@ public class AvaliacaoServiceImpl implements AvaliacaoService{
         prestador.getAvaliacao().add(avaliacao);
         prestadorRepository.save(prestador);
 
-        return ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(avaliacao.getId()).toUri();
+        return ServletUriComponentsBuilder.fromCurrentRequest().path("bicoon/avaliacoes/{id}").buildAndExpand(avaliacao.getId()).toUri();
     }
 
     @Override

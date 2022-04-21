@@ -87,8 +87,8 @@ class AvaliacaoServiceImplTest {
 
 //    @Test
 //    void deveVerificarCorretamenteQuandoCriarUmaAvaliacao() {
-//        when(clienteRepository.findById(anyLong())).thenReturn(Optional.of(cliente));
-//        when(prestadorRepository.findById(anyLong())).thenReturn(Optional.of(prestador));
+////        when(clienteRepository.findById(anyLong())).thenReturn(Optional.of(cliente));
+////        when(prestadorRepository.findById(anyLong())).thenReturn(Optional.of(prestador));
 //
 //        when(clienteService.verificaExistenciaCliente(anyLong())).thenReturn(cliente);
 //        when(prestadorService.verificaExistenciaPrestador(anyLong())).thenReturn(prestador);
