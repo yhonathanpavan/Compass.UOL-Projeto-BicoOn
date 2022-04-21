@@ -11,21 +11,20 @@ import com.compass.bicoon.services.PrestadorServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
+import java.net.URL;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Optional;
-
 import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.when;
@@ -47,6 +46,7 @@ class PrestadorControllerTest {
     public static final String PRESTADOR_NÃO_ENCONTRADO = "Prestador não encontrado";
     public static final String BABÁ = "Babá";
     public static final String COMENTARIO_AVALIACAO = "Servico muito bom";
+    public static final String URL_TEMPLATE = "/bicoon/prestadores/";
 
 
     @MockBean
@@ -57,6 +57,9 @@ class PrestadorControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Autowired
     ObjectMapper mapper;
@@ -92,7 +95,7 @@ class PrestadorControllerTest {
     void deveriaListarPrestadores() throws Exception {
         when(service.listarPrestadores(any(), any()
                 , any())).thenReturn(prestadorPaginacao);
-        mockMvc.perform(get("/bicoon/prestadores")
+        mockMvc.perform(get(URL_TEMPLATE)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", notNullValue()))
@@ -102,7 +105,7 @@ class PrestadorControllerTest {
     @Test
     void deveriaListarPrestadorPeloId() throws Exception {
         when(service.listarPorId(anyLong())).thenReturn(prestadorDto);
-        mockMvc.perform(get("/bicoon/prestadores/{id}",1)
+        mockMvc.perform(get(URL_TEMPLATE+"{id}",1)
                  .contentType(MediaType.APPLICATION_JSON))
                  .andExpect(jsonPath("$", notNullValue()))
                  .andExpect(jsonPath("$.id").value(1));
@@ -111,7 +114,7 @@ class PrestadorControllerTest {
     @Test
     void deveriaDeletarUmPrestadorPeloId() throws Exception{
         when(prestadorRepository.findById(anyLong())).thenReturn(Optional.of(prestador));
-        mockMvc.perform( delete("/bicoon/prestadores/{id}", 1L)
+        mockMvc.perform( delete(URL_TEMPLATE+"{id}", 1L)
                  .contentType(MediaType.APPLICATION_JSON))
                  .andExpect(status().isOk());
     }
@@ -119,7 +122,7 @@ class PrestadorControllerTest {
     @Test
     void deveriaAtualizarUmPrestadorPeloId() throws Exception {
         when(service.atualizarPrestador(anyLong(),any(PrestadorFormDto.class))).thenReturn(prestadorDto);
-        MockHttpServletRequestBuilder mockRequest = put("/bicoon/prestadores/{id}", 1)
+        MockHttpServletRequestBuilder mockRequest = put(URL_TEMPLATE+"{id}", 1)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
                 .content(this.mapper.writeValueAsString(prestadorForm));
@@ -133,7 +136,7 @@ class PrestadorControllerTest {
     @Test
     void deveriaListarServicosDoPrestadorPeloId() throws Exception {
         when(service.listarServicosPrestador(anyLong())).thenReturn(servicoPaginacao);
-        mockMvc.perform( get("/bicoon/prestadores/{id}/servicos", 1)
+        mockMvc.perform( get(URL_TEMPLATE+"{id}/servicos", 1)
                  .contentType(MediaType.APPLICATION_JSON))
                  .andExpect(status().isOk())
                  .andExpect(jsonPath("$.content.[0].id").value(servicoDto.getId()))
@@ -143,7 +146,7 @@ class PrestadorControllerTest {
     @Test
     void deveriaCadastrarUmPrestador() throws Exception {
         when(service.cadastrarPrestador(any(PrestadorFormDto.class))).thenReturn(any());
-        MockHttpServletRequestBuilder mockRequest = post("/bicoon/prestadores")
+        MockHttpServletRequestBuilder mockRequest = post(URL_TEMPLATE)
                  .contentType(MediaType.APPLICATION_JSON)
                  .accept(MediaType.APPLICATION_JSON)
                  .content(this.mapper.writeValueAsString(prestadorForm));
@@ -155,7 +158,7 @@ class PrestadorControllerTest {
     @Test
     void deveriaListarAsAvaliacoesDeUmPrestadorPeloId() throws Exception {
         when(service.listarAvaliacoesPrestador(anyLong())).thenReturn(avaliacaoPaginacao);
-        mockMvc.perform( get("/bicoon/prestadores/{id}/avaliacoes", 1)
+        mockMvc.perform( get(URL_TEMPLATE+"{id}/avaliacoes", 1)
                  .contentType(MediaType.APPLICATION_JSON))
                  .andExpect(status().isOk())
                  .andExpect(jsonPath("$.content.[0].id").value(avaliacaoDto.getId()))
@@ -165,7 +168,7 @@ class PrestadorControllerTest {
     @Test
     void deveriaAtualizarADisponibilidadeDeUmPrestadorPeloId() throws Exception {
         when(service.atualizarDisponibilidadePrestador(anyLong(),any(PrestadorDisponibilidadeFormDto.class))).thenReturn(prestadorDto);
-        MockHttpServletRequestBuilder mockRequest = put("/bicoon/prestadores/{id}/disponibilidade", 1)
+        MockHttpServletRequestBuilder mockRequest = put(URL_TEMPLATE+"{id}/disponibilidade", 1)
                  .contentType(MediaType.APPLICATION_JSON)
                  .accept(MediaType.APPLICATION_JSON)
                  .content(this.mapper.writeValueAsString(presDisp));
@@ -179,7 +182,7 @@ class PrestadorControllerTest {
     @Test
     void deveriaCadastrarServicoNoPrestador() throws Exception {
         when(service.cadastrarServico(anyLong(),any(ServicoFormDto.class))).thenReturn(servicoDto);
-        MockHttpServletRequestBuilder mockRequest = put("/bicoon/prestadores/{id}/servicos",1)
+        MockHttpServletRequestBuilder mockRequest = put(URL_TEMPLATE+"{id}/servicos",1)
                  .contentType(MediaType.APPLICATION_JSON)
                  .accept(MediaType.APPLICATION_JSON)
                  .content(this.mapper.writeValueAsString(servicoFormDto));
@@ -197,14 +200,7 @@ class PrestadorControllerTest {
         prestador.setServico(Arrays.asList(servico));
         prestador.setAvaliacao(Arrays.asList(avaliacao));
 
-        prestadorDto = PrestadorDto.builder()
-                .id(ID)
-                .nome(NOME)
-                .cidade(CIDADE)
-                .telefone(TELEFONE)
-                .disponivel(DISPONIVEL)
-                .sexo(SEXO)
-                .servico(Arrays.asList(servico)).build();
+        prestadorDto = modelMapper.map(prestador, PrestadorDto.class);
 
         prestadorForm = PrestadorFormDto.builder()
                 .nome(NOME)
