@@ -12,7 +12,7 @@ import javax.persistence.Entity;
 @Data
 public class Cliente extends Usuario {
 
-    public Cliente(long id, String nome, String email, String senha, String cidade, Sexo sexo ) {
+    public Cliente(long id, String nome, String email, String senha, String cidade, Sexo sexo) {
         super.id = id;
         super.nome = nome;
         super.email = email;

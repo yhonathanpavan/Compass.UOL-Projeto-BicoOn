@@ -4,7 +4,7 @@ import com.compass.bicoon.dto.ServicoDto;
 import com.compass.bicoon.dto.ServicoFormDto;
 import com.compass.bicoon.entities.Categoria;
 import com.compass.bicoon.entities.Servico;
-import com.compass.bicoon.exceptions.ObjectNotFound.ObjectNotFoundException;
+import com.compass.bicoon.exceptions.objectNotFound.ObjectNotFoundException;
 import com.compass.bicoon.repository.ServicoRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +30,8 @@ public class ServicoServiceImpl implements ServicoService{
 
     @Override
     public Page<ServicoDto> listarServicos(Pageable paginacao) {
-        Page<Servico> categoria = servicoRepository.findAll(paginacao);
-        Page<ServicoDto> servicosDto = new PageImpl<>(categoria.stream().map(e -> mapper.map(e, ServicoDto.class)).collect(Collectors.toList()));
+        Page<Servico> servico = servicoRepository.findAll(paginacao);
+        Page<ServicoDto> servicosDto = new PageImpl<>(servico.stream().map(e -> mapper.map(e, ServicoDto.class)).collect(Collectors.toList()));
 
         return servicosDto;
     }

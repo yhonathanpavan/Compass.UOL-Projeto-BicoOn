@@ -7,7 +7,7 @@ import com.compass.bicoon.entities.Avaliacao;
 import com.compass.bicoon.entities.Cliente;
 import com.compass.bicoon.entities.Prestador;
 import com.compass.bicoon.entities.Servico;
-import com.compass.bicoon.exceptions.ObjectNotFound.ObjectNotFoundException;
+import com.compass.bicoon.exceptions.objectNotFound.ObjectNotFoundException;
 import com.compass.bicoon.repository.AvaliacaoRepository;
 import com.compass.bicoon.repository.ClienteRepository;
 import com.compass.bicoon.repository.PrestadorRepository;
@@ -44,6 +44,8 @@ class AvaliacaoServiceImplTest {
     private static final String SENHA   = "123";
     private static final String CIDADE  = "Limeira";
     private static final Sexo SEXO      = Sexo.MASCULINO;
+    private static final String TELEFONE = "19 99578-1012";
+    private static final boolean DISPONIVEL= true;
 
     @InjectMocks
     private AvaliacaoServiceImpl service;
@@ -161,7 +163,7 @@ class AvaliacaoServiceImplTest {
         cliente = new Cliente(ID, NOME, EMAIL, SENHA, CIDADE, SEXO);
         clienteOpcional = Optional.of(cliente);
 
-        prestador = new Prestador(ID, NOME, EMAIL, SENHA, CIDADE, SEXO, AVALIACOES);
+        prestador = new Prestador(ID, NOME, EMAIL, CIDADE, SENHA, SEXO, TELEFONE, DISPONIVEL);
         prestadorOpcional = Optional.of(prestador);
         prestador.setAvaliacao(Arrays.asList(avaliacao));
     }

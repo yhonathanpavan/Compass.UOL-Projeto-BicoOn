@@ -24,13 +24,14 @@ public class Prestador extends Usuario {
     private String telefone;
     private Boolean disponivel = true;
 
-    public Prestador(long id, String nome, String email, String senha, String cidade, Sexo sexo, List<Avaliacao> avaliacao) {
-        super.id = id;
-        super.nome = nome;
-        super.email = email;
+    public Prestador(Long id, String nome, String email, String cidade, String senha, Sexo sexo, String telefone, Boolean disponivel) {
         super.senha = senha;
+        super.id = id;
+        super.email = email;
+        super.nome = nome;
         super.cidade = cidade;
         super.sexo = sexo;
-        this.avaliacao = avaliacao;
+        this.telefone = telefone;
+        this.disponivel = disponivel;
     }
 }

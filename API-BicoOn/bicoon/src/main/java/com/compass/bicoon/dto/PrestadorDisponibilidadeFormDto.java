@@ -1,11 +1,15 @@
 package com.compass.bicoon.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-
-import javax.validation.constraints.NotEmpty;
+import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotNull;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class PrestadorDisponibilidadeFormDto {
     @NotNull
     private Boolean disponivel;

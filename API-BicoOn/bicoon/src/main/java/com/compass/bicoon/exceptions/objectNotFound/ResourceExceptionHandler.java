@@ -1,4 +1,4 @@
-package com.compass.bicoon.exceptions.ObjectNotFound;
+package com.compass.bicoon.exceptions.objectNotFound;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
