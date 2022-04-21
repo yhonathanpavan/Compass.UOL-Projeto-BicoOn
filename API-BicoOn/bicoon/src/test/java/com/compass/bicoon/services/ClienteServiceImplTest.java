@@ -74,6 +74,20 @@ class ClienteServiceTest {
     }
 
     @Test
+    void listarClientesPorCidade_Sucesso() {
+
+        when(clienteRepository.findAll((Pageable) any())).thenReturn(pagina);
+        when(clienteRepository.findByCidade(any(), (Pageable) any())).thenReturn(pagina);
+
+        Pageable paginacao = PageRequest.of(0, 100);
+
+        Page<ClienteDto> resposta = service.listarClientes(CIDADE, paginacao);
+
+        assertNotNull(resposta);
+        assertEquals(resposta.getTotalElements(), 1);
+    }
+
+    @Test
     void listarPorId_Sucesso() {
         when(clienteRepository.findById(anyLong())).thenReturn(clienteOpcional);
 

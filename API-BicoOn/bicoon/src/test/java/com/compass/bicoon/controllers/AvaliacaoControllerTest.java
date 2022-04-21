@@ -2,6 +2,8 @@ package com.compass.bicoon.controllers;
 
 import com.compass.bicoon.dto.AvaliacaoDto;
 import com.compass.bicoon.dto.AvaliacaoFormDto;
+import com.compass.bicoon.dto.ClienteDto;
+import com.compass.bicoon.dto.ClienteFormDto;
 import com.compass.bicoon.entities.Avaliacao;
 import com.compass.bicoon.services.AvaliacaoServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -20,6 +23,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
