@@ -5,7 +5,7 @@ import com.compass.bicoon.entities.Avaliacao;
 import com.compass.bicoon.entities.Categoria;
 import com.compass.bicoon.entities.Prestador;
 import com.compass.bicoon.entities.Servico;
-import com.compass.bicoon.exceptions.ObjectNotFound.ObjectNotFoundException;
+import com.compass.bicoon.exceptions.objectNotFound.ObjectNotFoundException;
 import com.compass.bicoon.repository.PrestadorRepository;
 import com.compass.bicoon.repository.ServicoRepository;
 import org.modelmapper.ModelMapper;

@@ -1,4 +1,4 @@
-package com.compass.bicoon.exceptions.ObjectNotFound;
+package com.compass.bicoon.exceptions.objectNotFound;
 
 public class ObjectNotFoundException extends RuntimeException{
 

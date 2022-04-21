@@ -4,7 +4,7 @@ import com.compass.bicoon.dto.CategoriaDto;
 import com.compass.bicoon.dto.CategoriaFormDto;
 import com.compass.bicoon.entities.Categoria;
 import com.compass.bicoon.entities.Servico;
-import com.compass.bicoon.exceptions.ObjectNotFound.ObjectNotFoundException;
+import com.compass.bicoon.exceptions.objectNotFound.ObjectNotFoundException;
 import com.compass.bicoon.repository.CategoriaRepository;
 import com.compass.bicoon.repository.ServicoRepository;
 import org.modelmapper.ModelMapper;

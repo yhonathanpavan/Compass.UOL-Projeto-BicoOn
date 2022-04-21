@@ -6,7 +6,7 @@ import com.compass.bicoon.entities.Avaliacao;
 import com.compass.bicoon.entities.Categoria;
 import com.compass.bicoon.entities.Prestador;
 import com.compass.bicoon.entities.Servico;
-import com.compass.bicoon.exceptions.ObjectNotFound.ObjectNotFoundException;
+import com.compass.bicoon.exceptions.objectNotFound.ObjectNotFoundException;
 import com.compass.bicoon.repository.PrestadorRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -22,7 +22,12 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Optional;
 
+<<<<<<< HEAD
 import static org.junit.jupiter.api.Assertions.*;
+=======
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+>>>>>>> dedb9a1fa070b003dc3e65c359fe924ca75bc962
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -151,14 +156,22 @@ class PrestadorServiceImplTest {
     @Test
     void deveriaListarTodosPrestadoresSemFiltro (){
         when(prestadorRepository.findAll((Pageable) any())).thenReturn(page);
+<<<<<<< HEAD
         Page<PrestadorDto> paginaResposta = service.listarPrestadores(any(),null,null);
+=======
+        Page<PrestadorDto> paginaResposta = service.listarPrestadores(Mockito.any(),null,null);
+>>>>>>> dedb9a1fa070b003dc3e65c359fe924ca75bc962
         assertEquals(paginaResposta.getTotalElements(), page.getTotalElements());
         assertEquals(paginaResposta.stream().findFirst(), Optional.of(prestadorDto));
     }
 
     @Test
     void deveriaListarOsPrestadoresFiltrandoPorCidade(){
+<<<<<<< HEAD
         when(prestadorRepository.findByCidade((Pageable) any(), anyString())).thenReturn(page);
+=======
+        when(prestadorRepository.findByCidade((Pageable)any(),anyString())).thenReturn(page);
+>>>>>>> dedb9a1fa070b003dc3e65c359fe924ca75bc962
         Page<PrestadorDto> paginaResposta = service.listarPrestadores(pageable,CIDADE,null);
         assertNotNull(paginaResposta);
         assertEquals(paginaResposta.stream().findFirst().get().getCidade(), CIDADE);
@@ -166,7 +179,11 @@ class PrestadorServiceImplTest {
 
     @Test
     void deveriaListarOsPrestadoresFiltrandoPorCategoria(){
+<<<<<<< HEAD
         when(prestadorRepository.findByServicoCategoriaNome((Pageable) any(), anyString())).thenReturn(page);
+=======
+        when(prestadorRepository.findByServicoCategoriaNome((Pageable)any(),anyString())).thenReturn(page);
+>>>>>>> dedb9a1fa070b003dc3e65c359fe924ca75bc962
         Page<PrestadorDto> paginaResposta = service.listarPrestadores(pageable,null,BABÁ);
         assertNotNull(paginaResposta);
         assertEquals(paginaResposta.stream().findFirst().get().getServico().get(0).getCategoria().getNome(), BABÁ);
@@ -174,8 +191,13 @@ class PrestadorServiceImplTest {
 
     @Test
     void deveriaListarPrestadoresFiltrandoPorCidadeECategoria(){
+<<<<<<< HEAD
         when(prestadorRepository.findByCidadeAndServicoCategoriaNome((Pageable) any(), anyString()
                 , anyString())).thenReturn(page);
+=======
+        when(prestadorRepository.findByCidadeAndServicoCategoriaNome((Pageable)any(),anyString()
+                ,anyString())).thenReturn(page);
+>>>>>>> dedb9a1fa070b003dc3e65c359fe924ca75bc962
         Page<PrestadorDto> paginaResposta = service.listarPrestadores(pageable,CIDADE, BABÁ);
         assertNotNull(paginaResposta);
         assertEquals(paginaResposta.stream().findFirst().get().getServico().get(0).getCategoria().getNome(), BABÁ);
@@ -216,11 +238,14 @@ class PrestadorServiceImplTest {
         assertNotNull(avaliacaoResposta);
         assertEquals(avaliacaoResposta.getTotalElements(), 1);
         assertEquals(avaliacaoResposta.stream().findFirst().get().getData(), avaliacao.getData());
+<<<<<<< HEAD
     }
 
     @Test
     void deveriaCadastrarUmServicoNoPrestador(){
 
+=======
+>>>>>>> dedb9a1fa070b003dc3e65c359fe924ca75bc962
     }
 
     private void iniciaPrestador() {

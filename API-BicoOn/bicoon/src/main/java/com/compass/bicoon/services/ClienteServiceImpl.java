@@ -3,7 +3,7 @@ package com.compass.bicoon.services;
 import com.compass.bicoon.dto.ClienteDto;
 import com.compass.bicoon.dto.ClienteFormDto;
 import com.compass.bicoon.entities.Cliente;
-import com.compass.bicoon.exceptions.ObjectNotFound.ObjectNotFoundException;
+import com.compass.bicoon.exceptions.objectNotFound.ObjectNotFoundException;
 import com.compass.bicoon.repository.ClienteRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
