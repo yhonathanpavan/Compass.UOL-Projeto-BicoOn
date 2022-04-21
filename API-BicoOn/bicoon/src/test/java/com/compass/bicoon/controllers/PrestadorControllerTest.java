@@ -61,7 +61,6 @@ class PrestadorControllerTest {
     @Autowired
     ObjectMapper mapper;
 
-    private Pageable pageable;
     private PrestadorDto prestadorDto;
     private Prestador prestador;
     private Servico servico;
@@ -74,6 +73,7 @@ class PrestadorControllerTest {
     private ServicoDto servicoDto;
     private AvaliacaoDto avaliacaoDto;
     private PrestadorDisponibilidadeFormDto presDisp;
+    private ServicoFormDto servicoFormDto;
 
 
     @BeforeEach
@@ -85,17 +85,18 @@ class PrestadorControllerTest {
         prestadorPaginacao = new PageImpl(Arrays.asList(prestadorDto, prestadorDto));
         servicoPaginacao = new PageImpl(Arrays.asList(servicoDto, servicoDto));
         avaliacaoPaginacao = new PageImpl(Arrays.asList(avaliacaoDto, avaliacaoDto));
-        pageable = PageRequest.of(0,10);
 
     }
 
     @Test
     void deveriaListarPrestadores() throws Exception {
-        when(service.listarPrestadores(any(Pageable.class), anyString()
-                , anyString())).thenReturn(prestadorPaginacao);
+        when(service.listarPrestadores(any(), any()
+                , any())).thenReturn(prestadorPaginacao);
         mockMvc.perform(get("/bicoon/prestadores")
-                 .contentType(MediaType.APPLICATION_JSON))
-                 .andExpect(status().isOk());
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", notNullValue()))
+                .andExpect(jsonPath("$.content.[0].id").value(1));
     }
 
     @Test
@@ -175,6 +176,20 @@ class PrestadorControllerTest {
                  .andExpect(jsonPath("$.disponivel").value(prestadorDto.getDisponivel()));
     }
 
+    @Test
+    void deveriaCadastrarServicoNoPrestador() throws Exception {
+        when(service.cadastrarServico(anyLong(),any(ServicoFormDto.class))).thenReturn(servicoDto);
+        MockHttpServletRequestBuilder mockRequest = put("/bicoon/prestadores/{id}/servicos",1)
+                 .contentType(MediaType.APPLICATION_JSON)
+                 .accept(MediaType.APPLICATION_JSON)
+                 .content(this.mapper.writeValueAsString(servicoFormDto));
+
+        mockMvc.perform(mockRequest)
+                 .andExpect(status().isOk())
+                 .andExpect(jsonPath("$", notNullValue()))
+                 .andExpect(jsonPath("$.descricao").value(servicoDto.getDescricao()));
+    }
+
     private void iniciaPrestador() {
         prestador = new Prestador(ID, NOME, EMAIL, CIDADE
                 , SENHA, SEXO, TELEFONE, DISPONIVEL);
@@ -229,5 +244,9 @@ class PrestadorControllerTest {
                 .id(ID)
                 .descricao("Cuido de crianças")
                 .categoria(categoria).build();
+
+        servicoFormDto = ServicoFormDto.builder()
+                .descricao("Cuido de crianças")
+                .categoria("Teste").build();
     }
 }
