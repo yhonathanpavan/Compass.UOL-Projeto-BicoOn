@@ -1,6 +1,7 @@
 package com.compass.bicoon.services;
 
 import com.compass.bicoon.builder.AvaliacaoBuilder;
+import com.compass.bicoon.builder.ClienteBuilder;
 import com.compass.bicoon.constants.Sexo;
 import com.compass.bicoon.dto.AvaliacaoFormDto;
 import com.compass.bicoon.entities.Avaliacao;
@@ -16,9 +17,11 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.modelmapper.ModelMapper;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,9 +30,11 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.*;
 
-class AvaliacaoServiceImplTest {
+class AvaliacaoServiceTest {
 
     private static final long ID            = 1L;
+    private static final long CLIENTE_ID    = 1L;
+    private static final long PRESTADOR_ID  = 1L;
 
     private static final String NOME    = "Mateus";
     private static final String EMAIL   = "mateus@email.com";
@@ -61,7 +66,6 @@ class AvaliacaoServiceImplTest {
     private ModelMapper mapper;
 
     private Prestador prestador;
-    private Optional<Prestador> prestadorOpcional;
 
     @BeforeEach
     void setUp(){
@@ -71,20 +75,22 @@ class AvaliacaoServiceImplTest {
 
     private List<Avaliacao> AVALIACOES = new ArrayList<>();
 
-//    @Test
-//    void deveVerificarCorretamenteQuandoCriarUmaAvaliacao() {
-////        when(clienteRepository.findById(anyLong())).thenReturn(Optional.of(cliente));
-////        when(prestadorRepository.findById(anyLong())).thenReturn(Optional.of(prestador));
-//
-//        when(clienteService.verificaExistenciaCliente(anyLong())).thenReturn(cliente);
-//        when(prestadorService.verificaExistenciaPrestador(anyLong())).thenReturn(prestador);
-//
-//        when(avaliacaoRepository.save(any())).thenReturn(avaliacao);
-//
-//        service.criarAvaliacao(CLIENTE_ID, PRESTADOR_ID, avaliacaoFormDto);
-//
-//        verify(avaliacaoRepository, times(1)).save(any());
-//    }
+    @Test
+    void deveVerificarCorretamenteQuandoCriarUmaAvaliacao() {
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+
+        when(clienteService.verificaExistenciaCliente(anyLong())).thenReturn(ClienteBuilder.getCliente());
+        when(prestadorService.verificaExistenciaPrestador(anyLong())).thenReturn(prestador);
+        when(avaliacaoRepository.save(any())).thenReturn(AvaliacaoBuilder.getAvaliacao());
+
+        service.criarAvaliacao(CLIENTE_ID, PRESTADOR_ID, AvaliacaoBuilder.getAvaliacaoFormDto());
+        service.criarAvaliacao(CLIENTE_ID, PRESTADOR_ID, AvaliacaoBuilder.getAvaliacaoFormDtoNotaAcimaDeCinco());
+        service.criarAvaliacao(CLIENTE_ID, PRESTADOR_ID, AvaliacaoBuilder.getAvaliacaoFormDtoNotaAbaixoDeUm());
+
+
+        verify(avaliacaoRepository, times(3)).save(any(Avaliacao.class));
+    }
 
     @Test
     void atualizarAvaliacao() {
@@ -138,10 +144,6 @@ class AvaliacaoServiceImplTest {
     }
 
     private void iniciarAvaliacao(){
-//        AVALIACOES  = new ArrayList(avaliacao);
-
-        prestador = new Prestador(ID, NOME, EMAIL, CIDADE, SENHA, SEXO, TELEFONE, DISPONIVEL);
-        prestadorOpcional = Optional.of(prestador);
-        prestador.setAvaliacao(Arrays.asList(AvaliacaoBuilder.getAvaliacao()));
+        prestador = new Prestador(ID, NOME, EMAIL, CIDADE, SENHA, SEXO, TELEFONE, DISPONIVEL, AVALIACOES);
     }
 }
