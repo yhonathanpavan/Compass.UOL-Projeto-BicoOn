@@ -2,12 +2,9 @@ package com.compass.bicoon.services;
 
 import com.compass.bicoon.builder.AvaliacaoBuilder;
 import com.compass.bicoon.constants.Sexo;
-import com.compass.bicoon.dto.AvaliacaoDto;
 import com.compass.bicoon.dto.AvaliacaoFormDto;
 import com.compass.bicoon.entities.Avaliacao;
-import com.compass.bicoon.entities.Cliente;
 import com.compass.bicoon.entities.Prestador;
-import com.compass.bicoon.entities.Servico;
 import com.compass.bicoon.exceptions.objectNotFound.ObjectNotFoundException;
 import com.compass.bicoon.repository.AvaliacaoRepository;
 import com.compass.bicoon.repository.ClienteRepository;
@@ -20,7 +17,6 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.modelmapper.ModelMapper;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,11 +30,6 @@ import static org.mockito.Mockito.*;
 class AvaliacaoServiceImplTest {
 
     private static final long ID            = 1L;
-    private static final long CLIENTE_ID    = 1L;
-    private static final long PRESTADOR_ID  = 1L;
-    private static final String COMENTARIO  = "Muito bom, serviço top demais!";
-    private static final int NOTA           = 5;
-    private static final LocalDate DATA     = LocalDate.now();
 
     private static final String NOME    = "Mateus";
     private static final String EMAIL   = "mateus@email.com";
@@ -68,9 +59,6 @@ class AvaliacaoServiceImplTest {
 
     @Spy
     private ModelMapper mapper;
-
-    private Cliente cliente;
-    private Optional<Cliente> clienteOpcional;
 
     private Prestador prestador;
     private Optional<Prestador> prestadorOpcional;
@@ -151,9 +139,6 @@ class AvaliacaoServiceImplTest {
 
     private void iniciarAvaliacao(){
 //        AVALIACOES  = new ArrayList(avaliacao);
-
-        cliente = new Cliente(ID, NOME, EMAIL, SENHA, CIDADE, SEXO);
-        clienteOpcional = Optional.of(cliente);
 
         prestador = new Prestador(ID, NOME, EMAIL, CIDADE, SENHA, SEXO, TELEFONE, DISPONIVEL);
         prestadorOpcional = Optional.of(prestador);

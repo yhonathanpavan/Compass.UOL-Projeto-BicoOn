@@ -1,10 +1,8 @@
 package com.compass.bicoon.controllers;
 
-import com.compass.bicoon.constants.Sexo;
-import com.compass.bicoon.controllers.ClienteController;
+import com.compass.bicoon.builder.ClienteBuilder;
 import com.compass.bicoon.dto.ClienteDto;
 import com.compass.bicoon.dto.ClienteFormDto;
-import com.compass.bicoon.entities.Cliente;
 import com.compass.bicoon.services.ClienteServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,7 +12,6 @@ import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -25,7 +22,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -35,11 +31,7 @@ import static org.mockito.Mockito.*;
 class ClienteControllerTest {
 
     private static final long ID        = 1L;
-    private static final String NOME    = "Mateus";
-    private static final String EMAIL   = "mateus@email.com";
-    private static final String SENHA   = "123";
     private static final String CIDADE  = "Limeira";
-    private static final Sexo SEXO      = Sexo.MASCULINO;
 
     @InjectMocks
     private ClienteController clienteController;
@@ -50,22 +42,15 @@ class ClienteControllerTest {
     @Mock
     private ModelMapper mapper;
 
-    private Cliente cliente;
-    private ClienteDto clienteDto;
-    private ClienteFormDto clienteFormDto;
-    private Page<ClienteDto> pagina;
-
     @BeforeEach
     void setUp(){
         MockitoAnnotations.openMocks(this);
-        iniciarCliente();
-        pagina = new PageImpl<>(List.of(clienteDto));
     }
 
     @Test
     void listarClientes_Sucesso() {
-        when(service.listarClientes(any(), any())).thenReturn(pagina);
-        when(mapper.map(any(), any())).thenReturn(clienteDto);
+        when(service.listarClientes(any(), any())).thenReturn(ClienteBuilder.getClientePaginacaoDto());
+        when(mapper.map(any(), any())).thenReturn(ClienteBuilder.getClienteDto());
 
         Pageable paginacao = PageRequest.of(0, 100);
 
@@ -79,8 +64,8 @@ class ClienteControllerTest {
 
     @Test
     void listarClientesPorCidade_Sucesso() {
-        when(service.listarClientes(any(), any())).thenReturn(pagina);
-        when(mapper.map(any(), any())).thenReturn(clienteDto);
+        when(service.listarClientes(any(), any())).thenReturn(ClienteBuilder.getClientePaginacaoDto());
+        when(mapper.map(any(), any())).thenReturn(ClienteBuilder.getClienteDto());
 
         Pageable paginacao = PageRequest.of(0, 100);
 
@@ -94,8 +79,8 @@ class ClienteControllerTest {
 
     @Test
     void detalhesCliente_Sucesso() {
-        when(service.listarPorId(anyLong())).thenReturn(clienteDto);
-        when(mapper.map(any(), any())).thenReturn(clienteDto);
+        when(service.listarPorId(anyLong())).thenReturn(ClienteBuilder.getClienteDto());
+        when(mapper.map(any(), any())).thenReturn(ClienteBuilder.getClienteDto());
 
         ResponseEntity<ClienteDto> resposta = clienteController.detalhesCliente(ID);
 
@@ -113,11 +98,11 @@ class ClienteControllerTest {
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("bicoon/clientes/{id}")
-                .buildAndExpand(cliente.getId()).toUri();
+                .buildAndExpand(ClienteBuilder.getCliente().getId()).toUri();
 
         when(service.cadastrarCliente(any())).thenReturn(uri);
 
-        ResponseEntity<ClienteFormDto> resposta = clienteController.cadastrarCliente(clienteFormDto);
+        ResponseEntity<ClienteFormDto> resposta = clienteController.cadastrarCliente(ClienteBuilder.getClienteFormDto());
 
         assertNotNull(resposta);
         assertEquals(uri.toString(), "http://localhost/bicoon/clientes/1");
@@ -126,10 +111,10 @@ class ClienteControllerTest {
 
     @Test
     void atualizarCliente_Sucesso() {
-        when(service.atualizarCliente(ID, clienteFormDto)).thenReturn(clienteDto);
-        when(mapper.map(any(), any())).thenReturn(clienteDto);
+        when(service.atualizarCliente(ID, ClienteBuilder.getClienteFormDto())).thenReturn(ClienteBuilder.getClienteDto());
+        when(mapper.map(any(), any())).thenReturn(ClienteBuilder.getClienteDto());
 
-        ResponseEntity<ClienteDto> resposta = clienteController.atualizarCliente(ID, clienteFormDto);
+        ResponseEntity<ClienteDto> resposta = clienteController.atualizarCliente(ID, ClienteBuilder.getClienteFormDto());
 
         assertNotNull(resposta);
         assertNotNull(resposta.getBody());
@@ -148,11 +133,5 @@ class ClienteControllerTest {
         assertEquals(ResponseEntity.class, resposta.getClass());
         verify(service, times(1)).deletarCliente(anyLong());
         assertEquals(HttpStatus.OK, resposta.getStatusCode());
-    }
-
-    private void iniciarCliente(){
-        cliente = new Cliente(ID, NOME, EMAIL, SENHA, CIDADE, SEXO);
-        clienteDto = ClienteDto.builder().id(ID).nome(NOME).cidade(CIDADE).sexo(SEXO).build();
-        clienteFormDto = ClienteFormDto.builder().nome("Maria").email(EMAIL).senha(SENHA).cidade(CIDADE).sexo(SEXO).build();
     }
 }
