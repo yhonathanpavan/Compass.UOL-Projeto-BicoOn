@@ -1,5 +1,6 @@
 package com.compass.bicoon.services;
 
+import com.compass.bicoon.builder.AvaliacaoBuilder;
 import com.compass.bicoon.constants.Sexo;
 import com.compass.bicoon.dto.AvaliacaoDto;
 import com.compass.bicoon.dto.AvaliacaoFormDto;
@@ -68,11 +69,6 @@ class AvaliacaoServiceImplTest {
     @Spy
     private ModelMapper mapper;
 
-    private Avaliacao avaliacao;
-    private AvaliacaoDto avaliacaoDto;
-    private AvaliacaoFormDto avaliacaoFormDto;
-    private Optional<Avaliacao> avaliacaoOpcional;
-
     private Cliente cliente;
     private Optional<Cliente> clienteOpcional;
 
@@ -104,10 +100,10 @@ class AvaliacaoServiceImplTest {
 
     @Test
     void atualizarAvaliacao() {
-        when(avaliacaoRepository.findById(anyLong())).thenReturn(avaliacaoOpcional);
-        when(avaliacaoRepository.save(any())).thenReturn(avaliacao);
+        when(avaliacaoRepository.findById(anyLong())).thenReturn(Optional.of(AvaliacaoBuilder.getAvaliacao()));
+        when(avaliacaoRepository.save(any())).thenReturn(AvaliacaoBuilder.getAvaliacao());
 
-        AvaliacaoFormDto resposta = service.atualizarAvaliacao(ID, avaliacaoFormDto);
+        AvaliacaoFormDto resposta = service.atualizarAvaliacao(ID, AvaliacaoBuilder.getAvaliacaoFormDto());
 
         assertNotNull(resposta);
         assertEquals(AvaliacaoFormDto.class, resposta.getClass());
@@ -115,9 +111,10 @@ class AvaliacaoServiceImplTest {
 
     @Test
     void deletarAvaliacao_Sucesso() {
-        when(avaliacaoRepository.findById(anyLong())).thenReturn(avaliacaoOpcional);
+        when(avaliacaoRepository.findById(anyLong())).thenReturn(Optional.of(AvaliacaoBuilder.getAvaliacao()));
         doNothing().when(avaliacaoRepository).deleteById(anyLong());
         service.deletarAvaliacao(ID);
+
         verify(avaliacaoRepository, times(1)).deleteById(anyLong());
     }
 
@@ -135,11 +132,11 @@ class AvaliacaoServiceImplTest {
 
     @Test
     void deveRetornarUmaCategoriaQuandoVerificaExistenciaPorId(){
-        when(avaliacaoRepository.findById(anyLong())).thenReturn(avaliacaoOpcional);
+        when(avaliacaoRepository.findById(anyLong())).thenReturn(Optional.of(AvaliacaoBuilder.getAvaliacao()));
 
         Avaliacao avaliacaoEsperada = service.verificaExistenciaAvaliacao(ID);
 
-        assertEquals(avaliacaoEsperada, avaliacao);
+        assertEquals(avaliacaoEsperada, AvaliacaoBuilder.getAvaliacao());
     }
 
     @Test
@@ -155,16 +152,11 @@ class AvaliacaoServiceImplTest {
     private void iniciarAvaliacao(){
 //        AVALIACOES  = new ArrayList(avaliacao);
 
-        avaliacao = Avaliacao.builder().id(ID).clienteId(CLIENTE_ID).comentario(COMENTARIO).nota(NOTA).data(DATA).build();
-        avaliacaoDto = AvaliacaoDto.builder().id(ID).comentario(COMENTARIO).nota(NOTA).build();
-        avaliacaoFormDto = AvaliacaoFormDto.builder().comentario(COMENTARIO).nota(NOTA).build();
-        avaliacaoOpcional = Optional.of(Avaliacao.builder().id(ID).clienteId(CLIENTE_ID).comentario(COMENTARIO).nota(NOTA).data(DATA).build());
-
         cliente = new Cliente(ID, NOME, EMAIL, SENHA, CIDADE, SEXO);
         clienteOpcional = Optional.of(cliente);
 
         prestador = new Prestador(ID, NOME, EMAIL, CIDADE, SENHA, SEXO, TELEFONE, DISPONIVEL);
         prestadorOpcional = Optional.of(prestador);
-        prestador.setAvaliacao(Arrays.asList(avaliacao));
+        prestador.setAvaliacao(Arrays.asList(AvaliacaoBuilder.getAvaliacao()));
     }
 }

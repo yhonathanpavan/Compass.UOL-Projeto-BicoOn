@@ -2,8 +2,11 @@ package com.compass.bicoon.entities;
 
 import com.compass.bicoon.constants.Sexo;
 import com.compass.bicoon.model.Usuario;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Entity;
 
