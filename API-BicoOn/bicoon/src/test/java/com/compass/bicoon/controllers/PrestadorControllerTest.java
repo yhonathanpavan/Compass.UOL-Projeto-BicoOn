@@ -1,5 +1,8 @@
 package com.compass.bicoon.controllers;
 
+import com.compass.bicoon.builder.AvaliacaoBuilder;
+import com.compass.bicoon.builder.PrestadorBuilder;
+import com.compass.bicoon.builder.ServicoBuilder;
 import com.compass.bicoon.constants.Sexo;
 import com.compass.bicoon.dto.*;
 import com.compass.bicoon.entities.Avaliacao;
@@ -38,18 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class PrestadorControllerTest {
 
     public static final Long ID = Long.valueOf(1);
-    public static final String NOME = "João";
-    public static final String EMAIL = "joao@gmail.com";
-    public static final String CIDADE = "Mogi";
-    public static final String SENHA = "123456";
-    public static final Sexo SEXO = Sexo.MASCULINO;
-    public static final String TELEFONE = "19-988121123";
-    public static final boolean DISPONIVEL = true;
-    public static final String PRESTADOR_NÃO_ENCONTRADO = "Prestador não encontrado";
-    public static final String BABÁ = "Babá";
-    public static final String COMENTARIO_AVALIACAO = "Servico muito bom";
     public static final String URL_TEMPLATE = "/bicoon/prestadores/";
-
 
     @MockBean
     private PrestadorRepository prestadorRepository;
@@ -66,38 +58,10 @@ class PrestadorControllerTest {
     @Autowired
     ObjectMapper mapper;
 
-    private PrestadorDto prestadorDto;
-    private Prestador prestador;
-    private Servico servico;
-    private Avaliacao avaliacao;
-    private Categoria categoria;
-    private Page<PrestadorDto> prestadorPaginacao;
-    private Page<ServicoDto> servicoPaginacao;
-    private Page<AvaliacaoDto> avaliacaoPaginacao;
-    private PrestadorFormDto prestadorForm;
-    private ServicoDto servicoDto;
-    private AvaliacaoDto avaliacaoDto;
-    private PrestadorDisponibilidadeFormDto presDisp;
-    private ServicoFormDto servicoFormDto;
-
-    private List<Avaliacao> AVALIACOES = new ArrayList<>();
-
-    @BeforeEach
-    void setUp() {
-        iniciaCategoria();
-        iniciaServico();
-        iniciaAvaliacao();
-        iniciaPrestador();
-        prestadorPaginacao = new PageImpl(Arrays.asList(prestadorDto, prestadorDto));
-        servicoPaginacao = new PageImpl(Arrays.asList(servicoDto, servicoDto));
-        avaliacaoPaginacao = new PageImpl(Arrays.asList(avaliacaoDto, avaliacaoDto));
-
-    }
-
     @Test
     void deveriaListarPrestadores() throws Exception {
         when(service.listarPrestadores(any(), any()
-                , any())).thenReturn(prestadorPaginacao);
+                , any())).thenReturn(PrestadorBuilder.getPrestadorPaginacaoDto());
         mockMvc.perform(get(URL_TEMPLATE)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -107,7 +71,7 @@ class PrestadorControllerTest {
 
     @Test
     void deveriaListarPrestadorPeloId() throws Exception {
-        when(service.listarPorId(anyLong())).thenReturn(prestadorDto);
+        when(service.listarPorId(anyLong())).thenReturn(PrestadorBuilder.getPrestadorDto());
         mockMvc.perform(get(URL_TEMPLATE+"{id}",1)
                  .contentType(MediaType.APPLICATION_JSON))
                  .andExpect(jsonPath("$", notNullValue()))
@@ -116,7 +80,7 @@ class PrestadorControllerTest {
 
     @Test
     void deveriaDeletarUmPrestadorPeloId() throws Exception{
-        when(prestadorRepository.findById(anyLong())).thenReturn(Optional.of(prestador));
+        when(prestadorRepository.findById(anyLong())).thenReturn(Optional.of(PrestadorBuilder.getPrestador()));
         mockMvc.perform( delete(URL_TEMPLATE+"{id}", 1L)
                  .contentType(MediaType.APPLICATION_JSON))
                  .andExpect(status().isOk());
@@ -124,26 +88,26 @@ class PrestadorControllerTest {
 
     @Test
     void deveriaAtualizarUmPrestadorPeloId() throws Exception {
-        when(service.atualizarPrestador(anyLong(),any(PrestadorFormDto.class))).thenReturn(prestadorDto);
+        when(service.atualizarPrestador(anyLong(),any(PrestadorFormDto.class))).thenReturn(PrestadorBuilder.getPrestadorDto());
         MockHttpServletRequestBuilder mockRequest = put(URL_TEMPLATE+"{id}", 1)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON)
-                .content(this.mapper.writeValueAsString(prestadorForm));
+                .content(this.mapper.writeValueAsString(PrestadorBuilder.getPrestadorFormDto()));
 
         mockMvc.perform(mockRequest)
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", notNullValue()))
-                .andExpect(jsonPath("$.nome").value(prestadorDto.getNome()));
+                .andExpect(jsonPath("$.nome").value(PrestadorBuilder.getPrestadorDto().getNome()));
         }
 
     @Test
     void deveriaListarServicosDoPrestadorPeloId() throws Exception {
-        when(service.listarServicosPrestador(anyLong())).thenReturn(servicoPaginacao);
+        when(service.listarServicosPrestador(anyLong())).thenReturn(ServicoBuilder.getServicoPaginacaoDto());
         mockMvc.perform( get(URL_TEMPLATE+"{id}/servicos", 1)
                  .contentType(MediaType.APPLICATION_JSON))
                  .andExpect(status().isOk())
-                 .andExpect(jsonPath("$.content.[0].id").value(servicoDto.getId()))
-                 .andExpect(jsonPath("$.content.[0].descricao").value(servicoDto.getDescricao()));
+                 .andExpect(jsonPath("$.content.[0].id").value(ServicoBuilder.getServicoDto().getId()))
+                 .andExpect(jsonPath("$.content.[0].descricao").value(ServicoBuilder.getServicoDto().getDescricao()));
     }
 
     @Test
@@ -152,7 +116,7 @@ class PrestadorControllerTest {
         MockHttpServletRequestBuilder mockRequest = post(URL_TEMPLATE)
                  .contentType(MediaType.APPLICATION_JSON)
                  .accept(MediaType.APPLICATION_JSON)
-                 .content(this.mapper.writeValueAsString(prestadorForm));
+                 .content(this.mapper.writeValueAsString(PrestadorBuilder.getPrestadorFormDto()));
 
         mockMvc.perform(mockRequest)
                  .andExpect(status().isCreated());
@@ -160,92 +124,39 @@ class PrestadorControllerTest {
 
     @Test
     void deveriaListarAsAvaliacoesDeUmPrestadorPeloId() throws Exception {
-        when(service.listarAvaliacoesPrestador(anyLong())).thenReturn(avaliacaoPaginacao);
+        when(service.listarAvaliacoesPrestador(anyLong())).thenReturn(AvaliacaoBuilder.getAvaliacaoPaginacaoDto());
         mockMvc.perform( get(URL_TEMPLATE+"{id}/avaliacoes", 1)
                  .contentType(MediaType.APPLICATION_JSON))
                  .andExpect(status().isOk())
-                 .andExpect(jsonPath("$.content.[0].id").value(avaliacaoDto.getId()))
-                 .andExpect(jsonPath("$.content.[0].nota").value(avaliacaoDto.getNota()));
+                 .andExpect(jsonPath("$.content.[0].id").value(AvaliacaoBuilder.getAvaliacaoDto().getId()))
+                 .andExpect(jsonPath("$.content.[0].nota").value(AvaliacaoBuilder.getAvaliacaoDto().getNota()));
     }
 
     @Test
     void deveriaAtualizarADisponibilidadeDeUmPrestadorPeloId() throws Exception {
-        when(service.atualizarDisponibilidadePrestador(anyLong(),any(PrestadorDisponibilidadeFormDto.class))).thenReturn(prestadorDto);
+        when(service.atualizarDisponibilidadePrestador(anyLong(),any(PrestadorDisponibilidadeFormDto.class))).thenReturn(PrestadorBuilder.getPrestadorDto());
         MockHttpServletRequestBuilder mockRequest = put(URL_TEMPLATE+"{id}/disponibilidade", 1)
                  .contentType(MediaType.APPLICATION_JSON)
                  .accept(MediaType.APPLICATION_JSON)
-                 .content(this.mapper.writeValueAsString(presDisp));
+                 .content(this.mapper.writeValueAsString(PrestadorBuilder.getDisponibilidadeFalso()));
 
         mockMvc.perform(mockRequest)
                  .andExpect(status().isOk())
                  .andExpect(jsonPath("$", notNullValue()))
-                 .andExpect(jsonPath("$.disponivel").value(prestadorDto.getDisponivel()));
+                 .andExpect(jsonPath("$.disponivel").value(PrestadorBuilder.getPrestadorDto().getDisponivel()));
     }
 
     @Test
     void deveriaCadastrarServicoNoPrestador() throws Exception {
-        when(service.cadastrarServico(anyLong(),any(ServicoFormDto.class))).thenReturn(servicoDto);
+        when(service.cadastrarServico(anyLong(),any(ServicoFormDto.class))).thenReturn(ServicoBuilder.getServicoDto());
         MockHttpServletRequestBuilder mockRequest = put(URL_TEMPLATE+"{id}/servicos",1)
                  .contentType(MediaType.APPLICATION_JSON)
                  .accept(MediaType.APPLICATION_JSON)
-                 .content(this.mapper.writeValueAsString(servicoFormDto));
+                 .content(this.mapper.writeValueAsString(ServicoBuilder.getServicoForm()));
 
         mockMvc.perform(mockRequest)
                  .andExpect(status().isOk())
                  .andExpect(jsonPath("$", notNullValue()))
-                 .andExpect(jsonPath("$.descricao").value(servicoDto.getDescricao()));
-    }
-
-    private void iniciaPrestador() {
-        prestador = new Prestador(ID, NOME, EMAIL, CIDADE
-                , SENHA, SEXO, TELEFONE, DISPONIVEL, AVALIACOES);
-
-        prestador.setServico(Arrays.asList(servico));
-        prestador.setAvaliacao(Arrays.asList(avaliacao));
-
-        prestadorDto = modelMapper.map(prestador, PrestadorDto.class);
-
-        prestadorForm = PrestadorFormDto.builder()
-                .nome(NOME)
-                .cidade(CIDADE)
-                .email(EMAIL)
-                .senha(SENHA)
-                .telefone(TELEFONE)
-                .sexo(SEXO).build();
-
-        presDisp = PrestadorDisponibilidadeFormDto.builder()
-                .disponivel(false).build();
-
-    }
-
-    private void iniciaAvaliacao(){
-        avaliacao = Avaliacao.builder().id(ID).data(LocalDate.now())
-                .nota(5).clienteId(ID).comentario(COMENTARIO_AVALIACAO).build();
-
-        avaliacaoDto = AvaliacaoDto.builder().id(ID).data(LocalDate.now())
-                .nota(5).comentario(COMENTARIO_AVALIACAO).build();
-    }
-
-    private void iniciaCategoria() {
-        categoria = Categoria.builder()
-                .id(ID)
-                .nome("Babá").build();
-
-    }
-
-    private void iniciaServico(){
-        servico = Servico.builder()
-                .id(ID)
-                .descricao("Cuido de crianças")
-                .categoria(categoria).build();
-
-        servicoDto = ServicoDto.builder()
-                .id(ID)
-                .descricao("Cuido de crianças")
-                .categoria(categoria).build();
-
-        servicoFormDto = ServicoFormDto.builder()
-                .descricao("Cuido de crianças")
-                .categoria("Teste").build();
+                 .andExpect(jsonPath("$.descricao").value(ServicoBuilder.getServicoDto().getDescricao()));
     }
 }

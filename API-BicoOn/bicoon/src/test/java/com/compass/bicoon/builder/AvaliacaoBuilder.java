@@ -2,9 +2,13 @@ package com.compass.bicoon.builder;
 
 import com.compass.bicoon.dto.AvaliacaoDto;
 import com.compass.bicoon.dto.AvaliacaoFormDto;
+import com.compass.bicoon.dto.ClienteDto;
 import com.compass.bicoon.entities.Avaliacao;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class AvaliacaoBuilder {
 
@@ -51,5 +55,9 @@ public class AvaliacaoBuilder {
                 .comentario(COMENTARIO)
                 .nota(-3)
                 .build();
+    }
+
+    public static Page<AvaliacaoDto> getAvaliacaoPaginacaoDto(){
+        return new PageImpl<>(List.of(getAvaliacaoDto()));
     }
 }

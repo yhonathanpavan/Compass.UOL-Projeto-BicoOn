@@ -1,11 +1,12 @@
 package com.compass.bicoon.services;
 
+import com.compass.bicoon.builder.AvaliacaoBuilder;
+import com.compass.bicoon.builder.PrestadorBuilder;
 import com.compass.bicoon.constants.Sexo;
-import com.compass.bicoon.dto.*;
-import com.compass.bicoon.entities.Avaliacao;
-import com.compass.bicoon.entities.Categoria;
+import com.compass.bicoon.dto.AvaliacaoDto;
+import com.compass.bicoon.dto.PrestadorDto;
+import com.compass.bicoon.dto.ServicoDto;
 import com.compass.bicoon.entities.Prestador;
-import com.compass.bicoon.entities.Servico;
 import com.compass.bicoon.exceptions.objectNotFound.ObjectNotFoundException;
 import com.compass.bicoon.repository.PrestadorRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,14 +15,10 @@ import org.mockito.*;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -32,16 +29,9 @@ import static org.mockito.Mockito.*;
 class PrestadorServiceTest {
 
     public static final Long ID = Long.valueOf(1);
-    public static final String NOME = "João";
-    public static final String EMAIL = "joao@gmail.com";
     public static final String CIDADE = "Mogi";
-    public static final String SENHA = "123456";
-    public static final Sexo SEXO = Sexo.MASCULINO;
-    public static final String TELEFONE = "19-988121123";
-    public static final boolean DISPONIVEL = true;
     public static final String PRESTADOR_NÃO_ENCONTRADO = "Prestador não encontrado";
-    public static final String BABÁ = "Babá";
-    private List<Avaliacao> AVALIACOES = new ArrayList<>();
+    public static final String MARIDO_DE_ALUGUEL = "Marido de Aluguel";
 
     @InjectMocks
     PrestadorServiceImpl service;
@@ -52,40 +42,24 @@ class PrestadorServiceTest {
     @Spy
     ModelMapper mapper;
 
-    private Prestador prestador;
-    private Optional<Prestador> prestadorOptional;
-    private PrestadorFormDto prestadorForm;
-    private Servico servico;
-    private PageImpl<Prestador> page;
-    private PrestadorDto prestadorDto;
     private Pageable pageable;
-    private Categoria categoria;
-    private Optional<Categoria> optionalCategoria;
-    private PrestadorDisponibilidadeFormDto dispForm;
-    private ServicoFormDto servicoForm;
-    private Avaliacao avaliacao;
 
     @BeforeEach
     void setUp() {
-        iniciaCategoria();
-        iniciaServico();
-        iniciaAvaliacao();
-        iniciaPrestador();
         MockitoAnnotations.openMocks(this);
-        page = new PageImpl(Arrays.asList(prestador, prestador));
         pageable = PageRequest.of(0,10);
 
     }
     @Test
     void deveriaCadastrarUmPrestador(){
-        when(prestadorRepository.save(any(Prestador.class))).thenReturn(prestador);
-        service.cadastrarPrestador(prestadorForm);
+        when(prestadorRepository.save(any(Prestador.class))).thenReturn(PrestadorBuilder.getPrestador());
+        service.cadastrarPrestador(PrestadorBuilder.getPrestadorFormDto());
         verify(prestadorRepository, times(1)).save(any(Prestador.class));
     }
 
     @Test
     void deveriaTrazerUmUsuarioPeloId() {
-        when(prestadorRepository.findById(anyLong())).thenReturn(prestadorOptional);
+        when(prestadorRepository.findById(anyLong())).thenReturn(Optional.of(PrestadorBuilder.getPrestador()));
         PrestadorDto resposta = service.listarPorId(ID);
 
         assertNotNull(resposta);
@@ -105,7 +79,7 @@ class PrestadorServiceTest {
 
     @Test
     void deletadoComSucesso(){
-        when(prestadorRepository.findById(anyLong())).thenReturn(prestadorOptional);
+        when(prestadorRepository.findById(anyLong())).thenReturn(Optional.of(PrestadorBuilder.getPrestador()));
         doNothing().when(prestadorRepository).deleteById(anyLong());
         service.deletaPrestador(ID);
         verify(prestadorRepository, times(1)).deleteById(anyLong());
@@ -122,17 +96,17 @@ class PrestadorServiceTest {
 
     @Test
     void deveriaAtualizarUmPrestadorPeloId(){
-        when(prestadorRepository.findById(anyLong())).thenReturn(prestadorOptional);
-        PrestadorDto resposta = service.atualizarPrestador(ID, prestadorForm);
+        when(prestadorRepository.findById(anyLong())).thenReturn(Optional.of(PrestadorBuilder.getPrestador()));
+        PrestadorDto resposta = service.atualizarPrestador(ID, PrestadorBuilder.getPrestadorFormDto());
         assertNotNull(resposta);
         assertEquals(resposta.getClass(), PrestadorDto.class);
-        assertEquals(resposta.getNome(), prestadorForm.getNome());
+        assertEquals(resposta.getNome(), PrestadorBuilder.getPrestadorFormDto().getNome());
     }
 
     @Test
     void naoDeveriaAtualizarPrestadorPorIdInválido(){
         try {
-            service.atualizarPrestador(999L, prestadorForm);
+            service.atualizarPrestador(999L, PrestadorBuilder.getPrestadorFormDto());
         }catch (Exception ex){
             assertEquals(ex.getClass(), ObjectNotFoundException.class);
             assertEquals(PRESTADOR_NÃO_ENCONTRADO, ex.getMessage());
@@ -141,10 +115,10 @@ class PrestadorServiceTest {
 
     @Test
     void naoDeveriaAtualizarPrestadorComInformacoesIncorretas(){
-        when(prestadorRepository.findById(anyLong())).thenReturn(prestadorOptional);
+        when(prestadorRepository.findById(anyLong())).thenReturn(Optional.of(PrestadorBuilder.getPrestador()));
         try {
-            prestadorForm.setSexo(Sexo.valueOf("NASCULINO"));
-            service.atualizarPrestador(ID, prestadorForm);
+            PrestadorBuilder.getPrestador().setSexo(Sexo.valueOf("NASCULINO"));
+            service.atualizarPrestador(ID, PrestadorBuilder.getPrestadorFormDto());
         }catch (Exception ex){
             assertEquals(ex.getClass(), IllegalArgumentException.class);
         }
@@ -153,15 +127,15 @@ class PrestadorServiceTest {
 
     @Test
     void deveriaListarTodosPrestadoresSemFiltro (){
-        when(prestadorRepository.findAll((Pageable) any())).thenReturn(page);
+        when(prestadorRepository.findAll((Pageable) any())).thenReturn(PrestadorBuilder.getPrestadorPaginacao());
         Page<PrestadorDto> paginaResposta = service.listarPrestadores(Mockito.any(),null,null);
-        assertEquals(paginaResposta.getTotalElements(), page.getTotalElements());
-        assertEquals(paginaResposta.stream().findFirst(), Optional.of(prestadorDto));
+        assertEquals(paginaResposta.getTotalElements(), PrestadorBuilder.getPrestadorPaginacao().getTotalElements());
+        assertEquals(paginaResposta.stream().findFirst(), Optional.of(PrestadorBuilder.getPrestadorDto()));
     }
 
     @Test
     void deveriaListarOsPrestadoresFiltrandoPorCidade(){
-        when(prestadorRepository.findByCidade((Pageable)any(),anyString())).thenReturn(page);
+        when(prestadorRepository.findByCidade((Pageable)any(),anyString())).thenReturn(PrestadorBuilder.getPrestadorPaginacao());
         Page<PrestadorDto> paginaResposta = service.listarPrestadores(pageable,CIDADE,null);
         assertNotNull(paginaResposta);
         assertEquals(paginaResposta.stream().findFirst().get().getCidade(), CIDADE);
@@ -169,32 +143,32 @@ class PrestadorServiceTest {
 
     @Test
     void deveriaListarOsPrestadoresFiltrandoPorCategoria(){
-        when(prestadorRepository.findByServicoCategoriaNome((Pageable)any(),anyString())).thenReturn(page);
-        Page<PrestadorDto> paginaResposta = service.listarPrestadores(pageable,null,BABÁ);
+        when(prestadorRepository.findByServicoCategoriaNome((Pageable)any(),anyString())).thenReturn(PrestadorBuilder.getPrestadorPaginacao());
+        Page<PrestadorDto> paginaResposta = service.listarPrestadores(pageable,null, MARIDO_DE_ALUGUEL);
         assertNotNull(paginaResposta);
-        assertEquals(paginaResposta.stream().findFirst().get().getServico().get(0).getCategoria().getNome(), BABÁ);
+        assertEquals(paginaResposta.stream().findFirst().get().getServico().get(0).getCategoria().getNome(), MARIDO_DE_ALUGUEL);
     }
 
     @Test
     void deveriaListarPrestadoresFiltrandoPorCidadeECategoria(){
         when(prestadorRepository.findByCidadeAndServicoCategoriaNome((Pageable)any(),anyString()
-                ,anyString())).thenReturn(page);
-        Page<PrestadorDto> paginaResposta = service.listarPrestadores(pageable,CIDADE, BABÁ);
+                ,anyString())).thenReturn(PrestadorBuilder.getPrestadorPaginacao());
+        Page<PrestadorDto> paginaResposta = service.listarPrestadores(pageable,CIDADE, MARIDO_DE_ALUGUEL);
         assertNotNull(paginaResposta);
-        assertEquals(paginaResposta.stream().findFirst().get().getServico().get(0).getCategoria().getNome(), BABÁ);
+        assertEquals(paginaResposta.stream().findFirst().get().getServico().get(0).getCategoria().getNome(), MARIDO_DE_ALUGUEL);
         assertEquals(paginaResposta.stream().findFirst().get().getCidade(), CIDADE);
     }
 
     @Test
     void deveriaListarOsServicosDeUmPrestadorPeloId(){
-        when(prestadorRepository.findById(anyLong())).thenReturn(prestadorOptional);
+        when(prestadorRepository.findById(anyLong())).thenReturn(Optional.of(PrestadorBuilder.getPrestador()));
         Page<ServicoDto> paginaResposta = service.listarServicosPrestador(ID);
         assertNotNull(paginaResposta);
     }
 
     @Test
     void naoDeveriaListarOsServicosDeUmPrestadorPorIdInvalido(){
-        when(prestadorRepository.findById(anyLong())).thenReturn(prestadorOptional);
+        when(prestadorRepository.findById(anyLong())).thenReturn(Optional.of(PrestadorBuilder.getPrestador()));
         try {
             service.listarServicosPrestador(999L);
         }catch (Exception ex){
@@ -205,65 +179,19 @@ class PrestadorServiceTest {
 
     @Test
     void deveriaAlterarADisponibilidadeDeUmPrestador(){
-        when(prestadorRepository.findById(anyLong())).thenReturn(prestadorOptional);
-        PrestadorDto prestadorResposta = service.atualizarDisponibilidadePrestador(ID, dispForm);
+        when(prestadorRepository.findById(anyLong())).thenReturn(Optional.of(PrestadorBuilder.getPrestador()));
+        PrestadorDto prestadorResposta = service.atualizarDisponibilidadePrestador(ID, PrestadorBuilder.getDisponibilidadeVerdadeiro());
         assertNotNull(prestadorResposta);
-        assertEquals(prestadorResposta.getDisponivel(), dispForm.getDisponivel());
+        assertEquals(prestadorResposta.getDisponivel(), PrestadorBuilder.getDisponibilidadeVerdadeiro().getDisponivel());
     }
 
     @Test
     void deveriaListarAsAvaliacoesDeUmPrestadorPeloId(){
-        prestador.setAvaliacao(Arrays.asList(avaliacao));
-        when(prestadorRepository.findById(anyLong())).thenReturn(prestadorOptional);
+        PrestadorBuilder.getPrestador().setAvaliacao(Arrays.asList(AvaliacaoBuilder.getAvaliacao()));
+        when(prestadorRepository.findById(anyLong())).thenReturn(Optional.of(PrestadorBuilder.getPrestador()));
         Page<AvaliacaoDto> avaliacaoResposta = service.listarAvaliacoesPrestador(ID);
         assertNotNull(avaliacaoResposta);
         assertEquals(avaliacaoResposta.getTotalElements(), 1);
-        assertEquals(avaliacaoResposta.stream().findFirst().get().getData(), avaliacao.getData());
+        assertEquals(avaliacaoResposta.stream().findFirst().get().getData(), AvaliacaoBuilder.getAvaliacao().getData());
     }
-
-    private void iniciaPrestador() {
-        prestador = new Prestador(ID, NOME, EMAIL, CIDADE
-                , SENHA, SEXO, TELEFONE, DISPONIVEL, AVALIACOES);
-
-        prestador.setServico(Arrays.asList(servico));
-
-        prestadorOptional = Optional.of(prestador);
-
-        prestadorForm = PrestadorFormDto.builder()
-                .email(EMAIL)
-                .sexo(SEXO)
-                .nome("Maria")
-                .telefone("190")
-                .cidade(CIDADE).build();
-
-        prestadorDto = mapper.map(prestador, PrestadorDto.class);
-
-        dispForm = PrestadorDisponibilidadeFormDto.builder()
-                .disponivel(false).build();
-    }
-    private void iniciaAvaliacao(){
-        avaliacao = Avaliacao.builder().id(ID).data(LocalDate.now())
-                .nota(5).clienteId(ID).comentario("Servico muito bom").build();
-    }
-
-    private void iniciaCategoria() {
-        categoria = Categoria.builder()
-                .id(ID)
-                .nome("Babá").build();
-
-        optionalCategoria = Optional.of(categoria);
-
-    }
-
-    private void iniciaServico(){
-        servico = Servico.builder()
-                .id(ID)
-                .descricao("Cuido de crianças")
-                .categoria(categoria).build();
-
-        servicoForm = ServicoFormDto.builder()
-                .descricao("Trabalho Com Obras")
-                .categoria("Pedreiro").build();
-    }
-
 }

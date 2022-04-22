@@ -2,6 +2,7 @@ package com.compass.bicoon.services;
 
 import com.compass.bicoon.builder.AvaliacaoBuilder;
 import com.compass.bicoon.builder.ClienteBuilder;
+import com.compass.bicoon.builder.PrestadorBuilder;
 import com.compass.bicoon.constants.Sexo;
 import com.compass.bicoon.dto.AvaliacaoFormDto;
 import com.compass.bicoon.entities.Avaliacao;
@@ -36,14 +37,6 @@ class AvaliacaoServiceTest {
     private static final long CLIENTE_ID    = 1L;
     private static final long PRESTADOR_ID  = 1L;
 
-    private static final String NOME    = "Mateus";
-    private static final String EMAIL   = "mateus@email.com";
-    private static final String SENHA   = "123";
-    private static final String CIDADE  = "Limeira";
-    private static final Sexo SEXO      = Sexo.MASCULINO;
-    private static final String TELEFONE = "19 99578-1012";
-    private static final boolean DISPONIVEL= true;
-
     @InjectMocks
     private AvaliacaoServiceImpl service;
 
@@ -65,23 +58,21 @@ class AvaliacaoServiceTest {
     @Spy
     private ModelMapper mapper;
 
-    private Prestador prestador;
-
     @BeforeEach
     void setUp(){
         MockitoAnnotations.openMocks(this);
-        iniciarAvaliacao();
     }
-
-    private List<Avaliacao> AVALIACOES = new ArrayList<>();
 
     @Test
     void deveVerificarCorretamenteQuandoCriarUmaAvaliacao() {
+//        List<Avaliacao> AVALIACOES = new ArrayList<>();
+
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
 
+//        PrestadorBuilder.getPrestador().setAvaliacao(AVALIACOES);
         when(clienteService.verificaExistenciaCliente(anyLong())).thenReturn(ClienteBuilder.getCliente());
-        when(prestadorService.verificaExistenciaPrestador(anyLong())).thenReturn(prestador);
+        when(prestadorService.verificaExistenciaPrestador(anyLong())).thenReturn(PrestadorBuilder.getPrestador());
         when(avaliacaoRepository.save(any())).thenReturn(AvaliacaoBuilder.getAvaliacao());
 
         service.criarAvaliacao(CLIENTE_ID, PRESTADOR_ID, AvaliacaoBuilder.getAvaliacaoFormDto());
@@ -141,9 +132,5 @@ class AvaliacaoServiceTest {
             assertEquals(ObjectNotFoundException.class, ex.getClass());
             assertEquals("Avaliação não encontrada", ex.getMessage());
         }
-    }
-
-    private void iniciarAvaliacao(){
-        prestador = new Prestador(ID, NOME, EMAIL, CIDADE, SENHA, SEXO, TELEFONE, DISPONIVEL, AVALIACOES);
     }
 }
