@@ -24,7 +24,7 @@ public class Prestador extends Usuario {
     private String telefone;
     private Boolean disponivel = true;
 
-    public Prestador(Long id, String nome, String email, String cidade, String senha, Sexo sexo, String telefone, Boolean disponivel) {
+    public Prestador(Long id, String nome, String email, String cidade, String senha, Sexo sexo, String telefone, Boolean disponivel, List<Avaliacao> avaliacao) {
         super.senha = senha;
         super.id = id;
         super.email = email;
@@ -33,5 +33,6 @@ public class Prestador extends Usuario {
         super.sexo = sexo;
         this.telefone = telefone;
         this.disponivel = disponivel;
+        this.avaliacao = avaliacao;
     }
 }

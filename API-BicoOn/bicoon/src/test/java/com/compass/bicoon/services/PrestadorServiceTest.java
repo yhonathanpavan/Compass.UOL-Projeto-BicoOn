@@ -19,7 +19,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -27,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-class PrestadorServiceImplTest {
+class PrestadorServiceTest {
 
     public static final Long ID = Long.valueOf(1);
     public static final String NOME = "João";
@@ -39,6 +41,7 @@ class PrestadorServiceImplTest {
     public static final boolean DISPONIVEL = true;
     public static final String PRESTADOR_NÃO_ENCONTRADO = "Prestador não encontrado";
     public static final String BABÁ = "Babá";
+    private List<Avaliacao> AVALIACOES = new ArrayList<>();
 
     @InjectMocks
     PrestadorServiceImpl service;
@@ -220,7 +223,7 @@ class PrestadorServiceImplTest {
 
     private void iniciaPrestador() {
         prestador = new Prestador(ID, NOME, EMAIL, CIDADE
-                , SENHA, SEXO, TELEFONE, DISPONIVEL);
+                , SENHA, SEXO, TELEFONE, DISPONIVEL, AVALIACOES);
 
         prestador.setServico(Arrays.asList(servico));
 

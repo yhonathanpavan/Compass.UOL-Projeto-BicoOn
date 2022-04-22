@@ -23,7 +23,9 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.ArgumentMatchers.*;
@@ -78,6 +80,7 @@ class PrestadorControllerTest {
     private PrestadorDisponibilidadeFormDto presDisp;
     private ServicoFormDto servicoFormDto;
 
+    private List<Avaliacao> AVALIACOES = new ArrayList<>();
 
     @BeforeEach
     void setUp() {
@@ -195,7 +198,7 @@ class PrestadorControllerTest {
 
     private void iniciaPrestador() {
         prestador = new Prestador(ID, NOME, EMAIL, CIDADE
-                , SENHA, SEXO, TELEFONE, DISPONIVEL);
+                , SENHA, SEXO, TELEFONE, DISPONIVEL, AVALIACOES);
 
         prestador.setServico(Arrays.asList(servico));
         prestador.setAvaliacao(Arrays.asList(avaliacao));
