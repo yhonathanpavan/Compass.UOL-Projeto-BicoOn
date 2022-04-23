@@ -2,8 +2,10 @@ package com.compass.bicoon.entities;
 
 import com.compass.bicoon.constants.Sexo;
 import com.compass.bicoon.model.Usuario;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -23,7 +25,9 @@ public class Prestador extends Usuario {
     private String telefone;
     private Boolean disponivel = true;
 
-    public Prestador(Long id, String nome, String email, String cidade, String senha, Sexo sexo, String telefone, Boolean disponivel) {
+
+    @Builder
+    public Prestador(Long id, String nome, String email, String cidade, String senha, Sexo sexo, String telefone, Boolean disponivel, List<Avaliacao> avaliacao, List<Servico> servico) {
         super.senha = senha;
         super.id = id;
         super.email = email;
@@ -32,5 +36,7 @@ public class Prestador extends Usuario {
         super.sexo = sexo;
         this.telefone = telefone;
         this.disponivel = disponivel;
+        this.avaliacao = avaliacao;
+        this.servico = servico;
     }
 }
