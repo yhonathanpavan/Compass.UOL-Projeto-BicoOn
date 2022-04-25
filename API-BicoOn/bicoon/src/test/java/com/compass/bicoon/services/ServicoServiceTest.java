@@ -51,7 +51,7 @@ class ServicoServiceTest {
     }
 
     @Test
-    void deveDarObjectNotFoundExceptionQuandoVerificaExistencia(){
+    void deveDarDarServicoNaoEncontradaQuandoVerificaExistencia(){
         try{
             service.verificaExistenciaServico(ID);
         }catch(Exception ex){
@@ -64,33 +64,33 @@ class ServicoServiceTest {
     void deveRetornarUmServicoQuandoVerificaExistencia(){
         when(repository.findById(anyLong())).thenReturn(Optional.of(ServicoBuilder.getServico()));
 
-        Servico servicoEsperado = service.verificaExistenciaServico(ID);
+        Servico resposta = service.verificaExistenciaServico(ID);
 
-        assertEquals(servicoEsperado, ServicoBuilder.getServico());
+        assertEquals(ServicoBuilder.getServico(), resposta);
     }
 
     @Test
-    void deveListarServicos(){
+    void deveListarServicosCorretamente(){
         when(repository.findAll((Pageable) any())).thenReturn(ServicoBuilder.getServicoPaginacao());
 
         Page<ServicoDto> resposta = service.listarServicos(any());
-        assertEquals(resposta.getTotalElements(), 2);
-        assertEquals(resposta.stream().findFirst(), Optional.of(ServicoBuilder.getServicoDto()));
+        assertEquals(2, resposta.getTotalElements());
+        assertEquals(Optional.of(ServicoBuilder.getServicoDto()), resposta.stream().findFirst());
     }
 
     @Test
-    void atualizarServico(){
+    void deveAtualizarUmServicoCorretamente(){
         when(repository.findById(anyLong())).thenReturn(Optional.of(ServicoBuilder.getServico()));
         when(categoriaRepository.findByNome(anyString())).thenReturn(Optional.of(CategoriaBuilder.getCategoria()));
         when(categoriaService.verificaExistenciaCategoria(anyString())).thenReturn(CategoriaBuilder.getCategoria());
 
-        ServicoDto esperado = service.atualizarServico(ID, ServicoBuilder.getServicoForm());
-        assertNotNull(esperado);
-        assertEquals(esperado.getCategoria().getNome(), CategoriaBuilder.getCategoria().getNome());
+        ServicoDto resposta = service.atualizarServico(ID, ServicoBuilder.getServicoForm());
+        assertNotNull(resposta);
+        assertEquals(CategoriaBuilder.getCategoria().getNome(), resposta.getCategoria().getNome());
     }
 
     @Test
-    void deveDeletarServicoComSucesso(){
+    void deveVerificarCorretamenteQuandoDeletadaUmServico(){
         when(repository.findById(anyLong())).thenReturn(Optional.of(ServicoBuilder.getServico()));
         doNothing().when(repository).deleteById(anyLong());
 

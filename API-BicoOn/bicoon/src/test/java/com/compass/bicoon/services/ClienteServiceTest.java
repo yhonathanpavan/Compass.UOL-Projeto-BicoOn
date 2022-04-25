@@ -45,7 +45,7 @@ class ClienteServiceTest {
     }
 
     @Test
-    void listarClientes_Sucesso() {
+    void deveListarClientesCorretamente() {
 
         when(clienteRepository.findAll((Pageable) any())).thenReturn(ClienteBuilder.getClientePaginacao());
 
@@ -54,11 +54,11 @@ class ClienteServiceTest {
         Page<ClienteDto> resposta = service.listarClientes(null, paginacao);
 
         assertNotNull(resposta);
-        assertEquals(resposta.getTotalElements(), 1);
+        assertEquals(1, resposta.getTotalElements());
     }
 
     @Test
-    void listarClientesPorCidade_Sucesso() {
+    void deveListarClientesPorCidadeCorretamente() {
 
         when(clienteRepository.findAll((Pageable) any())).thenReturn(ClienteBuilder.getClientePaginacao());
         when(clienteRepository.findByCidade(any(), (Pageable) any())).thenReturn(ClienteBuilder.getClientePaginacao());
@@ -68,11 +68,11 @@ class ClienteServiceTest {
         Page<ClienteDto> resposta = service.listarClientes(CIDADE, paginacao);
 
         assertNotNull(resposta);
-        assertEquals(resposta.getTotalElements(), 1);
+        assertEquals(1, resposta.getTotalElements());
     }
 
     @Test
-    void listarPorId_Sucesso() {
+    void deveListarUmClientePeloIdCorretamente() {
         when(clienteRepository.findById(anyLong())).thenReturn(Optional.of(ClienteBuilder.getCliente()));
 
         ClienteDto resposta = service.listarPorId(ID);
@@ -92,7 +92,7 @@ class ClienteServiceTest {
     }
 
     @Test
-    void atualizarCliente_Sucesso() {
+    void deveAtualizarCorretamenteUmCliente() {
         when(clienteRepository.save(any())).thenReturn(ClienteBuilder.getCliente());
         when(clienteRepository.findById(anyLong())).thenReturn(Optional.of(ClienteBuilder.getCliente()));
         ClienteDto resposta = service.atualizarCliente(ID, ClienteBuilder.getClienteFormDto());
@@ -103,36 +103,25 @@ class ClienteServiceTest {
     }
 
     @Test
-    void deletarCliente_Sucesso() {
+    void deveVerificarCorretamenteQuandoDeletarUmCliente() {
         when(clienteRepository.findById(anyLong())).thenReturn(Optional.of(ClienteBuilder.getCliente()));
         doNothing().when(clienteRepository).deleteById(anyLong());
         service.deletarCliente(ID);
         verify(clienteRepository, times(1)).deleteById(anyLong());
     }
 
-    @Test
-    void deletarCliente_Erro() {
-        when(clienteRepository.findById(anyLong()))
-                .thenThrow(new ObjectNotFoundException("Cliente não encontrado"));
-        try{
-            service.deletarCliente(ID);
-        }catch (Exception e){
-            assertEquals(ObjectNotFoundException.class, e.getClass());
-            assertEquals("Cliente não encontrado", e.getMessage());
-        }
-    }
 
     @Test
     void deveRetornarUmaCategoriaQuandoVerificaExistenciaPorId(){
         when(clienteRepository.findById(anyLong())).thenReturn(Optional.of(ClienteBuilder.getCliente()));
 
-        Cliente clienteEsperado = service.verificaExistenciaCliente(ID);
+        Cliente resposta = service.verificaExistenciaCliente(ID);
 
-        assertEquals(clienteEsperado, ClienteBuilder.getCliente());
+        assertEquals(ClienteBuilder.getCliente(), resposta);
     }
 
     @Test
-    void deveDarObjectNotFoundExceptionQuandoVerificaExistenciaPorId(){
+    void deveClienteNaoEncontradoQuandoVerificaExistenciaPorId(){
         try{
             service.verificaExistenciaCliente(ID);
         }catch(Exception ex){

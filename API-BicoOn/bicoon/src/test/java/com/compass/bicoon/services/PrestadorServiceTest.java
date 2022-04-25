@@ -49,14 +49,14 @@ class PrestadorServiceTest {
 
     }
     @Test
-    void deveriaCadastrarUmPrestador(){
+    void deveVerificarCorretamenteQuandoCriarUmPrestador(){
         when(prestadorRepository.save(any(Prestador.class))).thenReturn(PrestadorBuilder.getPrestador());
         service.cadastrarPrestador(PrestadorBuilder.getPrestadorFormDto());
         verify(prestadorRepository, times(1)).save(any(Prestador.class));
     }
 
     @Test
-    void deveriaTrazerUmUsuarioPeloId() {
+    void deveListarUmPrestadorPeloIdCorretamente() {
         when(prestadorRepository.findById(anyLong())).thenReturn(Optional.of(PrestadorBuilder.getPrestador()));
         PrestadorDto resposta = service.listarPorId(ID);
 
@@ -66,7 +66,7 @@ class PrestadorServiceTest {
     }
 
     @Test
-    void quandoBuscaPeloIdNaoExistenteEstouraUmaExeption() {
+    void deveDarDarPrestadorNaoEncontradaQuandoVerificaExistencia() {
         try{
             service.listarPorId(999L);
         }catch (Exception ex){
@@ -76,7 +76,7 @@ class PrestadorServiceTest {
     }
 
     @Test
-    void deletadoComSucesso(){
+    void deveVerificarCorretamenteQuandoDeletarUmPrestador(){
         when(prestadorRepository.findById(anyLong())).thenReturn(Optional.of(PrestadorBuilder.getPrestador()));
         doNothing().when(prestadorRepository).deleteById(anyLong());
         service.deletaPrestador(ID);
@@ -84,7 +84,7 @@ class PrestadorServiceTest {
     }
 
     @Test
-    void deveriaDarErroAoDeletarPorIdInexistente(){
+    void deveDarDarPrestadorNaoEncontradaQuandoTentarDeletarComIdInvalido(){
         try {
             service.deletaPrestador(999L);
         }catch(Exception ex){
@@ -94,7 +94,7 @@ class PrestadorServiceTest {
     }
 
     @Test
-    void deveriaAtualizarUmPrestadorPeloId(){
+    void deveAtualizarCorretamenteUmPrestador(){
         when(prestadorRepository.findById(anyLong())).thenReturn(Optional.of(PrestadorBuilder.getPrestador()));
         PrestadorDto resposta = service.atualizarPrestador(ID, PrestadorBuilder.getPrestadorFormDto());
         assertNotNull(resposta);
@@ -103,7 +103,7 @@ class PrestadorServiceTest {
     }
 
     @Test
-    void naoDeveriaAtualizarPrestadorPorIdInválido(){
+    void deveDarDarPrestadorNaoEncontradaQuandoTentarAtualizarComIdInvalido(){
         try {
             service.atualizarPrestador(999L, PrestadorBuilder.getPrestadorFormDto());
         }catch (Exception ex){
@@ -113,7 +113,7 @@ class PrestadorServiceTest {
     }
 
     @Test
-    void naoDeveriaAtualizarPrestadorComInformacoesIncorretas(){
+    void naoDeveAtualizarPrestadorComInformacoesIncorretas(){
         when(prestadorRepository.findById(anyLong())).thenReturn(Optional.of(PrestadorBuilder.getPrestador()));
         try {
             PrestadorBuilder.getPrestador().setSexo(Sexo.valueOf("NASCULINO"));
@@ -125,7 +125,7 @@ class PrestadorServiceTest {
     }
 
     @Test
-    void deveriaListarTodosPrestadoresSemFiltro (){
+    void deveListarTodosPrestadoresSemFiltroCorretamente (){
         when(prestadorRepository.findAll((Pageable) any())).thenReturn(PrestadorBuilder.getPrestadorPaginacao());
         Page<PrestadorDto> paginaResposta = service.listarPrestadores(Mockito.any(),null,null);
         assertEquals(paginaResposta.getTotalElements(), PrestadorBuilder.getPrestadorPaginacao().getTotalElements());
@@ -133,7 +133,7 @@ class PrestadorServiceTest {
     }
 
     @Test
-    void deveriaListarOsPrestadoresFiltrandoPorCidade(){
+    void deveListarOsPrestadoresFiltrandoPorCidadeCorretamente(){
         when(prestadorRepository.findByCidade((Pageable)any(),anyString())).thenReturn(PrestadorBuilder.getPrestadorPaginacao());
         Page<PrestadorDto> paginaResposta = service.listarPrestadores(pageable,CIDADE,null);
         assertNotNull(paginaResposta);
@@ -141,7 +141,7 @@ class PrestadorServiceTest {
     }
 
     @Test
-    void deveriaListarOsPrestadoresFiltrandoPorCategoria(){
+    void deveListarOsPrestadoresFiltrandoPorCategoriaCorretamente(){
         when(prestadorRepository.findByServicoCategoriaNome((Pageable)any(),anyString())).thenReturn(PrestadorBuilder.getPrestadorPaginacao());
         Page<PrestadorDto> paginaResposta = service.listarPrestadores(pageable,null, MARIDO_DE_ALUGUEL);
         assertNotNull(paginaResposta);
@@ -149,7 +149,7 @@ class PrestadorServiceTest {
     }
 
     @Test
-    void deveriaListarPrestadoresFiltrandoPorCidadeECategoria(){
+    void deveListarPrestadoresFiltrandoPorCidadeECategoriaCorretamente(){
         when(prestadorRepository.findByCidadeAndServicoCategoriaNome((Pageable)any(),anyString()
                 ,anyString())).thenReturn(PrestadorBuilder.getPrestadorPaginacao());
         Page<PrestadorDto> paginaResposta = service.listarPrestadores(pageable,CIDADE, MARIDO_DE_ALUGUEL);
@@ -159,14 +159,14 @@ class PrestadorServiceTest {
     }
 
     @Test
-    void deveriaListarOsServicosDeUmPrestadorPeloId(){
+    void deverListarOsServicosDeUmPrestadorPeloId(){
         when(prestadorRepository.findById(anyLong())).thenReturn(Optional.of(PrestadorBuilder.getPrestador()));
         Page<ServicoDto> paginaResposta = service.listarServicosPrestador(ID);
         assertNotNull(paginaResposta);
     }
 
     @Test
-    void naoDeveriaListarOsServicosDeUmPrestadorPorIdInvalido(){
+    void deveDarDarPrestadorNaoEncontradaQuandoTentarListarComIdInvalido(){
         when(prestadorRepository.findById(anyLong())).thenReturn(Optional.of(PrestadorBuilder.getPrestador()));
         try {
             service.listarServicosPrestador(999L);
@@ -177,7 +177,7 @@ class PrestadorServiceTest {
     }
 
     @Test
-    void deveriaAlterarADisponibilidadeDeUmPrestador(){
+    void deveAlterarADisponibilidadeDeUmPrestadorCorretamente(){
         when(prestadorRepository.findById(anyLong())).thenReturn(Optional.of(PrestadorBuilder.getPrestador()));
         PrestadorDto prestadorResposta = service.atualizarDisponibilidadePrestador(ID, PrestadorBuilder.getDisponibilidadeVerdadeiro());
         assertNotNull(prestadorResposta);
@@ -185,7 +185,7 @@ class PrestadorServiceTest {
     }
 
     @Test
-    void deveriaListarAsAvaliacoesDeUmPrestadorPeloId(){
+    void deveListarAsAvaliacoesDeUmPrestadorPeloId(){
         PrestadorBuilder.getPrestador().setAvaliacao(Arrays.asList(AvaliacaoBuilder.getAvaliacao()));
         when(prestadorRepository.findById(anyLong())).thenReturn(Optional.of(PrestadorBuilder.getPrestador()));
         Page<AvaliacaoDto> avaliacaoResposta = service.listarAvaliacoesPrestador(ID);
