@@ -9,8 +9,8 @@ import javax.validation.constraints.NotNull;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class ServicoFormDto {
 
     @NotNull @NotEmpty

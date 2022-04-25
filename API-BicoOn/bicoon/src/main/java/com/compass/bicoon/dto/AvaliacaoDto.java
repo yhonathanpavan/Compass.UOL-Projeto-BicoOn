@@ -2,6 +2,7 @@ package com.compass.bicoon.dto;
 
 import com.compass.bicoon.serializer.DataSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.DateSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

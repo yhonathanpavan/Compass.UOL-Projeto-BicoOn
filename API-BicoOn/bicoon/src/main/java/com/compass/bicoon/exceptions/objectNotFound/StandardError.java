@@ -1,9 +1,9 @@
-package com.compass.bicoon.exceptions.ObjectNotFound;
+package com.compass.bicoon.exceptions.objectNotFound;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 
-@Data
+@Getter
 @AllArgsConstructor
 public class StandardError {
 

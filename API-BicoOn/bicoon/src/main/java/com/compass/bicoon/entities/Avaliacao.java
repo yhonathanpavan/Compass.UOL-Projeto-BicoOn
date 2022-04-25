@@ -14,6 +14,7 @@ import java.time.LocalDate;
 @Entity
 @Data
 @Builder
+
 @NoArgsConstructor
 @AllArgsConstructor
 public class Avaliacao {

@@ -2,16 +2,20 @@ package com.compass.bicoon.entities;
 
 import com.compass.bicoon.constants.Sexo;
 import com.compass.bicoon.model.Usuario;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Entity;
 
 @Entity
-@Data
 @NoArgsConstructor
+@Data
 public class Cliente extends Usuario {
 
+    @Builder
     public Cliente(long id, String nome, String email, String senha, String cidade, Sexo sexo) {
         super.id = id;
         super.nome = nome;
