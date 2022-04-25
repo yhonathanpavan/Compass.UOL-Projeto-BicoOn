@@ -2,13 +2,20 @@ package com.compass.bicoon.controllers;
 
 import com.compass.bicoon.dto.*;
 import com.compass.bicoon.services.PrestadorService;
+import com.compass.bicoon.services.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
+
+
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
@@ -20,6 +27,29 @@ public class PrestadorController {
 
     @Autowired
     PrestadorService prestadorService;
+
+    @Autowired
+    TokenService tokenService;
+
+    @Autowired
+    AuthenticationManager authManager;
+
+
+    @PostMapping("/login")
+    @Transactional
+    public ResponseEntity<?> login(@Valid @RequestBody LoginFormDto loginForm) throws AuthenticationException {
+        UsernamePasswordAuthenticationToken dadosLogin = loginForm.converter();
+
+        try {
+            Authentication authentication = authManager.authenticate(dadosLogin);
+            String token = tokenService.gerarToken(authentication);
+
+            return ResponseEntity.ok(TokenDto.builder().token(token).tipo("Bearer"));
+
+        }catch (AuthenticationException e){
+            return ResponseEntity.badRequest().build();
+        }
+    }
 
     @PostMapping
     @Transactional

@@ -1,5 +1,5 @@
 INSERT INTO PRESTADOR (NOME, EMAIL, SENHA, CIDADE, SEXO, TELEFONE) VALUES
-('Jacinto', 'jacintotristezas@email.com', '1234', 'Mogi', 'MASCULINO', '(19)99988-7766'),
+('Jacinto', 'jacintotristezas@email.com', '$2a$10$BIowSm3nLSOTxFl7xtl98ee2K/7SYAhrXPIhTmqbvSgCckMwICAHC', 'Mogi', 'MASCULINO', '(19)99988-7766'),
 ('Romildo', 'romildofelix@email.com', '1234', 'Araras', 'MASCULINO', '(19)98889-8877'),
 ('Joana', 'joanamarry@email.com', '1234', 'Pindamonhangaba', 'FEMININO', '(19)91234-4567');
 
