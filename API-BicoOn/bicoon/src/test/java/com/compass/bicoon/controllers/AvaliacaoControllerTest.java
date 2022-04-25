@@ -47,7 +47,7 @@ class AvaliacaoControllerTest {
     }
 
     @Test
-    void adicionarAvaliacao_Sucesso() {
+    void deveAdicionarUmaAvaliacaoCorretamenteERetornarStatusCreated() {
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
 
@@ -66,7 +66,7 @@ class AvaliacaoControllerTest {
     }
 
     @Test
-    void atualizarAvaliacao_Sucesso() {
+    void deveAtualizarUmaAvaliacaoCorretamenteERetornarStatusOk() {
         when(service.atualizarAvaliacao(ID, AvaliacaoBuilder.getAvaliacaoFormDto())).thenReturn(AvaliacaoBuilder.getAvaliacaoFormDto());
         when(mapper.map(any(), any())).thenReturn(AvaliacaoBuilder.getAvaliacaoFormDto());
 
@@ -80,7 +80,7 @@ class AvaliacaoControllerTest {
     }
 
     @Test
-    void deletarAvaliacao_Sucesso() {
+    void deveDeletarUmaAvaliacaoCorretamenteERetornarStatusOk() {
         doNothing().when(service).deletarAvaliacao(anyLong());
 
         ResponseEntity<?> resposta = avaliacaoController.deletarAvaliacao(ID);

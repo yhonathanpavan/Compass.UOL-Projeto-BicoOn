@@ -48,7 +48,7 @@ class ClienteControllerTest {
     }
 
     @Test
-    void listarClientes_Sucesso() {
+    void deveListarClientesCorretamenteERetornarStatusOk() {
         when(service.listarClientes(any(), any())).thenReturn(ClienteBuilder.getClientePaginacaoDto());
         when(mapper.map(any(), any())).thenReturn(ClienteBuilder.getClienteDto());
 
@@ -63,7 +63,7 @@ class ClienteControllerTest {
     }
 
     @Test
-    void listarClientesPorCidade_Sucesso() {
+    void deveListarClientesPorCidadeCorretamenteERetornarStatusOk() {
         when(service.listarClientes(any(), any())).thenReturn(ClienteBuilder.getClientePaginacaoDto());
         when(mapper.map(any(), any())).thenReturn(ClienteBuilder.getClienteDto());
 
@@ -78,7 +78,7 @@ class ClienteControllerTest {
     }
 
     @Test
-    void detalhesCliente_Sucesso() {
+    void deveListarUmClientePeloIdCorretamente() {
         when(service.listarPorId(anyLong())).thenReturn(ClienteBuilder.getClienteDto());
         when(mapper.map(any(), any())).thenReturn(ClienteBuilder.getClienteDto());
 
@@ -92,7 +92,7 @@ class ClienteControllerTest {
     }
 
     @Test
-    void cadastrarCliente_Sucesso() {
+    void deveCadastrarUmClienteCorretamenteERetornarCreated() {
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
 
@@ -110,7 +110,7 @@ class ClienteControllerTest {
     }
 
     @Test
-    void atualizarCliente_Sucesso() {
+    void deveAtualizarUmClienteCorretamenteERetornarStatusOk() {
         when(service.atualizarCliente(ID, ClienteBuilder.getClienteFormDto())).thenReturn(ClienteBuilder.getClienteDto());
         when(mapper.map(any(), any())).thenReturn(ClienteBuilder.getClienteDto());
 
@@ -124,7 +124,7 @@ class ClienteControllerTest {
     }
 
     @Test
-    void deletarCliente_Sucesso() {
+    void deveDeletarUmClienteCorretamenteERetornarStatusOk() {
         doNothing().when(service).deletarCliente(anyLong());
 
         ResponseEntity<?> resposta = clienteController.deletarCliente(ID);

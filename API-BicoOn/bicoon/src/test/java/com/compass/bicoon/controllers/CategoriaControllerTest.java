@@ -40,7 +40,7 @@ class CategoriaControllerTest {
 
 
     @Test
-    void listarCategorias() throws Exception {
+    void deveListarCategoriasCorretamenteERetornarStatusOk() throws Exception {
 
         when(service.listarCategorias(any(PageRequest.class))).thenReturn(CategoriaBuilder.getCategoriaPaginacaoDto());
 
@@ -54,7 +54,7 @@ class CategoriaControllerTest {
 
 
     @Test
-    void atualizarCategoria() throws Exception {
+    void deveAtualizarUmaCategoriaCorretamenteERetornarStatusOk() throws Exception {
 
         when(service.atualizarCategoria(anyLong(),any(CategoriaFormDto.class))).thenReturn(CategoriaBuilder.getCategoriaDto());
 
@@ -70,7 +70,7 @@ class CategoriaControllerTest {
     }
 
     @Test
-    void CadastrarCategoria() throws Exception {
+    void deveCadastrarUmaCategoriaCorretamenteERetornarStatusCreated() throws Exception {
 
         when(service.cadastrarCategoria(any(CategoriaFormDto.class))).thenReturn(any());
 
@@ -84,7 +84,7 @@ class CategoriaControllerTest {
     }
 
     @Test
-    void deletarCategoria() throws Exception {
+    void deveDeletarUmaCategoriaCorretamenteERetornarStatusOk() throws Exception {
 
         when(repository.findById(anyLong())).thenReturn(Optional.of(CategoriaBuilder.getCategoria()));
 

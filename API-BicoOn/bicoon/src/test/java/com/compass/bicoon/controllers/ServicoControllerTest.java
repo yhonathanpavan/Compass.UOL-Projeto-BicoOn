@@ -47,7 +47,7 @@ class ServicoControllerTest {
     ObjectMapper mapper;
 
     @Test
-    void listarServicos() throws Exception {
+    void deveListarServicosCorretamenteERetornarStatusOk() throws Exception {
 
         when(service.listarServicos(any(PageRequest.class))).thenReturn(ServicoBuilder.getServicoPaginacaoDto());
 
@@ -60,7 +60,7 @@ class ServicoControllerTest {
     }
 
     @Test
-    void atualizarServico() throws Exception {
+    void deveAtualizarUmServicoCorretamenteERetornarStatusOk() throws Exception {
 
 
         when(service.atualizarServico(anyLong(),any(ServicoFormDto.class))).thenReturn(ServicoBuilder.getServicoDto());
@@ -77,7 +77,7 @@ class ServicoControllerTest {
     }
 
     @Test
-    void deletarServico() throws Exception {
+    void deveDeletarUmServicoCorretamenteERetornarStatusOk() throws Exception {
 
         when(repository.findById(anyLong())).thenReturn(Optional.of(ServicoBuilder.getServico()));
 

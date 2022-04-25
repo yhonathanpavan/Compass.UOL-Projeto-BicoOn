@@ -33,6 +33,7 @@ public class AvaliacaoBuilder {
                 .id(ID)
                 .comentario(COMENTARIO)
                 .nota(NOTA)
+                .data(DATA)
                 .build();
     }
     

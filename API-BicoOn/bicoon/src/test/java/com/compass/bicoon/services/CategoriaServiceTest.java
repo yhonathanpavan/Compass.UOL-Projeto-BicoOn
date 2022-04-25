@@ -48,7 +48,7 @@ class CategoriaServiceTest {
     }
 
     @Test
-    void deveVerificarSeUmaCategoriaFoiSalva(){
+    void deveVerificarCorretamenteSeUmaCategoriaFoiSalva(){
         when(repository.save(any())).thenReturn(CategoriaBuilder.getCategoria());
 
         service.cadastrarCategoria(CategoriaBuilder.getCategoriaForm());
@@ -57,7 +57,7 @@ class CategoriaServiceTest {
     }
 
     @Test
-    void deveDarObjectNotFoundExceptionQuandoVerificaExistenciaPorId(){
+    void deveDarCategoriaNaoEncontradaQuandoVerificaExistenciaPorId(){
         try{
             service.verificaExistenciaCategoria(ID);
         }catch(Exception ex){
@@ -70,22 +70,22 @@ class CategoriaServiceTest {
     void deveRetornarUmaCategoriaQuandoVerificaExistenciaPorId(){
         when(repository.findById(anyLong())).thenReturn(Optional.of(CategoriaBuilder.getCategoria()));
 
-        Categoria categoriaEsperada = service.verificaExistenciaCategoria(ID);
+        Categoria resposta = service.verificaExistenciaCategoria(ID);
 
-        assertEquals(categoriaEsperada, CategoriaBuilder.getCategoria());
+        assertEquals(CategoriaBuilder.getCategoria(), resposta);
     }
 
     @Test
     void deveRetornarUmaCategoriaQuandoVerificaExistenciaPorNome(){
         when(repository.findByNome(anyString())).thenReturn(Optional.of(CategoriaBuilder.getCategoria()));
 
-        Categoria categoriaEsperada = service.verificaExistenciaCategoria(NOME);
+        Categoria resposta = service.verificaExistenciaCategoria(NOME);
 
-        assertEquals(categoriaEsperada, CategoriaBuilder.getCategoria());
+        assertEquals(CategoriaBuilder.getCategoria(), resposta);
     }
 
     @Test
-    void deveDarObjectNotFoundExceptionQuandoVerificaExistenciaPorNome(){
+    void deveDarCategoriaNaoEncontradaQuandoVerificaExistenciaPorNome(){
         try{
             service.verificaExistenciaCategoria(NOME);
         }catch(Exception ex){
@@ -95,7 +95,7 @@ class CategoriaServiceTest {
     }
 
     @Test
-    void deveListarCategoria(){
+    void deveListarCategoriasCorretamente(){
         when(repository.findAll((Pageable) any())).thenReturn(CategoriaBuilder.getCategoriaPaginacao());
 
         Page<CategoriaDto> resposta = service.listarCategorias(any());
@@ -104,16 +104,16 @@ class CategoriaServiceTest {
     }
 
     @Test
-    void atualizarCategoria(){
+    void deveAtualizarUmaCategoriaCorretamente(){
         when(repository.findById(anyLong())).thenReturn(Optional.of(CategoriaBuilder.getCategoria()));
 
-        CategoriaDto esperado = service.atualizarCategoria(ID, CategoriaBuilder.getCategoriaForm());
-        assertNotNull(esperado);
-        assertEquals(esperado.getNome(), "Babá");
+        CategoriaDto resposta = service.atualizarCategoria(ID, CategoriaBuilder.getCategoriaForm());
+        assertNotNull(resposta);
+        assertEquals("Babá", resposta.getNome());
     }
 
     @Test
-    void deveDeletarServicoComSucesso(){
+    void deveDeletarUmServicoCorretamente(){
         when(repository.findById(anyLong())).thenReturn(Optional.of(CategoriaBuilder.getCategoria()));
         when(servicoRepository.findByCategoriaId(anyLong())).thenReturn(List.of(ServicoBuilder.getServico()));
         doNothing().when(repository).deleteById(anyLong());

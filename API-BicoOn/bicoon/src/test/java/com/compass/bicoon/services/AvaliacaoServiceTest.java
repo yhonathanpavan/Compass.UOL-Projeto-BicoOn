@@ -65,12 +65,9 @@ class AvaliacaoServiceTest {
 
     @Test
     void deveVerificarCorretamenteQuandoCriarUmaAvaliacao() {
-//        List<Avaliacao> AVALIACOES = new ArrayList<>();
-
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
 
-//        PrestadorBuilder.getPrestador().setAvaliacao(AVALIACOES);
         when(clienteService.verificaExistenciaCliente(anyLong())).thenReturn(ClienteBuilder.getCliente());
         when(prestadorService.verificaExistenciaPrestador(anyLong())).thenReturn(PrestadorBuilder.getPrestador());
         when(avaliacaoRepository.save(any())).thenReturn(AvaliacaoBuilder.getAvaliacao());
@@ -84,7 +81,7 @@ class AvaliacaoServiceTest {
     }
 
     @Test
-    void atualizarAvaliacao() {
+    void deveAtualizarUmaAvaliacaoCorretamente() {
         when(avaliacaoRepository.findById(anyLong())).thenReturn(Optional.of(AvaliacaoBuilder.getAvaliacao()));
         when(avaliacaoRepository.save(any())).thenReturn(AvaliacaoBuilder.getAvaliacao());
 
@@ -95,7 +92,7 @@ class AvaliacaoServiceTest {
     }
 
     @Test
-    void deletarAvaliacao_Sucesso() {
+    void deveVerificarCorretamenteQuandoDeletadaUmaAvaliacao() {
         when(avaliacaoRepository.findById(anyLong())).thenReturn(Optional.of(AvaliacaoBuilder.getAvaliacao()));
         doNothing().when(avaliacaoRepository).deleteById(anyLong());
         service.deletarAvaliacao(ID);
@@ -103,20 +100,9 @@ class AvaliacaoServiceTest {
         verify(avaliacaoRepository, times(1)).deleteById(anyLong());
     }
 
-    @Test
-    void deletarAvaliacao_Erro() {
-        when(avaliacaoRepository.findById(anyLong()))
-                .thenThrow(new ObjectNotFoundException("Avaliação não encontrada"));
-        try{
-            service.deletarAvaliacao(ID);
-        }catch (Exception e){
-            assertEquals(ObjectNotFoundException.class, e.getClass());
-            assertEquals("Avaliação não encontrada", e.getMessage());
-        }
-    }
 
     @Test
-    void deveRetornarUmaCategoriaQuandoVerificaExistenciaPorId(){
+    void deveRetornarUmaCategoriaQuandoVerificarExistenciaPorId(){
         when(avaliacaoRepository.findById(anyLong())).thenReturn(Optional.of(AvaliacaoBuilder.getAvaliacao()));
 
         Avaliacao avaliacaoEsperada = service.verificaExistenciaAvaliacao(ID);
@@ -125,7 +111,7 @@ class AvaliacaoServiceTest {
     }
 
     @Test
-    void deveDarObjectNotFoundExceptionQuandoVerificaExistenciaPorId(){
+    void deveDarAvaliacaoNaoEncontradaQuandoVerificaExistenciaPorId(){
         try{
             service.verificaExistenciaAvaliacao(ID);
         }catch(Exception ex){
