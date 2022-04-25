@@ -44,7 +44,7 @@ public class PrestadorController {
             Authentication authentication = authManager.authenticate(dadosLogin);
             String token = tokenService.gerarToken(authentication);
 
-            return ResponseEntity.ok(TokenDto.builder().token(token).tipo("Bearer"));
+            return ResponseEntity.ok(new TokenDto(token, "Bearer"));
 
         }catch (AuthenticationException e){
             return ResponseEntity.badRequest().build();

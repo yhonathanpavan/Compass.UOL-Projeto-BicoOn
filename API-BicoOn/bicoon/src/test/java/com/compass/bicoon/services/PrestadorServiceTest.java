@@ -37,6 +37,9 @@ class PrestadorServiceTest {
     @Mock
     PrestadorRepository prestadorRepository;
 
+    @Mock
+    AutenticacaoService autenticacaoService;
+
     @Spy
     ModelMapper mapper;
 

@@ -7,7 +7,9 @@ import com.compass.bicoon.dto.PrestadorDisponibilidadeFormDto;
 import com.compass.bicoon.dto.PrestadorFormDto;
 import com.compass.bicoon.dto.ServicoFormDto;
 import com.compass.bicoon.repository.PrestadorRepository;
+import com.compass.bicoon.services.AutenticacaoService;
 import com.compass.bicoon.services.PrestadorServiceImpl;
+import com.compass.bicoon.services.TokenServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
@@ -46,6 +48,12 @@ class PrestadorControllerTest {
 
     @Autowired
     private ModelMapper modelMapper;
+
+    @MockBean
+    AutenticacaoService autenticacaoService;
+
+    @MockBean
+    TokenServiceImpl tokenService;
 
     @Autowired
     ObjectMapper mapper;

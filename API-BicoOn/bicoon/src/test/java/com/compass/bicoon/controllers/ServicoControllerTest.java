@@ -4,6 +4,7 @@ import com.compass.bicoon.builder.ServicoBuilder;
 import com.compass.bicoon.dto.ServicoFormDto;
 import com.compass.bicoon.repository.CategoriaRepository;
 import com.compass.bicoon.repository.ServicoRepository;
+import com.compass.bicoon.services.AutenticacaoService;
 import com.compass.bicoon.services.CategoriaServiceImpl;
 import com.compass.bicoon.services.ServicoServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -42,6 +43,9 @@ class ServicoControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @MockBean
+    AutenticacaoService autenticacaoService;
 
     @Autowired
     ObjectMapper mapper;
