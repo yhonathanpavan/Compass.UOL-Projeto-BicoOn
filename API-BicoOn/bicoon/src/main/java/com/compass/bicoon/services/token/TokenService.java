@@ -2,6 +2,7 @@ package com.compass.bicoon.services.token;
 
 import com.compass.bicoon.entities.Cliente;
 import com.compass.bicoon.entities.Prestador;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -36,10 +37,31 @@ public class TokenService {
 
         return Jwts.builder()
                 .setIssuer("API BicoOn")
-                .setSubject(idLogado)
+                .setSubject(logado.getClass().toString())
+                .setId(idLogado)
+                .claim("classe", logado.getClass().toString())
                 .setIssuedAt(hoje)
                 .setExpiration(dataExpiracao)
                 .signWith(SignatureAlgorithm.HS256, secret)
                 .compact();
+    }
+
+    public boolean isTokenValido(String token) {
+        try{
+            Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token);
+            return true;
+        } catch (Exception ex){
+            return false;
+        }
+    }
+
+    public Long getIdUsuario(String token) {
+        Claims claims = Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody();
+        return Long.parseLong(claims.getId());
+    }
+
+    public String getTipoUsuario(String token) throws ClassNotFoundException {
+        Claims claims = Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody();
+        return claims.getSubject();
     }
 }
