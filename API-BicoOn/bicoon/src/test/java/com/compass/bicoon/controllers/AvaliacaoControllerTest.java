@@ -1,8 +1,8 @@
 package com.compass.bicoon.controllers;
 
 import com.compass.bicoon.builder.AvaliacaoBuilder;
-import com.compass.bicoon.dto.AvaliacaoFormDto;
-import com.compass.bicoon.services.AvaliacaoServiceImpl;
+import com.compass.bicoon.dto.avaliacao.AvaliacaoFormDto;
+import com.compass.bicoon.services.avaliacao.AvaliacaoServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

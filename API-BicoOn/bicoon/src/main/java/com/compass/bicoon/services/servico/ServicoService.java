@@ -1,7 +1,7 @@
-package com.compass.bicoon.services;
+package com.compass.bicoon.services.servico;
 
-import com.compass.bicoon.dto.ServicoDto;
-import com.compass.bicoon.dto.ServicoFormDto;
+import com.compass.bicoon.dto.servico.ServicoDto;
+import com.compass.bicoon.dto.servico.ServicoFormDto;
 import com.compass.bicoon.entities.Servico;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

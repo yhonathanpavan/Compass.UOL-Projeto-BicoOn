@@ -1,7 +1,7 @@
-package com.compass.bicoon.services;
+package com.compass.bicoon.services.cliente;
 
-import com.compass.bicoon.dto.ClienteDto;
-import com.compass.bicoon.dto.ClienteFormDto;
+import com.compass.bicoon.dto.cliente.ClienteDto;
+import com.compass.bicoon.dto.cliente.ClienteFormDto;
 import com.compass.bicoon.entities.Cliente;
 import com.compass.bicoon.exceptions.objectNotFound.ObjectNotFoundException;
 import com.compass.bicoon.repository.ClienteRepository;

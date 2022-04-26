@@ -1,7 +1,7 @@
 package com.compass.bicoon.controllers;
 
-import com.compass.bicoon.dto.AvaliacaoFormDto;
-import com.compass.bicoon.services.AvaliacaoService;
+import com.compass.bicoon.dto.avaliacao.AvaliacaoFormDto;
+import com.compass.bicoon.services.avaliacao.AvaliacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

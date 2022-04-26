@@ -1,7 +1,7 @@
-package com.compass.bicoon.services;
+package com.compass.bicoon.services.categoria;
 
-import com.compass.bicoon.dto.CategoriaDto;
-import com.compass.bicoon.dto.CategoriaFormDto;
+import com.compass.bicoon.dto.categoria.CategoriaDto;
+import com.compass.bicoon.dto.categoria.CategoriaFormDto;
 import com.compass.bicoon.entities.Categoria;
 import com.compass.bicoon.entities.Servico;
 import com.compass.bicoon.exceptions.objectNotFound.ObjectNotFoundException;

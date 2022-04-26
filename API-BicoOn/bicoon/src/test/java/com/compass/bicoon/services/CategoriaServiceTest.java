@@ -2,11 +2,12 @@ package com.compass.bicoon.services;
 
 import com.compass.bicoon.builder.CategoriaBuilder;
 import com.compass.bicoon.builder.ServicoBuilder;
-import com.compass.bicoon.dto.CategoriaDto;
+import com.compass.bicoon.dto.categoria.CategoriaDto;
 import com.compass.bicoon.entities.Categoria;
 import com.compass.bicoon.exceptions.objectNotFound.ObjectNotFoundException;
 import com.compass.bicoon.repository.CategoriaRepository;
 import com.compass.bicoon.repository.ServicoRepository;
+import com.compass.bicoon.services.categoria.CategoriaServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

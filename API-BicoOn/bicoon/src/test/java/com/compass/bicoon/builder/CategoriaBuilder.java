@@ -1,7 +1,7 @@
 package com.compass.bicoon.builder;
 
-import com.compass.bicoon.dto.CategoriaDto;
-import com.compass.bicoon.dto.CategoriaFormDto;
+import com.compass.bicoon.dto.categoria.CategoriaDto;
+import com.compass.bicoon.dto.categoria.CategoriaFormDto;
 import com.compass.bicoon.entities.Categoria;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;

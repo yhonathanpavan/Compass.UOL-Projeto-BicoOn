@@ -1,26 +1,23 @@
-package com.compass.bicoon.dto;
+package com.compass.bicoon.dto.cliente;
 
 import com.compass.bicoon.constants.Sexo;
-import com.compass.bicoon.entities.Servico;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class PrestadorDto {
+@NoArgsConstructor
+public class ClienteDto {
 
     private Long id;
     private String nome;
     private String cidade;
-    private String telefone;
+    @Enumerated(EnumType.STRING)
     private Sexo sexo;
-    private Boolean disponivel;
-    private List<Servico> servico;
-
 }

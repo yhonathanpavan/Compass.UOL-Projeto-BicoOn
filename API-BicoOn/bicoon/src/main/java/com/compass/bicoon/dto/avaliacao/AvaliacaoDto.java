@@ -1,4 +1,4 @@
-package com.compass.bicoon.dto;
+package com.compass.bicoon.dto.avaliacao;
 
 import com.compass.bicoon.serializer.DataSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;

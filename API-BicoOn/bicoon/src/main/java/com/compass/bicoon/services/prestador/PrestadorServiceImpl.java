@@ -1,6 +1,11 @@
-package com.compass.bicoon.services;
+package com.compass.bicoon.services.prestador;
 
-import com.compass.bicoon.dto.*;
+import com.compass.bicoon.dto.avaliacao.AvaliacaoDto;
+import com.compass.bicoon.dto.prestador.PrestadorDisponibilidadeFormDto;
+import com.compass.bicoon.dto.prestador.PrestadorDto;
+import com.compass.bicoon.dto.prestador.PrestadorFormDto;
+import com.compass.bicoon.dto.servico.ServicoDto;
+import com.compass.bicoon.dto.servico.ServicoFormDto;
 import com.compass.bicoon.entities.Avaliacao;
 import com.compass.bicoon.entities.Categoria;
 import com.compass.bicoon.entities.Prestador;
@@ -8,6 +13,7 @@ import com.compass.bicoon.entities.Servico;
 import com.compass.bicoon.exceptions.objectNotFound.ObjectNotFoundException;
 import com.compass.bicoon.repository.PrestadorRepository;
 import com.compass.bicoon.repository.ServicoRepository;
+import com.compass.bicoon.services.categoria.CategoriaService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

@@ -1,9 +1,10 @@
-package com.compass.bicoon.dto;
+package com.compass.bicoon.dto.avaliacao;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -11,11 +12,10 @@ import javax.validation.constraints.NotNull;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ServicoFormDto {
+public class AvaliacaoFormDto {
 
     @NotNull @NotEmpty
-    private String categoria;
-    @NotNull @NotEmpty
-    private String descricao;
-
+    private String comentario;
+    @NotNull
+    private int nota;
 }

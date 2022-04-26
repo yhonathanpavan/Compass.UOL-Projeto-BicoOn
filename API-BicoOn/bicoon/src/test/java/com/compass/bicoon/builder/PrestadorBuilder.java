@@ -1,9 +1,9 @@
 package com.compass.bicoon.builder;
 
 import com.compass.bicoon.constants.Sexo;
-import com.compass.bicoon.dto.PrestadorDisponibilidadeFormDto;
-import com.compass.bicoon.dto.PrestadorDto;
-import com.compass.bicoon.dto.PrestadorFormDto;
+import com.compass.bicoon.dto.prestador.PrestadorDisponibilidadeFormDto;
+import com.compass.bicoon.dto.prestador.PrestadorDto;
+import com.compass.bicoon.dto.prestador.PrestadorFormDto;
 import com.compass.bicoon.entities.Avaliacao;
 import com.compass.bicoon.entities.Prestador;
 import org.springframework.data.domain.Page;

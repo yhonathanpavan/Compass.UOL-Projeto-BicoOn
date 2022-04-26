@@ -1,4 +1,4 @@
-package com.compass.bicoon.dto;
+package com.compass.bicoon.dto.prestador;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

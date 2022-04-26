@@ -1,19 +1,17 @@
-package com.compass.bicoon.dto;
+package com.compass.bicoon.dto.categoria;
 
-import com.compass.bicoon.entities.Categoria;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ServicoDto {
+public class CategoriaDto {
 
     private Long id;
-    private Categoria categoria;
-    private String descricao;
+    private String nome;
+
 }

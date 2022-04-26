@@ -3,14 +3,15 @@ package com.compass.bicoon.services;
 import com.compass.bicoon.builder.AvaliacaoBuilder;
 import com.compass.bicoon.builder.ClienteBuilder;
 import com.compass.bicoon.builder.PrestadorBuilder;
-import com.compass.bicoon.constants.Sexo;
-import com.compass.bicoon.dto.AvaliacaoFormDto;
+import com.compass.bicoon.dto.avaliacao.AvaliacaoFormDto;
 import com.compass.bicoon.entities.Avaliacao;
-import com.compass.bicoon.entities.Prestador;
 import com.compass.bicoon.exceptions.objectNotFound.ObjectNotFoundException;
 import com.compass.bicoon.repository.AvaliacaoRepository;
 import com.compass.bicoon.repository.ClienteRepository;
 import com.compass.bicoon.repository.PrestadorRepository;
+import com.compass.bicoon.services.avaliacao.AvaliacaoServiceImpl;
+import com.compass.bicoon.services.cliente.ClienteServiceImpl;
+import com.compass.bicoon.services.prestador.PrestadorServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -22,8 +23,6 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

@@ -1,8 +1,8 @@
 package com.compass.bicoon.controllers;
 
-import com.compass.bicoon.dto.ServicoDto;
-import com.compass.bicoon.dto.ServicoFormDto;
-import com.compass.bicoon.services.ServicoService;
+import com.compass.bicoon.dto.servico.ServicoDto;
+import com.compass.bicoon.dto.servico.ServicoFormDto;
+import com.compass.bicoon.services.servico.ServicoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

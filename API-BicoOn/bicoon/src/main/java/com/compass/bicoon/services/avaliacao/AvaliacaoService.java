@@ -1,6 +1,6 @@
-package com.compass.bicoon.services;
+package com.compass.bicoon.services.avaliacao;
 
-import com.compass.bicoon.dto.AvaliacaoFormDto;
+import com.compass.bicoon.dto.avaliacao.AvaliacaoFormDto;
 import com.compass.bicoon.entities.Avaliacao;
 
 import java.net.URI;
