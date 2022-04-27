@@ -1,10 +1,9 @@
 package com.compass.bicoon.controllers;
 
 import com.compass.bicoon.builder.CategoriaBuilder;
-import com.compass.bicoon.dto.CategoriaFormDto;
+import com.compass.bicoon.dto.categoria.CategoriaFormDto;
 import com.compass.bicoon.repository.CategoriaRepository;
-import com.compass.bicoon.services.AutenticacaoService;
-import com.compass.bicoon.services.CategoriaServiceImpl;
+import com.compass.bicoon.services.categoria.CategoriaServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +34,6 @@ class CategoriaControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @MockBean
-    AutenticacaoService autenticacaoService;
 
     @Autowired
     ObjectMapper mapper;

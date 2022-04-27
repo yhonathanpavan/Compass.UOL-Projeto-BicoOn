@@ -1,8 +1,8 @@
 package com.compass.bicoon.controllers;
 
-import com.compass.bicoon.dto.ClienteDto;
-import com.compass.bicoon.dto.ClienteFormDto;
-import com.compass.bicoon.services.ClienteServiceImpl;
+import com.compass.bicoon.dto.cliente.ClienteDto;
+import com.compass.bicoon.dto.cliente.ClienteFormDto;
+import com.compass.bicoon.services.cliente.ClienteServiceImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

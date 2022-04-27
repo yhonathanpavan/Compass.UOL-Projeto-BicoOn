@@ -1,8 +1,7 @@
 package com.compass.bicoon.builder;
 
-import com.compass.bicoon.dto.AvaliacaoDto;
-import com.compass.bicoon.dto.AvaliacaoFormDto;
-import com.compass.bicoon.dto.ClienteDto;
+import com.compass.bicoon.dto.avaliacao.AvaliacaoDto;
+import com.compass.bicoon.dto.avaliacao.AvaliacaoFormDto;
 import com.compass.bicoon.entities.Avaliacao;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;

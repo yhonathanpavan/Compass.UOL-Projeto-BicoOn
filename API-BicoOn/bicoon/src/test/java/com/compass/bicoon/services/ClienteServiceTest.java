@@ -1,10 +1,11 @@
 package com.compass.bicoon.services;
 
 import com.compass.bicoon.builder.ClienteBuilder;
-import com.compass.bicoon.dto.ClienteDto;
+import com.compass.bicoon.dto.cliente.ClienteDto;
 import com.compass.bicoon.entities.Cliente;
 import com.compass.bicoon.exceptions.objectNotFound.ObjectNotFoundException;
 import com.compass.bicoon.repository.ClienteRepository;
+import com.compass.bicoon.services.cliente.ClienteServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

@@ -2,9 +2,7 @@ package com.compass.bicoon.entities;
 
 import com.compass.bicoon.constants.Sexo;
 import com.compass.bicoon.model.Usuario;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -14,7 +12,8 @@ import java.util.Collection;
 import java.util.List;
 
 @Entity
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 public class Prestador extends Usuario implements UserDetails {
 

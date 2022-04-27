@@ -1,16 +1,16 @@
-INSERT INTO PRESTADOR (NOME, EMAIL, SENHA, CIDADE, SEXO, TELEFONE) VALUES
-('Jacinto', 'jacintotristezas@email.com', '$2a$10$BIowSm3nLSOTxFl7xtl98ee2K/7SYAhrXPIhTmqbvSgCckMwICAHC', 'Mogi', 'MASCULINO', '(19)99988-7766'),
-('Romildo', 'romildofelix@email.com', '1234', 'Araras', 'MASCULINO', '(19)98889-8877'),
-('Joana', 'joanamarry@email.com', '1234', 'Pindamonhangaba', 'FEMININO', '(19)91234-4567');
+INSERT INTO PRESTADOR (NOME, EMAIL, SENHA, CIDADE, SEXO, TELEFONE, DISPONIVEL) VALUES
+('José', 'joseromano@email.com', '$2a$10$4/64YPzg.ojbLDiPSkiHsuqjQS4bsu1uRiktDJlQw9.3APVZFzvFa', 'Mogi', 'MASCULINO', '(19)99988-7766', TRUE),
+('Romildo', 'romildofelix@email.com', '$2a$10$4/64YPzg.ojbLDiPSkiHsuqjQS4bsu1uRiktDJlQw9.3APVZFzvFa', 'Araras', 'MASCULINO', '(19)98889-8877', TRUE),
+('Joana', 'joanamarry@email.com', '$2a$10$4/64YPzg.ojbLDiPSkiHsuqjQS4bsu1uRiktDJlQw9.3APVZFzvFa', 'Pindamonhangaba', 'FEMININO', '(19)91234-4567', TRUE);
 
 INSERT INTO CLIENTE(CIDADE, EMAIL, NOME, SENHA, SEXO) VALUES
-('Engenheiro Coelho', 'mateus@email', 'Mateus Cardoso', '$2a$10$BIowSm3nLSOTxFl7xtl98ee2K/7SYAhrXPIhTmqbvSgCckMwICAHC', 'MASCULINO'),
-('Mogi Mirim', 'alan@email', 'Alan Fernando', '1234', 'MASCULINO'),
-('Leme', 'yho@email', 'Yhonathan Mateus', '4321', 'MASCULINO'),
-('São Paulo', 'fer@email', 'Fernanda Bueno', '1237', 'FEMININO'),
-('Araras', 'paula@email', 'Paula Cleide', '123456', 'FEMININO'),
-('Limeira', 'livia@email', 'Livia Silva', '1235', 'FEMININO'),
-('Mogi Mirim', 'elaine@email', 'Elaine Cristina', '1235', 'FEMININO');
+('Engenheiro Coelho', 'mateus@email.com', 'Mateus Cardoso', '$2a$10$4/64YPzg.ojbLDiPSkiHsuqjQS4bsu1uRiktDJlQw9.3APVZFzvFa', 'MASCULINO'),
+('Mogi Mirim', 'alan@email.com', 'Alan Fernando', '$2a$10$4/64YPzg.ojbLDiPSkiHsuqjQS4bsu1uRiktDJlQw9.3APVZFzvFa', 'MASCULINO'),
+('Leme', 'yho@email.com', 'Yhonathan Mateus', '$2a$10$4/64YPzg.ojbLDiPSkiHsuqjQS4bsu1uRiktDJlQw9.3APVZFzvFa', 'MASCULINO'),
+('São Paulo', 'fer@email.com', 'Fernanda Bueno', '$2a$10$4/64YPzg.ojbLDiPSkiHsuqjQS4bsu1uRiktDJlQw9.3APVZFzvFa', 'FEMININO'),
+('Araras', 'paula@email.com', 'Paula Cleide', '$2a$10$4/64YPzg.ojbLDiPSkiHsuqjQS4bsu1uRiktDJlQw9.3APVZFzvFa', 'FEMININO'),
+('Limeira', 'livia@email.com', 'Livia Silva', '$2a$10$4/64YPzg.ojbLDiPSkiHsuqjQS4bsu1uRiktDJlQw9.3APVZFzvFa', 'FEMININO'),
+('Mogi Mirim', 'elaine@email.com', 'Elaine Cristina', '$2a$10$4/64YPzg.ojbLDiPSkiHsuqjQS4bsu1uRiktDJlQw9.3APVZFzvFa', 'FEMININO');
 
 INSERT INTO AVALIACAO (CLIENTE_ID, COMENTARIO, DATA, NOTA, PRESTADOR_ID) VALUES
 (1, 'Serviço excelente, ótima qualidade!', '2022-7-3', 5, 1),

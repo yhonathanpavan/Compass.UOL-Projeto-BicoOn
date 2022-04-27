@@ -3,12 +3,13 @@ package com.compass.bicoon.services;
 import com.compass.bicoon.builder.AvaliacaoBuilder;
 import com.compass.bicoon.builder.PrestadorBuilder;
 import com.compass.bicoon.constants.Sexo;
-import com.compass.bicoon.dto.AvaliacaoDto;
-import com.compass.bicoon.dto.PrestadorDto;
-import com.compass.bicoon.dto.ServicoDto;
+import com.compass.bicoon.dto.avaliacao.AvaliacaoDto;
+import com.compass.bicoon.dto.prestador.PrestadorDto;
+import com.compass.bicoon.dto.servico.ServicoDto;
 import com.compass.bicoon.entities.Prestador;
 import com.compass.bicoon.exceptions.objectNotFound.ObjectNotFoundException;
 import com.compass.bicoon.repository.PrestadorRepository;
+import com.compass.bicoon.services.prestador.PrestadorServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
@@ -20,7 +21,9 @@ import org.springframework.data.domain.Pageable;
 
 import java.util.Arrays;
 import java.util.Optional;
-import static org.junit.jupiter.api.Assertions.*;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -85,7 +88,6 @@ class PrestadorServiceTest {
         service.deletaPrestador(ID);
         verify(prestadorRepository, times(1)).deleteById(anyLong());
     }
-
     @Test
     void deveDarDarPrestadorNaoEncontradaQuandoTentarDeletarComIdInvalido(){
         try {
@@ -194,6 +196,6 @@ class PrestadorServiceTest {
         Page<AvaliacaoDto> avaliacaoResposta = service.listarAvaliacoesPrestador(ID);
         assertNotNull(avaliacaoResposta);
         assertEquals(avaliacaoResposta.getTotalElements(), 1);
+        assertEquals(avaliacaoResposta.stream().findFirst().get().getData(), AvaliacaoBuilder.getAvaliacao().getData());
     }
-
 }

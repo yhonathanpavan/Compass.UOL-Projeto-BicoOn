@@ -1,9 +1,9 @@
 package com.compass.bicoon.controllers;
 
 import com.compass.bicoon.builder.ClienteBuilder;
-import com.compass.bicoon.dto.ClienteDto;
-import com.compass.bicoon.dto.ClienteFormDto;
-import com.compass.bicoon.services.ClienteServiceImpl;
+import com.compass.bicoon.dto.cliente.ClienteDto;
+import com.compass.bicoon.dto.cliente.ClienteFormDto;
+import com.compass.bicoon.services.cliente.ClienteServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;

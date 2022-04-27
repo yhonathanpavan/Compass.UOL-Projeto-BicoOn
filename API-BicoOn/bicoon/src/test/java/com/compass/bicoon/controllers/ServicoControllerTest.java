@@ -1,12 +1,11 @@
 package com.compass.bicoon.controllers;
 
 import com.compass.bicoon.builder.ServicoBuilder;
-import com.compass.bicoon.dto.ServicoFormDto;
+import com.compass.bicoon.dto.servico.ServicoFormDto;
 import com.compass.bicoon.repository.CategoriaRepository;
 import com.compass.bicoon.repository.ServicoRepository;
-import com.compass.bicoon.services.AutenticacaoService;
-import com.compass.bicoon.services.CategoriaServiceImpl;
-import com.compass.bicoon.services.ServicoServiceImpl;
+import com.compass.bicoon.services.categoria.CategoriaServiceImpl;
+import com.compass.bicoon.services.servico.ServicoServiceImpl;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,9 +42,6 @@ class ServicoControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
-
-    @MockBean
-    AutenticacaoService autenticacaoService;
 
     @Autowired
     ObjectMapper mapper;

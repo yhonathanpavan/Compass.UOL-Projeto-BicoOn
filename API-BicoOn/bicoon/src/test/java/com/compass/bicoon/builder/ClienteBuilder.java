@@ -1,8 +1,8 @@
 package com.compass.bicoon.builder;
 
 import com.compass.bicoon.constants.Sexo;
-import com.compass.bicoon.dto.ClienteDto;
-import com.compass.bicoon.dto.ClienteFormDto;
+import com.compass.bicoon.dto.cliente.ClienteDto;
+import com.compass.bicoon.dto.cliente.ClienteFormDto;
 import com.compass.bicoon.entities.Cliente;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
