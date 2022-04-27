@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
@@ -49,6 +50,7 @@ public class PrestadorServiceImpl implements PrestadorService{
     public URI cadastrarPrestador(PrestadorFormDto prestadorFormDto) {
         Prestador prestador = mapper.map(prestadorFormDto, Prestador.class);
         prestador.setDisponivel(true);
+        prestador.setSenha(new BCryptPasswordEncoder().encode(prestador.getSenha()));
         prestadorRepository.save(prestador);
         PrestadorDto prestadorDto = mapper.map(prestador, PrestadorDto.class);
 
@@ -61,6 +63,7 @@ public class PrestadorServiceImpl implements PrestadorService{
         verificaLogado(id);
         Prestador prestador = mapper.map(prestadorFormDto, Prestador.class);
         prestador.setId(id);
+        prestador.setSenha(new BCryptPasswordEncoder().encode(prestador.getSenha()));
         prestadorRepository.save(prestador);
 
         return mapper.map(prestador, PrestadorDto.class);

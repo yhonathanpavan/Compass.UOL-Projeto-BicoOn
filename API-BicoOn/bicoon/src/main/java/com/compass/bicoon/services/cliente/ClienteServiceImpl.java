@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
@@ -55,6 +56,7 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public URI cadastrarCliente(ClienteFormDto clienteFormDto){
         Cliente cliente = mapper.map(clienteFormDto, Cliente.class);
+        cliente.setSenha(new BCryptPasswordEncoder().encode(cliente.getSenha()));
         clienteRepository.save(cliente);
         return ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(cliente.getId()).toUri();
     }
@@ -65,6 +67,7 @@ public class ClienteServiceImpl implements ClienteService {
         verificaLogado(id);
         Cliente cliente = mapper.map(clienteFormDto, Cliente.class);
         cliente.setId(id);
+        cliente.setSenha(new BCryptPasswordEncoder().encode(cliente.getSenha()));
         clienteRepository.save(cliente);
 
         return mapper.map(cliente, ClienteDto.class);
