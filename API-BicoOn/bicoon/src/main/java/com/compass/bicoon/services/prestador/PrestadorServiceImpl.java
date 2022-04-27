@@ -10,6 +10,7 @@ import com.compass.bicoon.entities.Avaliacao;
 import com.compass.bicoon.entities.Categoria;
 import com.compass.bicoon.entities.Prestador;
 import com.compass.bicoon.entities.Servico;
+import com.compass.bicoon.exceptions.forbiddenAccess.ForbiddenAccessException;
 import com.compass.bicoon.exceptions.objectNotFound.ObjectNotFoundException;
 import com.compass.bicoon.repository.PrestadorRepository;
 import com.compass.bicoon.repository.ServicoRepository;
@@ -163,7 +164,7 @@ public class PrestadorServiceImpl implements PrestadorService{
         if(tokenService.getIdLogado() == id && tokenService.getTipoUsuarioLogado().equals(Prestador.class.toString())){
             return;
         }else{
-            throw new ObjectNotFoundException("Não é possível alterar");
+            throw new ForbiddenAccessException("Usuário atual não está autorizado");
         }
     }
 }

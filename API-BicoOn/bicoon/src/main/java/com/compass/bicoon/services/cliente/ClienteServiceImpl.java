@@ -4,6 +4,7 @@ import com.compass.bicoon.dto.cliente.ClienteDto;
 import com.compass.bicoon.dto.cliente.ClienteFormDto;
 import com.compass.bicoon.entities.Cliente;
 import com.compass.bicoon.entities.Prestador;
+import com.compass.bicoon.exceptions.forbiddenAccess.ForbiddenAccessException;
 import com.compass.bicoon.exceptions.objectNotFound.ObjectNotFoundException;
 import com.compass.bicoon.repository.ClienteRepository;
 import com.compass.bicoon.services.token.TokenService;
@@ -92,7 +93,7 @@ public class ClienteServiceImpl implements ClienteService {
         if(tokenService.getIdLogado() == id && tokenService.getTipoUsuarioLogado().equals(Cliente.class.toString())){
             return;
         }else{
-            throw new ObjectNotFoundException("Não é possível alterar");
+            throw new ForbiddenAccessException("Usuário atual não está autorizado");
         }
     }
 }
