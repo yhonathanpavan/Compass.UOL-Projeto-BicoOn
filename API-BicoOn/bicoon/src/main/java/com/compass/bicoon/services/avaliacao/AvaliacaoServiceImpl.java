@@ -41,6 +41,7 @@ public class AvaliacaoServiceImpl implements AvaliacaoService{
     public URI criarAvaliacao(Long clienteId, Long prestadorId, AvaliacaoFormDto avaliacaoFormDto){
         Cliente cliente = clienteService.verificaExistenciaCliente(clienteId);
         Prestador prestador = prestadorService.verificaExistenciaPrestador(prestadorId);
+        clienteService.verificaLogado(clienteId);
 
         if(avaliacaoFormDto.getNota() > 5){
             avaliacaoFormDto.setNota(5);

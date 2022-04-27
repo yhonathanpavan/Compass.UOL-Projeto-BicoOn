@@ -34,4 +34,6 @@ public interface PrestadorService {
 
     PrestadorDto atualizarDisponibilidadePrestador(Long id, PrestadorDisponibilidadeFormDto prestadorDispForm);
 
+    void verificaLogado(Long id);
+
 }

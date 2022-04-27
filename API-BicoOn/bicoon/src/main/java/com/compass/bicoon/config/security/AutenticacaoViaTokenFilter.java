@@ -51,15 +51,12 @@ public class AutenticacaoViaTokenFilter extends OncePerRequestFilter {
         if(tipoUsuario.equals(Cliente.class.toString())){
             usuario = clienteRepository.findById(idUsuario).get();
             perfilDeAcesso = ((Cliente) usuario).getAuthorities();
-            System.out.println("Tipo do usuario2: " + usuario.getClass());
+
         }else if(tipoUsuario.equals(Prestador.class.toString())){
             usuario = prestadorRepository.findById(idUsuario).get();
             perfilDeAcesso = ((Prestador) usuario).getAuthorities();
-            System.out.println("Tipo do usuario2: " + usuario.getClass());
-        }
-        System.out.println("usuario: " + usuario);
-        System.out.println("Perfil de acesso: " + perfilDeAcesso);
 
+        }
 
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(usuario, null, perfilDeAcesso);
         SecurityContextHolder.getContext().setAuthentication(authentication);

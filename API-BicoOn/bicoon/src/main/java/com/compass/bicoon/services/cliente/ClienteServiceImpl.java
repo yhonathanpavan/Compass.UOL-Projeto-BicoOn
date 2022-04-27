@@ -3,8 +3,10 @@ package com.compass.bicoon.services.cliente;
 import com.compass.bicoon.dto.cliente.ClienteDto;
 import com.compass.bicoon.dto.cliente.ClienteFormDto;
 import com.compass.bicoon.entities.Cliente;
+import com.compass.bicoon.entities.Prestador;
 import com.compass.bicoon.exceptions.objectNotFound.ObjectNotFoundException;
 import com.compass.bicoon.repository.ClienteRepository;
+import com.compass.bicoon.services.token.TokenService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,7 +14,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
 import java.net.URI;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,6 +26,9 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Autowired
     ModelMapper mapper;
+
+    @Autowired
+    TokenService tokenService;
 
     @Override
     public Page<ClienteDto> listarClientes(String cidade, Pageable paginacao) {
@@ -58,7 +62,7 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public ClienteDto atualizarCliente(Long id, ClienteFormDto clienteFormDto) {
         verificaExistenciaCliente(id);
-
+        verificaLogado(id);
         Cliente cliente = mapper.map(clienteFormDto, Cliente.class);
         cliente.setId(id);
         clienteRepository.save(cliente);
@@ -69,7 +73,7 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public void deletarCliente(Long id){
         verificaExistenciaCliente(id);
-
+        verificaLogado(id);
         clienteRepository.deleteById(id);
     }
 
@@ -79,5 +83,13 @@ public class ClienteServiceImpl implements ClienteService {
             return clienteOptional.get();
         }
         throw new ObjectNotFoundException("Cliente não encontrado");
+    }
+
+    public void verificaLogado(Long id) {
+        if(tokenService.getIdLogado() == id && tokenService.getTipoUsuarioLogado().equals(Cliente.class.toString())){
+            return;
+        }else{
+            throw new ObjectNotFoundException("Não é possível alterar");
+        }
     }
 }

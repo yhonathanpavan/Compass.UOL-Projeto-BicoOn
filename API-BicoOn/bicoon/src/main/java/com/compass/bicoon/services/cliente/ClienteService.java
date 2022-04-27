@@ -20,4 +20,5 @@ public interface ClienteService {
     void deletarCliente(Long id);
 
     Cliente verificaExistenciaCliente(Long id);
+    void verificaLogado(Long id);
 }

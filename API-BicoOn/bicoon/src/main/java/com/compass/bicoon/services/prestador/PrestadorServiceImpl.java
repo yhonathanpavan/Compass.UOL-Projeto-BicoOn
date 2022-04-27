@@ -14,6 +14,7 @@ import com.compass.bicoon.exceptions.objectNotFound.ObjectNotFoundException;
 import com.compass.bicoon.repository.PrestadorRepository;
 import com.compass.bicoon.repository.ServicoRepository;
 import com.compass.bicoon.services.categoria.CategoriaService;
+import com.compass.bicoon.services.token.TokenService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -41,6 +42,9 @@ public class PrestadorServiceImpl implements PrestadorService{
     @Autowired
     CategoriaService categoriaService;
 
+    @Autowired
+    TokenService tokenService;
+
     @Override
     public URI cadastrarPrestador(PrestadorFormDto prestadorFormDto) {
         Prestador prestador = mapper.map(prestadorFormDto, Prestador.class);
@@ -54,6 +58,7 @@ public class PrestadorServiceImpl implements PrestadorService{
     @Override
     public PrestadorDto atualizarPrestador(Long id, PrestadorFormDto prestadorFormDto) {
         verificaExistenciaPrestador(id);
+        verificaLogado(id);
         Prestador prestador = mapper.map(prestadorFormDto, Prestador.class);
         prestador.setId(id);
         prestadorRepository.save(prestador);
@@ -64,6 +69,7 @@ public class PrestadorServiceImpl implements PrestadorService{
     @Override
     public void deletaPrestador(Long id) {
         verificaExistenciaPrestador(id);
+        verificaLogado(id);
         prestadorRepository.deleteById(id);
     }
 
@@ -107,6 +113,7 @@ public class PrestadorServiceImpl implements PrestadorService{
     public ServicoDto cadastrarServico(Long id, ServicoFormDto servicoForm) {
 
         Prestador prestador = verificaExistenciaPrestador(id);
+        verificaLogado(id);
         Categoria categoria = categoriaService.verificaExistenciaCategoria(servicoForm.getCategoria());
 
         Servico servico = mapper.map(servicoForm, Servico.class);
@@ -117,6 +124,16 @@ public class PrestadorServiceImpl implements PrestadorService{
         prestadorRepository.save(prestador);
 
         return mapper.map(servico, ServicoDto.class);
+    }
+
+    @Override
+    public PrestadorDto atualizarDisponibilidadePrestador(Long id, PrestadorDisponibilidadeFormDto prestadorDispForm) {
+        Prestador prestador = verificaExistenciaPrestador(id);
+        verificaLogado(id);
+        prestador.setDisponivel(prestadorDispForm.getDisponivel());
+        prestadorRepository.save(prestador);
+
+        return mapper.map(prestador, PrestadorDto.class);
     }
 
     private Page<Prestador> defineRetorno(Pageable paginacao, String cidade, String categoria) {
@@ -131,7 +148,6 @@ public class PrestadorServiceImpl implements PrestadorService{
         }
     }
 
-
     public Prestador verificaExistenciaPrestador(Long id) {
         Optional<Prestador> prestadorOptional = prestadorRepository.findById(id);
         if(prestadorOptional.isPresent()){
@@ -140,12 +156,11 @@ public class PrestadorServiceImpl implements PrestadorService{
         throw new ObjectNotFoundException("Prestador não encontrado");
     }
 
-    @Override
-    public PrestadorDto atualizarDisponibilidadePrestador(Long id, PrestadorDisponibilidadeFormDto prestadorDispForm) {
-        Prestador prestador = verificaExistenciaPrestador(id);
-        prestador.setDisponivel(prestadorDispForm.getDisponivel());
-        prestadorRepository.save(prestador);
-
-        return mapper.map(prestador, PrestadorDto.class);
+    public void verificaLogado(Long id) {
+        if(tokenService.getIdLogado() == id && tokenService.getTipoUsuarioLogado().equals(Prestador.class.toString())){
+            return;
+        }else{
+            throw new ObjectNotFoundException("Não é possível alterar");
+        }
     }
 }

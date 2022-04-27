@@ -20,9 +20,11 @@ public class TokenService {
     @Value("${forum.jwt.secret}")
     private String secret;
 
+    private String idLogado;
+    private Object logado;
+
     public String gerarToken(Authentication authentication) {
-        Object logado = authentication.getPrincipal();
-        String idLogado;
+        logado = authentication.getPrincipal();
 
         if(logado.getClass() == Cliente.class){
             logado = (Cliente) authentication.getPrincipal();
@@ -63,5 +65,13 @@ public class TokenService {
     public String getTipoUsuario(String token) throws ClassNotFoundException {
         Claims claims = Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody();
         return claims.getSubject();
+    }
+
+    public Long getIdLogado(){
+        return Long.parseLong(idLogado);
+    }
+
+    public String getTipoUsuarioLogado(){
+        return logado.getClass().toString();
     }
 }

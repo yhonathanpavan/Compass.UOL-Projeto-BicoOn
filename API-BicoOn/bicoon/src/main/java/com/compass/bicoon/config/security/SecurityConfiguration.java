@@ -50,8 +50,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/h2-console/**").permitAll()
-                .antMatchers(HttpMethod.GET, "/bicoon/categorias").permitAll()
-                .antMatchers(HttpMethod.POST, "/bicoon/auth").permitAll()
+                .antMatchers(HttpMethod.POST, "/bicoon/prestadores").permitAll() //Permite somente cadastro
+                .antMatchers(HttpMethod.POST, "/bicoon/clientes").permitAll() //Permite somente cadastro
+                .antMatchers(HttpMethod.POST, "/bicoon/auth").permitAll() //Permite o login
                 .anyRequest().authenticated()
                 .and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

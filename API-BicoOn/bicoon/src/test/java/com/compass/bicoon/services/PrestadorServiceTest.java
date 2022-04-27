@@ -9,6 +9,7 @@ import com.compass.bicoon.dto.servico.ServicoDto;
 import com.compass.bicoon.entities.Prestador;
 import com.compass.bicoon.exceptions.objectNotFound.ObjectNotFoundException;
 import com.compass.bicoon.repository.PrestadorRepository;
+import com.compass.bicoon.services.autenticacao.AutenticacaoService;
 import com.compass.bicoon.services.prestador.PrestadorServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
