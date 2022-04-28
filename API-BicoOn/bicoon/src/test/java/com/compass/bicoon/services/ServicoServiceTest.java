@@ -8,6 +8,7 @@ import com.compass.bicoon.exceptions.objectNotFound.ObjectNotFoundException;
 import com.compass.bicoon.repository.CategoriaRepository;
 import com.compass.bicoon.repository.ServicoRepository;
 import com.compass.bicoon.services.categoria.CategoriaServiceImpl;
+import com.compass.bicoon.services.prestador.PrestadorServiceImpl;
 import com.compass.bicoon.services.servico.ServicoServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,6 +44,9 @@ class ServicoServiceTest {
     private ServicoRepository repository;
 
     @Mock
+    PrestadorServiceImpl prestadorService;
+
+    @Mock
     private CategoriaRepository categoriaRepository;
 
     @Spy
@@ -70,7 +74,7 @@ class ServicoServiceTest {
 
         Servico resposta = service.verificaExistenciaServico(ID);
 
-        assertEquals(ServicoBuilder.getServico(), resposta);
+        assertEquals(ServicoBuilder.getServico().getDescricao(), resposta.getDescricao());
     }
 
     @Test

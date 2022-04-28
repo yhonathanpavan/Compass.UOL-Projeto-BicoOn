@@ -142,7 +142,7 @@ class PrestadorServiceTest {
         when(prestadorRepository.findAll((Pageable) any())).thenReturn(PrestadorBuilder.getPrestadorPaginacao());
         Page<PrestadorDto> paginaResposta = service.listarPrestadores(Mockito.any(),null,null);
         assertEquals(paginaResposta.getTotalElements(), PrestadorBuilder.getPrestadorPaginacao().getTotalElements());
-        assertEquals(paginaResposta.stream().findFirst(), Optional.of(PrestadorBuilder.getPrestadorDto()));
+        assertEquals(paginaResposta.stream().findFirst().get().getCidade(), PrestadorBuilder.getPrestadorDto().getCidade());
     }
 
     @Test

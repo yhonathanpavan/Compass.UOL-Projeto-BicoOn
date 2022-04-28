@@ -19,12 +19,12 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -76,7 +76,7 @@ class CategoriaServiceTest {
 
         Categoria resposta = service.verificaExistenciaCategoria(ID);
 
-        assertEquals(CategoriaBuilder.getCategoria(), resposta);
+        assertEquals(CategoriaBuilder.getCategoria().getNome(), resposta.getNome());
     }
 
     @Test
@@ -85,7 +85,7 @@ class CategoriaServiceTest {
 
         Categoria resposta = service.verificaExistenciaCategoria(NOME);
 
-        assertEquals(CategoriaBuilder.getCategoria(), resposta);
+        assertEquals(CategoriaBuilder.getCategoria().getNome(), resposta.getNome());
     }
 
     @Test

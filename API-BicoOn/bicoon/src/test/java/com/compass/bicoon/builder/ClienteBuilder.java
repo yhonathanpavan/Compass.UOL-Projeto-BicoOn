@@ -48,10 +48,10 @@ public class ClienteBuilder {
                 .build();
     }
     public static Page<Cliente> getClientePaginacao(){
-        return new PageImpl<>(List.of(getCliente()));
+        return new PageImpl<>(List.of(getCliente(),getCliente()));
     }
 
     public static Page<ClienteDto> getClientePaginacaoDto(){
-        return new PageImpl<>(List.of(getClienteDto()));
+        return new PageImpl<>(List.of(getClienteDto(),getClienteDto()));
     }
 }

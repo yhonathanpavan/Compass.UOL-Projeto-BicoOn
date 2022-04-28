@@ -110,7 +110,7 @@ class AvaliacaoServiceTest {
 
         Avaliacao avaliacaoEsperada = service.verificaExistenciaAvaliacao(ID);
 
-        assertEquals(avaliacaoEsperada, AvaliacaoBuilder.getAvaliacao());
+        assertEquals(avaliacaoEsperada.getData(), AvaliacaoBuilder.getAvaliacao().getData());
     }
 
     @Test

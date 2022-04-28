@@ -1,7 +1,6 @@
 package com.compass.bicoon.services;
 
 import com.compass.bicoon.builder.ClienteBuilder;
-import com.compass.bicoon.builder.PrestadorBuilder;
 import com.compass.bicoon.dto.cliente.ClienteDto;
 import com.compass.bicoon.entities.Cliente;
 import com.compass.bicoon.exceptions.objectNotFound.ObjectNotFoundException;
