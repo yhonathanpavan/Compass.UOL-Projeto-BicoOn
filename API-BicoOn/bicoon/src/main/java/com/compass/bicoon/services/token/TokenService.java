@@ -2,6 +2,7 @@ package com.compass.bicoon.services.token;
 
 import com.compass.bicoon.entities.Cliente;
 import com.compass.bicoon.entities.Prestador;
+import com.compass.bicoon.exceptions.forbiddenAccess.ForbiddenAccessException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -39,8 +40,7 @@ public class TokenService {
 
         return Jwts.builder()
                 .setIssuer("API BicoOn")
-                .setSubject(logado.getClass().toString())
-                .setId(idLogado)
+                .setSubject(idLogado)
                 .claim("classe", logado.getClass().toString())
                 .setIssuedAt(hoje)
                 .setExpiration(dataExpiracao)
@@ -58,17 +58,21 @@ public class TokenService {
     }
 
     public Long getIdUsuario(String token) {
-        Claims claims = Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody();
-        return Long.parseLong(claims.getId());
+            Claims claims = Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody();
+            return Long.parseLong(claims.getSubject());
     }
 
-    public String getTipoUsuario(String token) throws ClassNotFoundException {
+    public String getTipoUsuario(String token){
         Claims claims = Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody();
-        return claims.getSubject();
+        return claims.get("classe", String.class);
     }
 
     public Long getIdLogado(){
-        return Long.parseLong(idLogado);
+        try {
+            return Long.parseLong(idLogado);
+        }catch(Exception ex){
+            throw new ForbiddenAccessException("É preciso estar autenticado");
+        }
     }
 
     public String getTipoUsuarioLogado(){

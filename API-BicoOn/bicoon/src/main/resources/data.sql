@@ -1,6 +1,4 @@
-INSERT INTO PERFIL(ID, NOME) VALUES(1,'ROLE_ADMINISTRADOR');
-INSERT INTO CLIENTE(EMAIL, SENHA) VALUES ('admin','$2a$10$4/64YPzg.ojbLDiPSkiHsuqjQS4bsu1uRiktDJlQw9.3APVZFzvFa');
-INSERT INTO CLIENTE_PERFIS(CLIENTE_ID, PERFIS_ID) VALUES (1,1);
+ INSERT INTO PERFIL(ID, NOME) VALUES(1,'ROLE_ADMINISTRADOR');
 
 INSERT INTO PRESTADOR (NOME, EMAIL, SENHA, CIDADE, SEXO, TELEFONE, DISPONIVEL) VALUES
 ('José', 'joseromano@email.com', '$2a$10$4/64YPzg.ojbLDiPSkiHsuqjQS4bsu1uRiktDJlQw9.3APVZFzvFa', 'Mogi', 'MASCULINO', '(19)99988-7766', TRUE),
@@ -8,6 +6,7 @@ INSERT INTO PRESTADOR (NOME, EMAIL, SENHA, CIDADE, SEXO, TELEFONE, DISPONIVEL) V
 ('Joana', 'joanamarry@email.com', '$2a$10$4/64YPzg.ojbLDiPSkiHsuqjQS4bsu1uRiktDJlQw9.3APVZFzvFa', 'Pindamonhangaba', 'FEMININO', '(19)91234-4567', TRUE);
 
 INSERT INTO CLIENTE(CIDADE, EMAIL, NOME, SENHA, SEXO) VALUES
+('São Paulo', 'admin@admin', 'admin', '$2a$10$4/64YPzg.ojbLDiPSkiHsuqjQS4bsu1uRiktDJlQw9.3APVZFzvFa', 'MASCULINO'),
 ('Engenheiro Coelho', 'mateus@email.com', 'Mateus Cardoso', '$2a$10$4/64YPzg.ojbLDiPSkiHsuqjQS4bsu1uRiktDJlQw9.3APVZFzvFa', 'MASCULINO'),
 ('Mogi Mirim', 'alan@email.com', 'Alan Fernando', '$2a$10$4/64YPzg.ojbLDiPSkiHsuqjQS4bsu1uRiktDJlQw9.3APVZFzvFa', 'MASCULINO'),
 ('Leme', 'yho@email.com', 'Yhonathan Mateus', '$2a$10$4/64YPzg.ojbLDiPSkiHsuqjQS4bsu1uRiktDJlQw9.3APVZFzvFa', 'MASCULINO'),
@@ -15,6 +14,8 @@ INSERT INTO CLIENTE(CIDADE, EMAIL, NOME, SENHA, SEXO) VALUES
 ('Araras', 'paula@email.com', 'Paula Cleide', '$2a$10$4/64YPzg.ojbLDiPSkiHsuqjQS4bsu1uRiktDJlQw9.3APVZFzvFa', 'FEMININO'),
 ('Limeira', 'livia@email.com', 'Livia Silva', '$2a$10$4/64YPzg.ojbLDiPSkiHsuqjQS4bsu1uRiktDJlQw9.3APVZFzvFa', 'FEMININO'),
 ('Mogi Mirim', 'elaine@email.com', 'Elaine Cristina', '$2a$10$4/64YPzg.ojbLDiPSkiHsuqjQS4bsu1uRiktDJlQw9.3APVZFzvFa', 'FEMININO');
+
+INSERT INTO CLIENTE_PERFIS(CLIENTE_ID, PERFIS_ID) VALUES (1,1);
 
 INSERT INTO AVALIACAO (CLIENTE_ID, COMENTARIO, DATA, NOTA, PRESTADOR_ID) VALUES
 (1, 'Serviço excelente, ótima qualidade!', '2022-7-3', 5, 1),
