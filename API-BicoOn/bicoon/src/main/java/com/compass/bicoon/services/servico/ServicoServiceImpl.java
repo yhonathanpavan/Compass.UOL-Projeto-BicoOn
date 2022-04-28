@@ -7,6 +7,7 @@ import com.compass.bicoon.entities.Servico;
 import com.compass.bicoon.exceptions.objectNotFound.ObjectNotFoundException;
 import com.compass.bicoon.repository.ServicoRepository;
 import com.compass.bicoon.services.categoria.CategoriaService;
+import com.compass.bicoon.services.prestador.PrestadorService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,8 +30,11 @@ public class ServicoServiceImpl implements ServicoService{
     @Autowired
     CategoriaService categoriaService;
 
+    @Autowired
+    PrestadorService prestadorService;
+
     @Override
-    public Page<ServicoDto> listarServicos(Pageable paginacao) {
+    public Page<ServicoDto> listarServicos(Pageable paginacao) { //... para o admin.
         Page<Servico> servico = servicoRepository.findAll(paginacao);
         Page<ServicoDto> servicosDto = new PageImpl<>(servico.stream().map(e -> mapper.map(e, ServicoDto.class)).collect(Collectors.toList()));
 
@@ -40,6 +44,8 @@ public class ServicoServiceImpl implements ServicoService{
     @Override
     public ServicoDto atualizarServico(Long id, ServicoFormDto servicoForm) {
         verificaExistenciaServico(id);
+        verificaPrestadorLogadoPeloIdDoServico(id);
+
         Categoria categoria = categoriaService.verificaExistenciaCategoria(servicoForm.getCategoria());
 
             Servico servico = mapper.map(servicoForm, Servico.class);
@@ -53,6 +59,8 @@ public class ServicoServiceImpl implements ServicoService{
     @Override
     public void deletarServico(Long id) {
         verificaExistenciaServico(id);
+        verificaPrestadorLogadoPeloIdDoServico(id);
+
         servicoRepository.deleteById(id);
     }
 
@@ -63,6 +71,11 @@ public class ServicoServiceImpl implements ServicoService{
             return servicoOptional.get();
         }
         throw new ObjectNotFoundException("Serviço não encontrado");
+    }
+
+    private void verificaPrestadorLogadoPeloIdDoServico(Long id) {
+        Long prestadorId = servicoRepository.findPrestadorId(id);
+        prestadorService.verificaLogado(prestadorId);
     }
 
 }

@@ -1,9 +1,6 @@
 package com.compass.bicoon.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -12,9 +9,9 @@ import javax.persistence.Id;
 import java.time.LocalDate;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Builder
-
 @NoArgsConstructor
 @AllArgsConstructor
 public class Avaliacao {

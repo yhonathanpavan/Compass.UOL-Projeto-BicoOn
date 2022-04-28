@@ -62,8 +62,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and().addFilterBefore(new AutenticacaoViaTokenFilter(tokenService, clienteRepository, prestadorRepository), UsernamePasswordAuthenticationFilter.class);
     }
 
-//    public static void main(String[] args) {
-//        System.out.println(new BCryptPasswordEncoder().encode("1234"));
-//    }
 
 }

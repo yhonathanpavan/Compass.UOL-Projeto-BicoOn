@@ -17,6 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -41,8 +42,9 @@ public class ClienteServiceImpl implements ClienteService {
         } else {
             cliente = clienteRepository.findByCidade(cidade, paginacao);
         }
-        Page<ClienteDto> clienteDto = new PageImpl<>(cliente.stream()
-                .map(e -> mapper.map(e, ClienteDto.class)).collect(Collectors.toList()));
+
+        Page<ClienteDto> clienteDto = new PageImpl<>(cliente.stream()                   //Sublista para não exibir o próprio administrador
+                .map(e -> mapper.map(e, ClienteDto.class)).collect(Collectors.toList()).subList(1, cliente.stream().toList().size()));
 
         return clienteDto;
     }

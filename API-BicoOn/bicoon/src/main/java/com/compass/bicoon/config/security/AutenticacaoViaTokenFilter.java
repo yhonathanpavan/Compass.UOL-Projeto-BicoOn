@@ -33,16 +33,12 @@ public class AutenticacaoViaTokenFilter extends OncePerRequestFilter {
         String token = recuperarToken(request);
         boolean valido = tokenService.isTokenValido(token);
         if(valido){
-            try {
-                autenticarUsuario(token);
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
+            autenticarUsuario(token);
         }
         filterChain.doFilter(request, response);
     }
 
-    private void autenticarUsuario(String token) throws ClassNotFoundException {
+    private void autenticarUsuario(String token) {
         Long idUsuario = tokenService.getIdUsuario(token);
         String tipoUsuario = tokenService.getTipoUsuario(token);
         Object usuario = null;
