@@ -11,10 +11,12 @@ import com.compass.bicoon.exceptions.objectNotFound.ObjectNotFoundException;
 import com.compass.bicoon.repository.PrestadorRepository;
 import com.compass.bicoon.services.autenticacao.AutenticacaoService;
 import com.compass.bicoon.services.prestador.PrestadorServiceImpl;
+import com.compass.bicoon.services.token.TokenService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
 import org.modelmapper.ModelMapper;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -28,6 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
+@AutoConfigureTestDatabase
 class PrestadorServiceTest {
 
     public static final Long ID = Long.valueOf(1);
@@ -42,7 +45,7 @@ class PrestadorServiceTest {
     PrestadorRepository prestadorRepository;
 
     @Mock
-    AutenticacaoService autenticacaoService;
+    TokenService tokenService;
 
     @Spy
     ModelMapper mapper;
@@ -85,6 +88,8 @@ class PrestadorServiceTest {
     @Test
     void deveVerificarCorretamenteQuandoDeletarUmPrestador(){
         when(prestadorRepository.findById(anyLong())).thenReturn(Optional.of(PrestadorBuilder.getPrestador()));
+        when(tokenService.getIdLogado()).thenReturn(1L);
+        when(tokenService.getTipoUsuarioLogado()).thenReturn(Prestador.class.toString());
         doNothing().when(prestadorRepository).deleteById(anyLong());
         service.deletaPrestador(ID);
         verify(prestadorRepository, times(1)).deleteById(anyLong());
@@ -102,6 +107,8 @@ class PrestadorServiceTest {
     @Test
     void deveAtualizarCorretamenteUmPrestador(){
         when(prestadorRepository.findById(anyLong())).thenReturn(Optional.of(PrestadorBuilder.getPrestador()));
+        when(tokenService.getIdLogado()).thenReturn(1L);
+        when(tokenService.getTipoUsuarioLogado()).thenReturn(Prestador.class.toString());
         PrestadorDto resposta = service.atualizarPrestador(ID, PrestadorBuilder.getPrestadorFormDto());
         assertNotNull(resposta);
         assertEquals(resposta.getClass(), PrestadorDto.class);
@@ -185,6 +192,8 @@ class PrestadorServiceTest {
     @Test
     void deveAlterarADisponibilidadeDeUmPrestadorCorretamente(){
         when(prestadorRepository.findById(anyLong())).thenReturn(Optional.of(PrestadorBuilder.getPrestador()));
+        when(tokenService.getIdLogado()).thenReturn(1L);
+        when(tokenService.getTipoUsuarioLogado()).thenReturn(Prestador.class.toString());
         PrestadorDto prestadorResposta = service.atualizarDisponibilidadePrestador(ID, PrestadorBuilder.getDisponibilidadeVerdadeiro());
         assertNotNull(prestadorResposta);
         assertEquals(prestadorResposta.getDisponivel(), PrestadorBuilder.getDisponibilidadeVerdadeiro().getDisponivel());

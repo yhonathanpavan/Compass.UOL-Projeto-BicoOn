@@ -1,11 +1,13 @@
 package com.compass.bicoon.services;
 
 import com.compass.bicoon.builder.ClienteBuilder;
+import com.compass.bicoon.builder.PrestadorBuilder;
 import com.compass.bicoon.dto.cliente.ClienteDto;
 import com.compass.bicoon.entities.Cliente;
 import com.compass.bicoon.exceptions.objectNotFound.ObjectNotFoundException;
 import com.compass.bicoon.repository.ClienteRepository;
 import com.compass.bicoon.services.cliente.ClienteServiceImpl;
+import com.compass.bicoon.services.token.TokenService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -13,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
 import org.modelmapper.ModelMapper;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -26,6 +29,7 @@ import static org.mockito.Mockito.*;
 
 
 @SpringBootTest
+@AutoConfigureTestDatabase
 class ClienteServiceTest {
 
     private static final long ID        = 1L;
@@ -36,6 +40,9 @@ class ClienteServiceTest {
 
     @Mock
     private ClienteRepository clienteRepository;
+
+    @Mock
+    TokenService tokenService;
 
     @Spy
     private ModelMapper mapper;
@@ -96,6 +103,9 @@ class ClienteServiceTest {
     void deveAtualizarCorretamenteUmCliente() {
         when(clienteRepository.save(any())).thenReturn(ClienteBuilder.getCliente());
         when(clienteRepository.findById(anyLong())).thenReturn(Optional.of(ClienteBuilder.getCliente()));
+        when(tokenService.getIdLogado()).thenReturn(1L);
+        when(tokenService.getTipoUsuarioLogado()).thenReturn(Cliente.class.toString());
+
         ClienteDto resposta = service.atualizarCliente(ID, ClienteBuilder.getClienteFormDto());
 
         assertNotNull(resposta);
@@ -106,6 +116,8 @@ class ClienteServiceTest {
     @Test
     void deveVerificarCorretamenteQuandoDeletarUmCliente() {
         when(clienteRepository.findById(anyLong())).thenReturn(Optional.of(ClienteBuilder.getCliente()));
+        when(tokenService.getIdLogado()).thenReturn(1L);
+        when(tokenService.getTipoUsuarioLogado()).thenReturn(Cliente.class.toString());
         doNothing().when(clienteRepository).deleteById(anyLong());
         service.deletarCliente(ID);
         verify(clienteRepository, times(1)).deleteById(anyLong());

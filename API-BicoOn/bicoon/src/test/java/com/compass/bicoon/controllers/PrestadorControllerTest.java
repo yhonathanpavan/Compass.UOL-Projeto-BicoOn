@@ -7,14 +7,18 @@ import com.compass.bicoon.dto.prestador.PrestadorDisponibilidadeFormDto;
 import com.compass.bicoon.dto.prestador.PrestadorFormDto;
 import com.compass.bicoon.dto.servico.ServicoFormDto;
 import com.compass.bicoon.repository.PrestadorRepository;
+import com.compass.bicoon.services.autenticacao.AutenticacaoService;
 import com.compass.bicoon.services.prestador.PrestadorServiceImpl;
+import com.compass.bicoon.services.token.TokenService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
@@ -30,6 +34,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(controllers = PrestadorController.class)
+@ActiveProfiles("test")
+@AutoConfigureTestDatabase
 class PrestadorControllerTest {
 
     public static final Long ID = Long.valueOf(1);
@@ -40,6 +46,12 @@ class PrestadorControllerTest {
 
     @MockBean
     private PrestadorServiceImpl service;
+
+    @MockBean
+    private AutenticacaoService autenticacaoService;
+
+    @MockBean
+    private TokenService tokenService;
 
     @Autowired
     private MockMvc mockMvc;
