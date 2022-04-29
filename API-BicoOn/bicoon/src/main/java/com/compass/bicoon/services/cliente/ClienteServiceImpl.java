@@ -36,6 +36,8 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public Page<ClienteDto> listarClientes(String cidade, Pageable paginacao) {
         Page<Cliente> cliente;
+        Page<ClienteDto> clienteDto;
+        Long idAdmin = 1L;
 
         if(cidade == null){
             cliente = clienteRepository.findAll(paginacao);
@@ -43,8 +45,16 @@ public class ClienteServiceImpl implements ClienteService {
             cliente = clienteRepository.findByCidade(cidade, paginacao);
         }
 
-        Page<ClienteDto> clienteDto = new PageImpl<>(cliente.stream()                   //Sublista para não exibir o próprio administrador
-                .map(e -> mapper.map(e, ClienteDto.class)).collect(Collectors.toList()).subList(1, cliente.stream().toList().size()));
+        List<ClienteDto> clienteDtos = cliente.stream()
+                .map(e -> mapper.map(e, ClienteDto.class)).toList();
+
+        if(clienteDtos.isEmpty()){
+            throw new ObjectNotFoundException("Cliente não encontrado");
+        }else if(clienteDtos.get(0).getId().equals(idAdmin)){
+            clienteDto = new PageImpl<>(clienteDtos.subList(1, cliente.stream().toList().size())); //Oculta o administrador da exibição
+        }else{
+            clienteDto = new PageImpl<>(clienteDtos);
+        }
 
         return clienteDto;
     }
@@ -91,7 +101,7 @@ public class ClienteServiceImpl implements ClienteService {
         throw new ObjectNotFoundException("Cliente não encontrado");
     }
 
-    public void verificaLogado(Long id) {
+    public void verificaLogado(Long id) throws ForbiddenAccessException{
         if(tokenService.getIdLogado() == id && tokenService.getTipoUsuarioLogado().equals(Cliente.class.toString())){
             return;
         }else{

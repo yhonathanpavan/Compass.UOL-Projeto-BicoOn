@@ -69,13 +69,31 @@ public class TokenService {
 
     public Long getIdLogado(){
         try {
-            return Long.parseLong(idLogado);
+            if(this.idLogado == null){
+                return  null;
+            }
+            return Long.parseLong(this.idLogado);
         }catch(Exception ex){
             throw new ForbiddenAccessException("É preciso estar autenticado");
         }
     }
 
+    public void setIdLogado(Long idRecuperadoToken){
+         this.idLogado = idRecuperadoToken.toString();
+    }
+
+
     public String getTipoUsuarioLogado(){
+        if(this.idLogado == null){
+            return  null;
+        }else if(logado.toString().equals(Cliente.class.toString()) || logado.toString().equals(Prestador.class.toString())){
+            return logado.toString();
+        }
         return logado.getClass().toString();
     }
+
+    public void setTipoLogado(String classeRecuperadoToken){
+        this.logado = classeRecuperadoToken;
+    }
+
 }
