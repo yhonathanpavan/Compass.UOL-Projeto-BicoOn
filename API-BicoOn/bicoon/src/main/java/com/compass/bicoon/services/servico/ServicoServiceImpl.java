@@ -1,4 +1,4 @@
-package com.compass.bicoon.exceptions.services.servico;
+package com.compass.bicoon.services.servico;
 
 import com.compass.bicoon.dto.servico.ServicoDto;
 import com.compass.bicoon.dto.servico.ServicoFormDto;
@@ -6,10 +6,10 @@ import com.compass.bicoon.entities.Categoria;
 import com.compass.bicoon.entities.Servico;
 import com.compass.bicoon.exceptions.forbiddenAccess.ForbiddenAccessException;
 import com.compass.bicoon.exceptions.objectNotFound.ObjectNotFoundException;
-import com.compass.bicoon.exceptions.services.categoria.CategoriaService;
-import com.compass.bicoon.exceptions.services.prestador.PrestadorService;
 import com.compass.bicoon.repository.ServicoRepository;
-import com.compass.bicoon.exceptions.services.token.TokenService;
+import com.compass.bicoon.services.categoria.CategoriaService;
+import com.compass.bicoon.services.prestador.PrestadorService;
+import com.compass.bicoon.services.token.TokenService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

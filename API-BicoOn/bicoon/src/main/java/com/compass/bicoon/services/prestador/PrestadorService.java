@@ -1,4 +1,4 @@
-package com.compass.bicoon.exceptions.services.prestador;
+package com.compass.bicoon.services.prestador;
 
 import com.compass.bicoon.dto.avaliacao.AvaliacaoDto;
 import com.compass.bicoon.dto.prestador.PrestadorDisponibilidadeFormDto;

@@ -1,4 +1,4 @@
-package com.compass.bicoon.exceptions.services.categoria;
+package com.compass.bicoon.services.categoria;
 
 import com.compass.bicoon.dto.categoria.CategoriaDto;
 import com.compass.bicoon.dto.categoria.CategoriaFormDto;

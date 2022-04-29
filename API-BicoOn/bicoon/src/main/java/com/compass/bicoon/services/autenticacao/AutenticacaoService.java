@@ -1,4 +1,4 @@
-package com.compass.bicoon.exceptions.services.autenticacao;
+package com.compass.bicoon.services.autenticacao;
 
 import com.compass.bicoon.entities.Cliente;
 import com.compass.bicoon.entities.Prestador;
