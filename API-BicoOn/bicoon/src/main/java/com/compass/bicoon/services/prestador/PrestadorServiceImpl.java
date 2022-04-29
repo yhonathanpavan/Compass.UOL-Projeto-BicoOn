@@ -81,6 +81,7 @@ public class PrestadorServiceImpl implements PrestadorService{
     public Page<PrestadorDto> listarPrestadores(Pageable paginacao, String cidade, String categoria){
         Page<Prestador> prestador;
         prestador = defineRetorno(paginacao, cidade, categoria);
+
         Page<PrestadorDto> prestadorDto = new PageImpl<>(prestador.stream().map(element -> mapper.map(element
                 , PrestadorDto.class)).collect(Collectors.toList()));
 
@@ -142,7 +143,7 @@ public class PrestadorServiceImpl implements PrestadorService{
 
     private Page<Prestador> defineRetorno(Pageable paginacao, String cidade, String categoria) {
         if(cidade==null && categoria==null){
-            return prestadorRepository.findAll(paginacao);
+            return prestadorRepository.findByDisponivelTrue(paginacao);
         }else if(cidade != null && categoria == null){
             return prestadorRepository.findByCidade(paginacao, cidade);
         }else if(categoria != null && cidade == null){
