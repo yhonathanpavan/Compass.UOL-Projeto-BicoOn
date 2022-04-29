@@ -32,6 +32,8 @@ import java.util.stream.Collectors;
 @Service
 public class PrestadorServiceImpl implements PrestadorService{
 
+    public static final String ADMINISTRADOR = "ROLE_ADMINISTRADOR";
+
     @Autowired
     PrestadorRepository prestadorRepository;
 
@@ -162,7 +164,8 @@ public class PrestadorServiceImpl implements PrestadorService{
     }
 
     public void verificaLogado(Long id) {
-        if(tokenService.getIdLogado() == id && tokenService.getTipoUsuarioLogado().equals(Prestador.class.toString())){
+        if((tokenService.getIdLogado() == id && tokenService.getTipoUsuarioLogado().equals(Prestador.class.toString()))
+                || tokenService.getTipoPerfilLogado().equals(ADMINISTRADOR)){
             return;
         }else{
             throw new ForbiddenAccessException("Usuário atual não está autorizado");

@@ -4,10 +4,12 @@ import com.compass.bicoon.dto.servico.ServicoDto;
 import com.compass.bicoon.dto.servico.ServicoFormDto;
 import com.compass.bicoon.entities.Categoria;
 import com.compass.bicoon.entities.Servico;
+import com.compass.bicoon.exceptions.forbiddenAccess.ForbiddenAccessException;
 import com.compass.bicoon.exceptions.objectNotFound.ObjectNotFoundException;
 import com.compass.bicoon.repository.ServicoRepository;
 import com.compass.bicoon.services.categoria.CategoriaService;
 import com.compass.bicoon.services.prestador.PrestadorService;
+import com.compass.bicoon.services.token.TokenService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,11 +23,15 @@ import java.util.stream.Collectors;
 @Service
 public class ServicoServiceImpl implements ServicoService{
 
+    public static final String ADMINISTRADOR = "ROLE_ADMINISTRADOR";
     @Autowired
     ServicoRepository servicoRepository;
 
     @Autowired
     ModelMapper mapper;
+
+    @Autowired
+    TokenService tokenService;
 
     @Autowired
     CategoriaService categoriaService;
@@ -35,6 +41,7 @@ public class ServicoServiceImpl implements ServicoService{
 
     @Override
     public Page<ServicoDto> listarServicos(Pageable paginacao) { //... para o admin.
+        verificaPermissao();
         Page<Servico> servico = servicoRepository.findAll(paginacao);
         Page<ServicoDto> servicosDto = new PageImpl<>(servico.stream().map(e -> mapper.map(e, ServicoDto.class)).collect(Collectors.toList()));
 
@@ -76,6 +83,14 @@ public class ServicoServiceImpl implements ServicoService{
     private void verificaPrestadorLogadoPeloIdDoServico(Long id) {
         Long prestadorId = servicoRepository.findPrestadorId(id);
         prestadorService.verificaLogado(prestadorId);
+    }
+
+    private void verificaPermissao() {
+        if(tokenService.getTipoPerfilLogado().equals(ADMINISTRADOR)){
+            return;
+        }else {
+            throw new ForbiddenAccessException("Não Autorizado");
+        }
     }
 
 }

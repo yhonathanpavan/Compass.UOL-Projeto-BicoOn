@@ -22,6 +22,7 @@ public class TokenService {
     private String secret;
 
     private String idLogado;
+    private String tipoPerfilLogado;
     private Object logado;
 
     public String gerarToken(Authentication authentication) {
@@ -30,9 +31,11 @@ public class TokenService {
         if(logado.getClass() == Cliente.class){
             logado = (Cliente) authentication.getPrincipal();
             idLogado = ((Cliente) logado).getId().toString();
+            tipoPerfilLogado = verificaPerfilCliente((Cliente) logado);
         }else{
             logado = (Prestador) authentication.getPrincipal();
             idLogado = ((Prestador) logado).getId().toString();
+            tipoPerfilLogado = verificaPerfilPrestador((Prestador) logado);
         }
 
         Date hoje = new Date();
@@ -54,6 +57,22 @@ public class TokenService {
             return true;
         } catch (Exception ex){
             return false;
+        }
+    }
+
+    private String verificaPerfilCliente(Cliente logado) {
+        if(!logado.getPerfis().isEmpty()){
+            return logado.getPerfis().get(0).getNome();
+        }else {
+            return ""; //Só retorna vazio pois ele não tem perfil cadastrado
+        }
+    }
+
+    private String verificaPerfilPrestador(Prestador logado) {
+        if(!logado.getPerfis().isEmpty()){
+            return logado.getPerfis().get(0).getNome();
+        }else {
+            return ""; //Só retorna vazio pois ele não tem perfil cadastrado
         }
     }
 
@@ -92,8 +111,12 @@ public class TokenService {
         return logado.getClass().toString();
     }
 
-    public void setTipoLogado(String classeRecuperadoToken){
+    public void setTipoPerfilLogado(String classeRecuperadoToken){
         this.logado = classeRecuperadoToken;
     }
 
+
+    public String getTipoPerfilLogado(){
+        return tipoPerfilLogado;
+    }
 }

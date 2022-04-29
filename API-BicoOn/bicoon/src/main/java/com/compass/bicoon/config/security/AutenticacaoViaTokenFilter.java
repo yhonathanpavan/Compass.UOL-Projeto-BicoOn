@@ -2,7 +2,6 @@ package com.compass.bicoon.config.security;
 
 import com.compass.bicoon.entities.Cliente;
 import com.compass.bicoon.entities.Prestador;
-import com.compass.bicoon.exceptions.forbiddenAccess.ForbiddenAccessException;
 import com.compass.bicoon.repository.ClienteRepository;
 import com.compass.bicoon.repository.PrestadorRepository;
 import com.compass.bicoon.services.token.TokenService;
@@ -37,7 +36,7 @@ public class AutenticacaoViaTokenFilter extends OncePerRequestFilter {
             autenticarUsuario(token);
             if(tokenService.getIdLogado() == null && tokenService.getTipoUsuarioLogado() == null){
                 tokenService.setIdLogado(tokenService.getIdUsuario(token));
-                tokenService.setTipoLogado(tokenService.getTipoUsuario(token));
+                tokenService.setTipoPerfilLogado(tokenService.getTipoUsuario(token));
             }
 
         }
