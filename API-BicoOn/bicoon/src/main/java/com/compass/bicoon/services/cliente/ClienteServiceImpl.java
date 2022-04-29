@@ -3,7 +3,6 @@ package com.compass.bicoon.services.cliente;
 import com.compass.bicoon.dto.cliente.ClienteDto;
 import com.compass.bicoon.dto.cliente.ClienteFormDto;
 import com.compass.bicoon.entities.Cliente;
-import com.compass.bicoon.entities.Prestador;
 import com.compass.bicoon.exceptions.forbiddenAccess.ForbiddenAccessException;
 import com.compass.bicoon.exceptions.objectNotFound.ObjectNotFoundException;
 import com.compass.bicoon.repository.ClienteRepository;
@@ -17,12 +16,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class ClienteServiceImpl implements ClienteService {
+
+    public static final String ADMINISTRADOR = "ROLE_ADMINISTRADOR";
 
     @Autowired
     ClienteRepository clienteRepository;
@@ -92,7 +92,8 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     public void verificaLogado(Long id) {
-        if(tokenService.getIdLogado() == id && tokenService.getTipoUsuarioLogado().equals(Cliente.class.toString())){
+        if((tokenService.getIdLogado() == id && tokenService.getTipoUsuarioLogado().equals(Cliente.class.toString()))
+                || tokenService.getTipoLogado().equals(ADMINISTRADOR)){
             return;
         }else{
             throw new ForbiddenAccessException("Usuário atual não está autorizado");

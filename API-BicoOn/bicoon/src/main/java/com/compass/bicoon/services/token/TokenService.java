@@ -22,6 +22,7 @@ public class TokenService {
     private String secret;
 
     private String idLogado;
+    private String tipoLogado;
     private Object logado;
 
     public String gerarToken(Authentication authentication) {
@@ -30,10 +31,14 @@ public class TokenService {
         if(logado.getClass() == Cliente.class){
             logado = (Cliente) authentication.getPrincipal();
             idLogado = ((Cliente) logado).getId().toString();
+            tipoLogado = verificaPerfilCliente((Cliente) logado);
         }else{
             logado = (Prestador) authentication.getPrincipal();
             idLogado = ((Prestador) logado).getId().toString();
+            tipoLogado = verificaPerfilPrestador((Prestador) logado);
         }
+
+        System.out.println(tipoLogado);
 
         Date hoje = new Date();
         Date dataExpiracao = new Date(hoje.getTime() + Long.parseLong(expiration));
@@ -57,6 +62,22 @@ public class TokenService {
         }
     }
 
+    private String verificaPerfilCliente(Cliente logado) {
+        if(!logado.getPerfis().isEmpty()){
+            return logado.getPerfis().get(0).getNome();
+        }else {
+            return ""; //Só retorna vazio pois ele não tem perfil cadastrado
+        }
+    }
+
+    private String verificaPerfilPrestador(Prestador logado) {
+        if(!logado.getPerfis().isEmpty()){
+            return logado.getPerfis().get(0).getNome();
+        }else {
+            return ""; //Só retorna vazio pois ele não tem perfil cadastrado
+        }
+    }
+
     public Long getIdUsuario(String token) {
             Claims claims = Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody();
             return Long.parseLong(claims.getSubject());
@@ -77,5 +98,9 @@ public class TokenService {
 
     public String getTipoUsuarioLogado(){
         return logado.getClass().toString();
+    }
+
+    public String getTipoLogado(){
+        return tipoLogado;
     }
 }
