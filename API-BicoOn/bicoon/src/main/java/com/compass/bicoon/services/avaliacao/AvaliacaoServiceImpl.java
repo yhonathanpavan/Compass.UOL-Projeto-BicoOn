@@ -1,4 +1,4 @@
-package com.compass.bicoon.services.avaliacao;
+package com.compass.bicoon.exceptions.services.avaliacao;
 
 import com.compass.bicoon.dto.avaliacao.AvaliacaoFormDto;
 import com.compass.bicoon.entities.Avaliacao;
@@ -8,9 +8,9 @@ import com.compass.bicoon.exceptions.forbiddenAccess.ForbiddenAccessException;
 import com.compass.bicoon.exceptions.objectNotFound.ObjectNotFoundException;
 import com.compass.bicoon.repository.AvaliacaoRepository;
 import com.compass.bicoon.repository.PrestadorRepository;
-import com.compass.bicoon.services.cliente.ClienteService;
-import com.compass.bicoon.services.prestador.PrestadorService;
-import com.compass.bicoon.services.token.TokenService;
+import com.compass.bicoon.exceptions.services.cliente.ClienteService;
+import com.compass.bicoon.exceptions.services.prestador.PrestadorService;
+import com.compass.bicoon.exceptions.services.token.TokenService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.compass.bicoon.services.cliente;
+package com.compass.bicoon.exceptions.services.cliente;
 
 import com.compass.bicoon.dto.cliente.ClienteDto;
 import com.compass.bicoon.dto.cliente.ClienteFormDto;

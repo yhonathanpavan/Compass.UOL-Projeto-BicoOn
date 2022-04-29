@@ -1,4 +1,4 @@
-package com.compass.bicoon.services.servico;
+package com.compass.bicoon.exceptions.services.servico;
 
 import com.compass.bicoon.dto.servico.ServicoDto;
 import com.compass.bicoon.dto.servico.ServicoFormDto;

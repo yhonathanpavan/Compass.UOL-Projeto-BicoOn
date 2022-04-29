@@ -1,4 +1,4 @@
-package com.compass.bicoon.services.avaliacao;
+package com.compass.bicoon.exceptions.services.avaliacao;
 
 import com.compass.bicoon.dto.avaliacao.AvaliacaoFormDto;
 import com.compass.bicoon.entities.Avaliacao;
