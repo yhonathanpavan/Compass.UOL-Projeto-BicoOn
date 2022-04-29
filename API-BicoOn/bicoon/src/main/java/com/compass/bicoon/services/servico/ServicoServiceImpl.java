@@ -85,7 +85,7 @@ public class ServicoServiceImpl implements ServicoService{
         prestadorService.verificaLogado(prestadorId);
     }
 
-    private void verificaPermissao() {
+    public void verificaPermissao() {
         if(tokenService.getTipoPerfilLogado().equals(ADMINISTRADOR)){
             return;
         }else {

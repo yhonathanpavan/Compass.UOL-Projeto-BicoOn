@@ -139,7 +139,7 @@ class PrestadorServiceTest {
 
     @Test
     void deveListarTodosPrestadoresSemFiltroCorretamente (){
-        when(prestadorRepository.findAll((Pageable) any())).thenReturn(PrestadorBuilder.getPrestadorPaginacao());
+        when(prestadorRepository.findByDisponivelTrue((Pageable) any())).thenReturn(PrestadorBuilder.getPrestadorPaginacao());
         Page<PrestadorDto> paginaResposta = service.listarPrestadores(Mockito.any(),null,null);
         assertEquals(paginaResposta.getTotalElements(), PrestadorBuilder.getPrestadorPaginacao().getTotalElements());
         assertEquals(paginaResposta.stream().findFirst().get().getCidade(), PrestadorBuilder.getPrestadorDto().getCidade());

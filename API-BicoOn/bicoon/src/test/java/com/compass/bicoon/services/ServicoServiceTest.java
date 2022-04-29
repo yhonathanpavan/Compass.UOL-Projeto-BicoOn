@@ -10,6 +10,7 @@ import com.compass.bicoon.repository.ServicoRepository;
 import com.compass.bicoon.services.categoria.CategoriaServiceImpl;
 import com.compass.bicoon.services.prestador.PrestadorServiceImpl;
 import com.compass.bicoon.services.servico.ServicoServiceImpl;
+import com.compass.bicoon.services.token.TokenService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -20,6 +21,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 
 import java.util.Optional;
@@ -48,6 +50,9 @@ class ServicoServiceTest {
 
     @Mock
     private CategoriaRepository categoriaRepository;
+
+    @Mock
+    private TokenService tokenService;
 
     @Spy
     private ModelMapper mapper;
@@ -79,9 +84,12 @@ class ServicoServiceTest {
 
     @Test
     void deveListarServicosCorretamente(){
+        Pageable pageable = PageRequest.of(0, 10);
+
+        when(tokenService.getTipoPerfilLogado()).thenReturn("ROLE_ADMINISTRADOR");
         when(repository.findAll((Pageable) any())).thenReturn(ServicoBuilder.getServicoPaginacao());
 
-        Page<ServicoDto> resposta = service.listarServicos(any());
+        Page<ServicoDto> resposta = service.listarServicos(pageable);
         assertEquals(2, resposta.getTotalElements());
         assertEquals(Optional.of(ServicoBuilder.getServicoDto()), resposta.stream().findFirst());
     }
