@@ -17,4 +17,6 @@ public interface PrestadorRepository extends JpaRepository<Prestador, Long>{
 
     Optional<Prestador> findByEmail(String email);
 
+    Page<Prestador> findByDisponivelTrue(Pageable paginacao);
+
 }

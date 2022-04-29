@@ -3,7 +3,6 @@ package com.compass.bicoon.services.cliente;
 import com.compass.bicoon.dto.cliente.ClienteDto;
 import com.compass.bicoon.dto.cliente.ClienteFormDto;
 import com.compass.bicoon.entities.Cliente;
-import com.compass.bicoon.entities.Prestador;
 import com.compass.bicoon.exceptions.forbiddenAccess.ForbiddenAccessException;
 import com.compass.bicoon.exceptions.objectNotFound.ObjectNotFoundException;
 import com.compass.bicoon.repository.ClienteRepository;
@@ -19,10 +18,11 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class ClienteServiceImpl implements ClienteService {
+
+    public static final String ADMINISTRADOR = "ROLE_ADMINISTRADOR";
 
     @Autowired
     ClienteRepository clienteRepository;
@@ -36,6 +36,8 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public Page<ClienteDto> listarClientes(String cidade, Pageable paginacao) {
         Page<Cliente> cliente;
+        Page<ClienteDto> clienteDto;
+        Long idAdmin = 1L;
 
         if(cidade == null){
             cliente = clienteRepository.findAll(paginacao);
@@ -43,8 +45,16 @@ public class ClienteServiceImpl implements ClienteService {
             cliente = clienteRepository.findByCidade(cidade, paginacao);
         }
 
-        Page<ClienteDto> clienteDto = new PageImpl<>(cliente.stream()                   //Sublista para não exibir o próprio administrador
-                .map(e -> mapper.map(e, ClienteDto.class)).collect(Collectors.toList()).subList(1, cliente.stream().toList().size()));
+        List<ClienteDto> clienteDtos = cliente.stream()
+                .map(e -> mapper.map(e, ClienteDto.class)).toList();
+
+        if(clienteDtos.isEmpty()){
+            throw new ObjectNotFoundException("Cliente não encontrado");
+        }else if(clienteDtos.get(0).getId().equals(idAdmin)){
+            clienteDto = new PageImpl<>(clienteDtos.subList(1, cliente.stream().toList().size())); //Oculta o administrador da exibição
+        }else{
+            clienteDto = new PageImpl<>(clienteDtos);
+        }
 
         return clienteDto;
     }
@@ -92,7 +102,8 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     public void verificaLogado(Long id) {
-        if(tokenService.getIdLogado() == id && tokenService.getTipoUsuarioLogado().equals(Cliente.class.toString())){
+        if((tokenService.getIdLogado() == id && tokenService.getTipoUsuarioLogado().equals(Cliente.class.toString()))
+                || tokenService.getTipoPerfilLogado().equals(ADMINISTRADOR)){
             return;
         }else{
             throw new ForbiddenAccessException("Usuário atual não está autorizado");

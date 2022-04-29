@@ -4,11 +4,13 @@ import com.compass.bicoon.dto.avaliacao.AvaliacaoFormDto;
 import com.compass.bicoon.entities.Avaliacao;
 import com.compass.bicoon.entities.Cliente;
 import com.compass.bicoon.entities.Prestador;
+import com.compass.bicoon.exceptions.forbiddenAccess.ForbiddenAccessException;
 import com.compass.bicoon.exceptions.objectNotFound.ObjectNotFoundException;
 import com.compass.bicoon.repository.AvaliacaoRepository;
 import com.compass.bicoon.repository.PrestadorRepository;
 import com.compass.bicoon.services.cliente.ClienteService;
 import com.compass.bicoon.services.prestador.PrestadorService;
+import com.compass.bicoon.services.token.TokenService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,7 @@ import java.util.Optional;
 @Service
 public class AvaliacaoServiceImpl implements AvaliacaoService{
 
+    public static final String ADMINISTRADOR = "ROLE_ADMINISTRADOR";
     @Autowired
     PrestadorRepository prestadorRepository;
 
@@ -29,6 +32,9 @@ public class AvaliacaoServiceImpl implements AvaliacaoService{
 
     @Autowired
     ModelMapper mapper;
+
+    @Autowired
+    TokenService tokenService;
 
     @Autowired
     ClienteService clienteService;
@@ -63,6 +69,7 @@ public class AvaliacaoServiceImpl implements AvaliacaoService{
     @Override
     public AvaliacaoFormDto atualizarAvaliacao(Long id, AvaliacaoFormDto avaliacaoFormDto){
         Avaliacao avaliacao = verificaExistenciaAvaliacao(id);
+        verificaPermissao();
         Long clienteId = avaliacao.getClienteId();
 
         avaliacao = mapper.map(avaliacaoFormDto, Avaliacao.class);
@@ -78,7 +85,7 @@ public class AvaliacaoServiceImpl implements AvaliacaoService{
     @Override
     public void deletarAvaliacao(Long id){
         verificaExistenciaAvaliacao(id);
-
+        verificaPermissao();
         avaliacaoRepository.deleteById(id);
     }
 
@@ -89,5 +96,13 @@ public class AvaliacaoServiceImpl implements AvaliacaoService{
             return avaliacaoOptional.get();
         }
         throw new ObjectNotFoundException("Avaliação não encontrada");
+    }
+
+    private void verificaPermissao() {
+        if(tokenService.getTipoPerfilLogado().equals(ADMINISTRADOR)){
+            return;
+        }else {
+            throw new ForbiddenAccessException("Não Autorizado");
+        }
     }
 }

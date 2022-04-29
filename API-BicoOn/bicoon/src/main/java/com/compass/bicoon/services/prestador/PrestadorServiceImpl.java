@@ -32,6 +32,8 @@ import java.util.stream.Collectors;
 @Service
 public class PrestadorServiceImpl implements PrestadorService{
 
+    public static final String ADMINISTRADOR = "ROLE_ADMINISTRADOR";
+
     @Autowired
     PrestadorRepository prestadorRepository;
 
@@ -81,6 +83,7 @@ public class PrestadorServiceImpl implements PrestadorService{
     public Page<PrestadorDto> listarPrestadores(Pageable paginacao, String cidade, String categoria){
         Page<Prestador> prestador;
         prestador = defineRetorno(paginacao, cidade, categoria);
+
         Page<PrestadorDto> prestadorDto = new PageImpl<>(prestador.stream().map(element -> mapper.map(element
                 , PrestadorDto.class)).collect(Collectors.toList()));
 
@@ -142,7 +145,7 @@ public class PrestadorServiceImpl implements PrestadorService{
 
     private Page<Prestador> defineRetorno(Pageable paginacao, String cidade, String categoria) {
         if(cidade==null && categoria==null){
-            return prestadorRepository.findAll(paginacao);
+            return prestadorRepository.findByDisponivelTrue(paginacao);
         }else if(cidade != null && categoria == null){
             return prestadorRepository.findByCidade(paginacao, cidade);
         }else if(categoria != null && cidade == null){
@@ -161,7 +164,8 @@ public class PrestadorServiceImpl implements PrestadorService{
     }
 
     public void verificaLogado(Long id) {
-        if(tokenService.getIdLogado() == id && tokenService.getTipoUsuarioLogado().equals(Prestador.class.toString())){
+        if((tokenService.getIdLogado() == id && tokenService.getTipoUsuarioLogado().equals(Prestador.class.toString()))
+                || tokenService.getTipoPerfilLogado().equals(ADMINISTRADOR)){
             return;
         }else{
             throw new ForbiddenAccessException("Usuário atual não está autorizado");

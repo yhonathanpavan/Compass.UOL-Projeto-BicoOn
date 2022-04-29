@@ -22,6 +22,7 @@ public class TokenService {
     private String secret;
 
     private String idLogado;
+    private String tipoPerfilLogado;
     private Object logado;
 
     public String gerarToken(Authentication authentication) {
@@ -30,9 +31,11 @@ public class TokenService {
         if(logado.getClass() == Cliente.class){
             logado = (Cliente) authentication.getPrincipal();
             idLogado = ((Cliente) logado).getId().toString();
+            tipoPerfilLogado = verificaPerfilCliente((Cliente) logado);
         }else{
             logado = (Prestador) authentication.getPrincipal();
             idLogado = ((Prestador) logado).getId().toString();
+            tipoPerfilLogado = verificaPerfilPrestador((Prestador) logado);
         }
 
         Date hoje = new Date();
@@ -57,6 +60,22 @@ public class TokenService {
         }
     }
 
+    private String verificaPerfilCliente(Cliente logado) {
+        if(!logado.getPerfis().isEmpty()){
+            return logado.getPerfis().get(0).getNome();
+        }else {
+            return ""; //Só retorna vazio pois ele não tem perfil cadastrado
+        }
+    }
+
+    private String verificaPerfilPrestador(Prestador logado) {
+        if(!logado.getPerfis().isEmpty()){
+            return logado.getPerfis().get(0).getNome();
+        }else {
+            return ""; //Só retorna vazio pois ele não tem perfil cadastrado
+        }
+    }
+
     public Long getIdUsuario(String token) {
             Claims claims = Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token).getBody();
             return Long.parseLong(claims.getSubject());
@@ -69,13 +88,35 @@ public class TokenService {
 
     public Long getIdLogado(){
         try {
-            return Long.parseLong(idLogado);
+            if(this.idLogado == null){
+                return  null;
+            }
+            return Long.parseLong(this.idLogado);
         }catch(Exception ex){
             throw new ForbiddenAccessException("É preciso estar autenticado");
         }
     }
 
+    public void setIdLogado(Long idRecuperadoToken){
+         this.idLogado = idRecuperadoToken.toString();
+    }
+
+
     public String getTipoUsuarioLogado(){
+        if(this.idLogado == null){
+            return  null;
+        }else if(logado.toString().equals(Cliente.class.toString()) || logado.toString().equals(Prestador.class.toString())){
+            return logado.toString();
+        }
         return logado.getClass().toString();
+    }
+
+    public void setTipoPerfilLogado(String classeRecuperadoToken){
+        this.logado = classeRecuperadoToken;
+    }
+
+
+    public String getTipoPerfilLogado(){
+        return tipoPerfilLogado;
     }
 }

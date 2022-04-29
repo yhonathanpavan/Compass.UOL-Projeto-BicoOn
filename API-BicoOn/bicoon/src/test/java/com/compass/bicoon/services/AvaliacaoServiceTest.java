@@ -12,6 +12,7 @@ import com.compass.bicoon.repository.PrestadorRepository;
 import com.compass.bicoon.services.avaliacao.AvaliacaoServiceImpl;
 import com.compass.bicoon.services.cliente.ClienteServiceImpl;
 import com.compass.bicoon.services.prestador.PrestadorServiceImpl;
+import com.compass.bicoon.services.token.TokenService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -58,6 +59,9 @@ class AvaliacaoServiceTest {
     @Mock
     private PrestadorRepository prestadorRepository;
 
+    @Mock
+    private TokenService tokenService;
+
     @Spy
     private ModelMapper mapper;
 
@@ -87,6 +91,7 @@ class AvaliacaoServiceTest {
     void deveAtualizarUmaAvaliacaoCorretamente() {
         when(avaliacaoRepository.findById(anyLong())).thenReturn(Optional.of(AvaliacaoBuilder.getAvaliacao()));
         when(avaliacaoRepository.save(any())).thenReturn(AvaliacaoBuilder.getAvaliacao());
+        when(tokenService.getTipoPerfilLogado()).thenReturn("ROLE_ADMINISTRADOR");
 
         AvaliacaoFormDto resposta = service.atualizarAvaliacao(ID, AvaliacaoBuilder.getAvaliacaoFormDto());
 
@@ -97,6 +102,7 @@ class AvaliacaoServiceTest {
     @Test
     void deveVerificarCorretamenteQuandoDeletadaUmaAvaliacao() {
         when(avaliacaoRepository.findById(anyLong())).thenReturn(Optional.of(AvaliacaoBuilder.getAvaliacao()));
+        when(tokenService.getTipoPerfilLogado()).thenReturn("ROLE_ADMINISTRADOR");
         doNothing().when(avaliacaoRepository).deleteById(anyLong());
         service.deletarAvaliacao(ID);
 
