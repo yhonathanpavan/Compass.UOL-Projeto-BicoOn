@@ -22,7 +22,7 @@ public class TokenService {
     private String secret;
 
     private String idLogado;
-    private String tipoLogado;
+    private String tipoPerfilLogado;
     private Object logado;
 
     public String gerarToken(Authentication authentication) {
@@ -31,14 +31,12 @@ public class TokenService {
         if(logado.getClass() == Cliente.class){
             logado = (Cliente) authentication.getPrincipal();
             idLogado = ((Cliente) logado).getId().toString();
-            tipoLogado = verificaPerfilCliente((Cliente) logado);
+            tipoPerfilLogado = verificaPerfilCliente((Cliente) logado);
         }else{
             logado = (Prestador) authentication.getPrincipal();
             idLogado = ((Prestador) logado).getId().toString();
-            tipoLogado = verificaPerfilPrestador((Prestador) logado);
+            tipoPerfilLogado = verificaPerfilPrestador((Prestador) logado);
         }
-
-        System.out.println(tipoLogado);
 
         Date hoje = new Date();
         Date dataExpiracao = new Date(hoje.getTime() + Long.parseLong(expiration));
@@ -90,17 +88,35 @@ public class TokenService {
 
     public Long getIdLogado(){
         try {
-            return Long.parseLong(idLogado);
+            if(this.idLogado == null){
+                return  null;
+            }
+            return Long.parseLong(this.idLogado);
         }catch(Exception ex){
             throw new ForbiddenAccessException("É preciso estar autenticado");
         }
     }
 
+    public void setIdLogado(Long idRecuperadoToken){
+         this.idLogado = idRecuperadoToken.toString();
+    }
+
+
     public String getTipoUsuarioLogado(){
+        if(this.idLogado == null){
+            return  null;
+        }else if(logado.toString().equals(Cliente.class.toString()) || logado.toString().equals(Prestador.class.toString())){
+            return logado.toString();
+        }
         return logado.getClass().toString();
     }
 
-    public String getTipoLogado(){
-        return tipoLogado;
+    public void setTipoPerfilLogado(String classeRecuperadoToken){
+        this.logado = classeRecuperadoToken;
+    }
+
+
+    public String getTipoPerfilLogado(){
+        return tipoPerfilLogado;
     }
 }

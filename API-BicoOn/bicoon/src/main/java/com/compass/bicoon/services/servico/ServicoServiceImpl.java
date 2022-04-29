@@ -86,7 +86,7 @@ public class ServicoServiceImpl implements ServicoService{
     }
 
     private void verificaPermissao() {
-        if(tokenService.getTipoLogado().equals(ADMINISTRADOR)){
+        if(tokenService.getTipoPerfilLogado().equals(ADMINISTRADOR)){
             return;
         }else {
             throw new ForbiddenAccessException("Não Autorizado");

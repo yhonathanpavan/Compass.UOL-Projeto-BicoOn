@@ -34,6 +34,11 @@ public class AutenticacaoViaTokenFilter extends OncePerRequestFilter {
         boolean valido = tokenService.isTokenValido(token);
         if(valido){
             autenticarUsuario(token);
+            if(tokenService.getIdLogado() == null && tokenService.getTipoUsuarioLogado() == null){
+                tokenService.setIdLogado(tokenService.getIdUsuario(token));
+                tokenService.setTipoPerfilLogado(tokenService.getTipoUsuario(token));
+            }
+
         }
         filterChain.doFilter(request, response);
     }
@@ -58,7 +63,7 @@ public class AutenticacaoViaTokenFilter extends OncePerRequestFilter {
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
-    private String recuperarToken(HttpServletRequest request) {
+    public String recuperarToken(HttpServletRequest request) {
         String token = request.getHeader("Authorization");
         if (token == null || token.isEmpty() || !token.startsWith("Bearer ")) {
             return null;
