@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 @Data
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class ClienteFormDto {
 
     @NotNull @NotEmpty
