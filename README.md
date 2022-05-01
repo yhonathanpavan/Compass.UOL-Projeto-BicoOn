@@ -15,7 +15,7 @@
 </div></br>
 
 <div align="center">
-  <img src="BicoOn.jpg" alt="BicoOn" height="350px">
+  <img src="https://github.com/mateusCoder/ReadMeTemplate/blob/main/BicoOn.jpg" alt="BicoOn" height="350px">
 </div></br>
 
 > O BicoOn é um projeto desenvolvido para conectar prestadores de serviços informais e clientes, ele permite que pessoas acessem o contato e os serviços de diferentes profissionais por cidade.
@@ -253,7 +253,7 @@ Agradecemos a empresa por todo apoio prestado neste projeto.
 <sub>
   <div>
     <a href="https://compass.uol/pt/" target="_blank" rel="noreferrer" rel="noopener">
-      <img src="compass.uol.png" alt="compass.uol" width="300px;"/><br>
+      <img src="https://github.com/mateusCoder/ReadMeTemplate/blob/main/compass.uol.png" alt="compass.uol" width="300px;"/><br>
     </a></br>
   </div>
 </sub>
