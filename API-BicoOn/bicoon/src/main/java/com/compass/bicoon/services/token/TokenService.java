@@ -60,7 +60,7 @@ public class TokenService {
         }
     }
 
-    private String verificaPerfilCliente(Cliente logado) {
+    public String verificaPerfilCliente(Cliente logado) {
         if(!logado.getPerfis().isEmpty()){
             return logado.getPerfis().get(0).getNome();
         }else {
@@ -68,7 +68,7 @@ public class TokenService {
         }
     }
 
-    private String verificaPerfilPrestador(Prestador logado) {
+    public String verificaPerfilPrestador(Prestador logado) {
         if(!logado.getPerfis().isEmpty()){
             return logado.getPerfis().get(0).getNome();
         }else {
@@ -111,12 +111,16 @@ public class TokenService {
         return logado.getClass().toString();
     }
 
-    public void setTipoPerfilLogado(String classeRecuperadoToken){
+    public void setTipoUsuarioLogado(String classeRecuperadoToken){
         this.logado = classeRecuperadoToken;
     }
 
 
     public String getTipoPerfilLogado(){
         return tipoPerfilLogado;
+    }
+
+    public void setTipoPerfilLogado(String nomePerfil){
+        this.tipoPerfilLogado = nomePerfil;
     }
 }

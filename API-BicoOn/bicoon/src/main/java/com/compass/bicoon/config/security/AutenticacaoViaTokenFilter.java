@@ -31,12 +31,21 @@ public class AutenticacaoViaTokenFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
         String token = recuperarToken(request);
+        String tipoPerfil;
+
         boolean valido = tokenService.isTokenValido(token);
         if(valido){
             autenticarUsuario(token);
             if(tokenService.getIdLogado() == null && tokenService.getTipoUsuarioLogado() == null){
+
                 tokenService.setIdLogado(tokenService.getIdUsuario(token));
-                tokenService.setTipoPerfilLogado(tokenService.getTipoUsuario(token));
+                tokenService.setTipoUsuarioLogado(tokenService.getTipoUsuario(token));
+
+                if(tokenService.getTipoUsuarioLogado().equals(Cliente.class.toString())){
+                    Cliente cliente = clienteRepository.findById(tokenService.getIdLogado()).get();
+                    tipoPerfil = tokenService.verificaPerfilCliente(cliente);
+                    tokenService.setTipoPerfilLogado(tipoPerfil);
+                }
             }
 
         }
