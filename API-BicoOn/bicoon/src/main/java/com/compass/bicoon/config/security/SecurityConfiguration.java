@@ -56,7 +56,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/bicoon/clientes").permitAll() //Permite somente cadastro
                 .antMatchers(HttpMethod.POST, "/bicoon/auth").permitAll() //Permite o login
                 .antMatchers("/bicoon/categorias/**").hasRole("ADMINISTRADOR")
-                .antMatchers(HttpMethod.GET, "/actuator/**").hasRole("ADMINISTRADOR")
+                .antMatchers(HttpMethod.GET, "/actuator/**").permitAll()
                 .anyRequest().authenticated()
                 .and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
