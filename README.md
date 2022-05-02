@@ -197,7 +197,7 @@ Agradecemos às seguintes pessoas que contribuíram para este projeto:
     </td>
     <td align="center">
       <a href="#">
-        <img src="https://avatars.githubusercontent.com/u/61952169?v=4" width="100px;" alt="Foto da Elaine Cristina"/><br>
+        <img src="https://github.com/mateusCoder/ReadMeTemplate/blob/main/elaine.jpg" width="100px;" alt="Foto da Elaine Cristina"/><br>
         <sub>
           <div align="center">
             <b>Elaine Cristina</b></br></br>
