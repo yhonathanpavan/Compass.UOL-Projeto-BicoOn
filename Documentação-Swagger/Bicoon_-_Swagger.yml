@@ -1,0 +1,1185 @@
+openapi: 3.0.1
+info:
+  title: BicoOn API
+  description: O BicoOn é um projeto desenvolvido para conectar prestadores de serviços informais e clientes, ele permite que pessoas acessem o contato e os serviços de diferentes profissionais por cidade.
+  version: 1.0.0
+tags:
+- name: "Autenticação"
+  description: "Métodos de Clientes"
+- name: "Clientes"
+  description: "Métodos de Clientes"
+- name: "Prestadores"
+  description: "Métodos de Prestadores"
+- name: "Avaliações"
+  description: "Métodos de Avaliações"
+- name: "Servicos"
+  description: "Métodos de Serviços"
+- name: "Categorias"
+  description: "Métodos de Categorias"
+externalDocs:
+  description: Leia mais sobre BicoOn API
+  url: https://github.com/yhonathanpavan/Compass.UOL-Projeto-BicoOn#readme
+servers:
+- url: http://localhost:8080/bicoon
+  description: API de Prod
+paths:
+
+
+#Autenticação
+  /auth:
+    post:
+      tags:
+      - "Autenticação"
+      summary: Autentica um usuário existente
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginForm"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Login"
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MensagensBadRequest"
+#Clientes
+  /clientes:
+    get:
+      tags:
+      - "Clientes"
+      summary: Lista todos os clientes
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsuariosPaginacao"
+        403:
+            description: Forbidden
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/MensagensForbidden"
+      security:      
+      - auth: []  
+    post:
+      tags:
+      - "Clientes"
+      summary: Cadastra um novo cliente
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UsuarioForm"
+      responses:
+        201: 
+          description: "CREATED"
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MensagensBadRequest"
+          
+  /clientes/{id}:
+      parameters: 
+      - name: id
+        in: path 
+        schema:
+          type: integer
+        required: true 
+      get:
+        tags:
+        - "Clientes"
+        summary: Detalha um cliente pelo ID
+        responses:
+          200:
+            description: "OK"
+            content: 
+              application/json:
+                schema:
+                    $ref: "#/components/schemas/Usuario"
+          403:
+            description: Forbidden
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/MensagensForbidden"
+          404:
+            description: Not Found
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/MensagensNotFound"
+        security:      
+        - auth: []  
+      put:
+        tags:
+        - "Clientes"
+        summary: Atualiza o cadastro de um cliente pelo ID
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/UsuarioForm"
+        responses:
+          200:
+            description: "OK"
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/Usuario"
+          403:
+            description: Forbidden
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/MensagensForbidden"
+          400:
+            description: Bad Request
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/MensagensBadRequest"
+          404:
+            description: Not Found
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/MensagensNotFound"
+        security:      
+        - auth: []  
+      delete:
+        tags:
+        - "Clientes"
+        summary: Remove o cadastro de um cliente
+        responses: 
+          200: 
+            description: "OK"
+          403:
+            description: Forbidden
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/MensagensForbidden"
+          404:
+            description: Not Found
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/MensagensNotFound"
+        security:      
+        - auth: []  
+
+#Prestadores     
+  /prestadores:
+    get:
+      tags:
+      - "Prestadores"
+      summary: Lista todos os prestadores
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                  $ref: "#/components/schemas/PrestadoresPaginacao"
+        403:
+            description: Forbidden
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/MensagensForbidden"
+      security:      
+      - auth: []  
+    post:
+      tags:
+      - "Prestadores"
+      summary: Cadastra um novo prestador
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PrestadorForm"
+      responses:
+        201: 
+          description: "CREATED"
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MensagensBadRequest"
+          
+  /prestadores/{id}:
+    parameters: 
+    - name: id
+      in: path 
+      schema:
+        type: integer
+      required: true 
+    get:
+      tags:
+      - "Prestadores"
+      summary: Detalha um prestador pelo ID
+      responses:
+        200:
+          description: "OK"
+          content: 
+            application/json:
+              schema:
+                  $ref: "#/components/schemas/Prestadores"
+        403:
+            description: Forbidden
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/MensagensForbidden"
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MensagensNotFound"
+      security:      
+      - auth: [] 
+    put:
+      tags:
+      - "Prestadores"
+      summary: Atualiza o cadastro de um prestador pelo ID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PrestadorForm"
+      responses:
+        200:
+          description: "OK"
+          content: 
+            application/json:
+              schema:
+                  $ref: "#/components/schemas/Prestadores"
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MensagensBadRequest"
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MensagensForbidden"
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MensagensNotFound"
+      security:      
+      - auth: [] 
+    delete:
+      tags:
+      - "Prestadores"
+      summary: Remove o cadastro de um prestador
+      responses: 
+        200: 
+          description: "OK"
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MensagensForbidden"
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MensagensNotFound"
+      security:      
+      - auth: [] 
+          
+  /prestadores/{id}/servicos:
+    parameters: 
+    - name: id
+      in: path 
+      schema:
+        type: integer
+      required: true 
+    get:
+      tags:
+      - "Prestadores"
+      summary: Lista os serviços de um prestador pelo ID
+      responses:
+        200:
+          description: "OK"
+          content: 
+            application/json:
+              schema:
+                  $ref: "#/components/schemas/ServicosPaginacao"
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MensagensForbidden"
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MensagensNotFound"
+      security:      
+      - auth: [] 
+    put:
+      tags:
+      - "Prestadores"
+      summary: Atualiza o cadastro de servico de um prestador pelo ID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ServicoForm"
+      responses:
+        200:
+          description: "OK"
+          content: 
+            application/json:
+              schema:
+                  $ref: "#/components/schemas/Servicos"
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MensagensBadRequest"
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MensagensForbidden"
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MensagensNotFound"
+      security:      
+      - auth: [] 
+          
+  /prestadores/{id}/avaliacoes:
+    parameters: 
+    - name: id
+      in: path 
+      schema:
+        type: integer
+      required: true 
+    get:
+      tags:
+      - "Prestadores"
+      summary: Lista as avaliações de um prestador pelo ID
+      responses:
+        200:
+          description: "OK"
+          content: 
+            application/json:
+              schema:
+                  $ref: "#/components/schemas/AvaliacoesPaginacao"
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MensagensForbidden"
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MensagensNotFound"
+      security:      
+      - auth: [] 
+          
+  /prestadores/{id}/disponibilidade:
+    parameters: 
+    - name: id
+      in: path 
+      schema:
+        type: integer
+      required: true 
+    put:
+      tags:
+      - "Prestadores"
+      summary: Atualiza a disponibilidade de um prestador pelo ID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Disponibilidades"
+      responses:
+        200:
+          description: "OK"
+          content: 
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Prestadores"
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MensagensBadRequest"
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MensagensForbidden"
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MensagensNotFound"
+      security:      
+      - auth: [] 
+          
+#Avaliacoes      
+  /avaliacoes/clientes/{clienteId}/prestadores/{prestadorId}:
+    parameters: 
+      - name: clienteId
+        in: path 
+        schema:
+          type: integer
+        required: true 
+      - name: prestadorId
+        in: path 
+        schema:
+          type: integer
+        required: true 
+    post:
+      tags:
+      - "Avaliações"
+      summary: Cadastra uma nova avaliação de um prestador pelo ID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AvaliacaoForm"
+      responses:
+        201: 
+          description: "CREATED"
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MensagensBadRequest"
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MensagensForbidden"
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MensagensNotFound"
+      security:      
+      - auth: []  
+  /avaliacoes/{id}:
+    parameters: 
+      - name: id
+        in: path 
+        schema:
+          type: integer
+        required: true 
+    put:
+      tags:
+      - "Avaliações"
+      summary: Atualiza uma avaliação pelo ID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AvaliacaoForm"
+      responses:
+        200:
+          description: "OK"
+          content: 
+            application/json:
+              schema:
+                  $ref: "#/components/schemas/AvaliacaoForm"
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MensagensBadRequest"
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MensagensForbidden"
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MensagensNotFound"
+      security:      
+      - auth: []  
+    delete:
+      tags:
+      - "Avaliações"
+      summary: Remove uma avaliação pelo ID
+      responses: 
+        200: 
+          description: "OK"
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MensagensForbidden"
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MensagensNotFound"
+      security:      
+      - auth: []  
+          
+#Servicos
+  /servicos:
+    get:
+      tags:
+      - "Servicos"
+      summary: Lista todos os serviços
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                  $ref: "#/components/schemas/ServicosPaginacao"
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MensagensForbidden"
+      security:      
+      - auth: []  
+  /servicos/{id}:
+    parameters: 
+      - name: id
+        in: path 
+        schema:
+          type: integer
+        required: true 
+    put:
+      tags:
+      - "Servicos"
+      summary: Atualiza um serviço pelo ID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ServicoForm"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                  $ref: "#/components/schemas/Servicos"
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MensagensBadRequest"
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MensagensForbidden"
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MensagensNotFound"
+      security:      
+      - auth: []  
+    delete:
+      tags:
+      - "Servicos"
+      summary: Remove um serviço pelo ID
+      responses: 
+        200: 
+          description: "OK"
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MensagensForbidden"
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MensagensNotFound"
+      security:      
+      - auth: []  
+          
+#Categorias
+  /categorias:
+    get:
+      tags:
+      - "Categorias"
+      summary: Lista todos as categorias
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                  $ref: "#/components/schemas/CategoriasPaginacao"
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MensagensForbidden"
+      security:      
+      - auth: []  
+    post:
+      tags:
+      - "Categorias"
+      summary: Cadastra uma nova categoria
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CategoriaForm"
+      responses:
+        201: 
+          description: "CREATED"
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MensagensBadRequest"
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MensagensForbidden"
+      security:      
+      - auth: []  
+  /categorias/{id}:
+    parameters: 
+      - name: id
+        in: path 
+        schema:
+          type: integer
+        required: true 
+    put:
+      tags:
+      - "Categorias"
+      summary: Atualiza uma categoria pelo ID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CategoriaForm"
+      responses:
+        200:
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                  $ref: "#/components/schemas/Categorias"
+        400:
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MensagensBadRequest"
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MensagensForbidden"
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MensagensNotFound"
+      security:      
+        - auth: []
+    delete:
+      tags:
+      - "Categorias"
+      summary: Remove uma categoria pelo ID
+      responses: 
+        200: 
+          description: "OK"
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MensagensForbidden"
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MensagensNotFound"
+      security:      
+      - auth: []     
+components:
+  schemas:
+  
+    Login:
+      type: object
+      properties:
+        token:
+          type: string
+        tipo: 
+          type: string
+  
+    LoginForm:
+      type: object
+      properties:
+        email:
+          type: string
+        senha: 
+          type: string
+
+    Usuario:
+      type: object
+      properties: 
+        id: 
+          type: integer
+        nome:
+          type: string
+        cidade: 
+          type: string
+        sexo:
+          type: string
+    
+    UsuarioForm:
+      type: object
+      properties:
+        nome:
+          type: string
+        email:
+          type: string
+        senha: 
+          type: string
+        cidade: 
+          type: string
+        sexo:
+          type: string
+          
+    UsuariosPaginacao:
+      type: object
+      properties: 
+        content:
+          type: array
+          items:
+            type: object
+            properties: 
+              id:
+                type: integer
+              nome:
+                type: string
+              cidade:
+                type: string
+              sexo:
+                type: string
+        pageable:
+          type: string
+        last:
+          type: boolean
+        totalPages:
+          type: integer
+        totalElements:
+          type: integer
+        size:
+          type: integer
+        number:
+          type: integer
+        sort:
+          type: object
+          properties: 
+            empty: 
+              type: boolean
+            unsorted:
+              type: boolean
+            sorted:
+              type: boolean
+        first: 
+          type: boolean
+        numberOfElements:
+          type: integer
+        empty:
+          type: boolean
+          
+    Prestadores:
+      type: object
+      properties: 
+        id: 
+          type: integer
+        nome:
+          type: string
+        cidade: 
+          type: string
+        telefone:
+          type: string
+        sexo:
+          type: string
+        disponivel:
+          type: boolean
+        servico:
+          type: array
+          items: 
+            properties:
+              id:
+                type: integer
+              categoria:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  nome: 
+                    type: string
+              descricao:
+                type: string
+
+    PrestadorForm:
+      type: object
+      properties: 
+        nome:
+          type: string
+        email:
+          type: string
+        senha:
+          type: string
+        cidade: 
+          type: string
+        telefone:
+          type: string
+        sexo:
+          type: string
+          
+    PrestadoresPaginacao:
+      type: object
+      properties: 
+        content:
+          type: array
+          items:
+            type: object
+            properties: 
+              id: 
+                type: integer
+              nome:
+                type: string
+              cidade: 
+                type: string
+              telefone:
+                type: string
+              sexo:
+                type: string
+              disponivel:
+                type: boolean
+              servico:
+                type: array
+                items: 
+                  properties:
+                    id:
+                      type: integer
+                    categoria:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                        nome: 
+                          type: string
+                    descricao:
+                      type: string
+        pageable:
+          type: string
+        last:
+          type: boolean
+        totalPages:
+          type: integer
+        totalElements:
+          type: integer
+        size:
+          type: integer
+        number:
+          type: integer
+        sort:
+          type: object
+          properties: 
+            empty: 
+              type: boolean
+            unsorted:
+              type: boolean
+            sorted:
+              type: boolean
+        first: 
+          type: boolean
+        numberOfElements:
+          type: integer
+        empty:
+          type: boolean
+          
+    ServicosPaginacao:
+      type: object
+      properties: 
+        content:
+          type: array
+          items:
+            type: object
+            properties: 
+              id:
+                type: integer
+              categoria:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                  nome:
+                    type: string
+              descricao:
+                type: string
+        pageable:
+          type: string
+        last:
+          type: boolean
+        totalPages:
+          type: integer
+        totalElements:
+          type: integer
+        size:
+          type: integer
+        number:
+          type: integer
+        sort:
+          type: object
+          properties: 
+            empty: 
+              type: boolean
+            unsorted:
+              type: boolean
+            sorted:
+              type: boolean
+        first: 
+          type: boolean
+        numberOfElements:
+          type: integer
+        empty:
+          type: boolean
+            
+    Servicos:
+      type: object
+      properties: 
+        id:
+          type: integer
+        categoria:
+          type: object
+          properties:
+            id:
+              type: integer
+            nome:
+              type: string
+        descricao:
+          type: string
+          
+    ServicoForm:
+      type: object
+      properties: 
+        categoria:
+          type: string
+        descricao:
+          type: string
+    
+    AvaliacaoForm:
+      type: object
+      properties: 
+        comentario:
+          type: string
+        nota:
+          type: integer
+          
+    AvaliacoesPaginacao:
+      type: object
+      properties: 
+        content:
+          type: array
+          items:
+            type: object
+            properties: 
+              id:
+                type: integer
+              comentario:
+                type: string
+              nota:
+                type: integer
+              data:
+                type: string
+        pageable:
+          type: string
+        last:
+          type: boolean
+        totalPages:
+          type: integer
+        totalElements:
+          type: integer
+        size:
+          type: integer
+        number:
+          type: integer
+        sort:
+          type: object
+          properties: 
+            empty: 
+              type: boolean
+            unsorted:
+              type: boolean
+            sorted:
+              type: boolean
+        first: 
+          type: boolean
+        numberOfElements:
+          type: integer
+        empty:
+          type: boolean
+          
+    Disponibilidades:
+      type: object
+      properties: 
+        disponivel:
+          type: boolean
+          
+    Categorias:
+      type: object
+      properties: 
+        id:
+          type: integer
+        nome:
+          type: string
+  
+    CategoriaForm:
+      type: object
+      properties: 
+        nome:
+          type: string
+  
+    CategoriasPaginacao:
+      type: object
+      properties: 
+        content:
+          type: array
+          items:
+            type: object
+            properties: 
+              id:
+                type: integer
+              nome:
+                type: string
+        pageable:
+          type: string
+        last:
+          type: boolean
+        totalPages:
+          type: integer
+        totalElements:
+          type: integer
+        size:
+          type: integer
+        number:
+          type: integer
+        sort:
+          type: object
+          properties: 
+            empty: 
+              type: boolean
+            unsorted:
+              type: boolean
+            sorted:
+              type: boolean
+        first: 
+          type: boolean
+        numberOfElements:
+          type: integer
+        empty:
+          type: boolean
+  
+    MensagensBadRequest:
+      type: array
+      items:
+       properties:
+        campo:   
+          type: string
+        erro:   
+          type: string
+          
+    MensagensForbidden:
+       properties:
+        timestamp:   
+          type: integer
+        status:   
+          type: integer
+        error:
+          type: string
+        message:
+          type: string
+        path:
+          type: string
+    
+    MensagensNotFound:
+       properties:
+        timestamp:   
+          type: integer
+        status:   
+          type: integer
+        error:
+          type: string
+        message:
+          type: string
+        path:
+          type: string
+  
+  securitySchemes:
+    auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
