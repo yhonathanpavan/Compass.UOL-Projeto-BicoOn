@@ -180,7 +180,7 @@ Agradecemos às seguintes pessoas que contribuíram para este projeto:
 <table>
   <tr>
     <td align="center">
-      <a href="#">
+      <a href="https://github.com/AlnDevE">
         <img src="https://avatars.githubusercontent.com/u/87677794?v=4" width="100px;" alt="Foto do Alan da Silva"/><br>
         <sub>
           <div align="center">
@@ -196,8 +196,8 @@ Agradecemos às seguintes pessoas que contribuíram para este projeto:
       </a>
     </td>
     <td align="center">
-      <a href="#">
-        <img src="https://avatars.githubusercontent.com/u/61952169?v=4" width="100px;" alt="Foto da Elaine Cristina"/><br>
+      <a href="https://github.com/ElainePaula">
+        <img src="https://github.com/mateusCoder/ReadMeTemplate/blob/main/elaine.jpg" width="100px;" alt="Foto da Elaine Cristina"/><br>
         <sub>
           <div align="center">
             <b>Elaine Cristina</b></br></br>
@@ -212,7 +212,7 @@ Agradecemos às seguintes pessoas que contribuíram para este projeto:
       </a>
     </td>
     <td align="center">
-      <a href="#">
+      <a href="https://github.com/mateusCoder">
         <img src="https://avatars.githubusercontent.com/u/76978080?v=4" width="100px;" alt="Foto do Mateus Cardoso"/><br>
         <sub>
           <div align="center">
@@ -228,7 +228,7 @@ Agradecemos às seguintes pessoas que contribuíram para este projeto:
       </a>
     </td>
     <td align="center">
-      <a href="#">
+      <a href="https://github.com/YhonathanPavan">
         <img src="https://avatars.githubusercontent.com/u/51124985?v=4" width="100px;" alt="Foto do Yhonathan Pavan"/><br>
         <sub>
           <div align="center">
