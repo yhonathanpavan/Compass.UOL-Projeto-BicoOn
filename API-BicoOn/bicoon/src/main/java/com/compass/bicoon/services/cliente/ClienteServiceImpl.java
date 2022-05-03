@@ -38,6 +38,7 @@ public class ClienteServiceImpl implements ClienteService {
         Page<Cliente> cliente;
         Page<ClienteDto> clienteDto;
         Long idAdmin = 1L;
+        verificaPermissao();
 
         if(cidade == null){
             cliente = clienteRepository.findAll(paginacao);
@@ -62,6 +63,7 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public ClienteDto listarPorId(Long id){
         Cliente cliente = verificaExistenciaCliente(id);
+        verificaLogado(id);
 
         return mapper.map(cliente, ClienteDto.class);
     }
@@ -107,6 +109,14 @@ public class ClienteServiceImpl implements ClienteService {
             return;
         }else{
             throw new ForbiddenAccessException("Usuário atual não está autorizado");
+        }
+    }
+
+    public void verificaPermissao() {
+        if(tokenService.getTipoPerfilLogado().equals(ADMINISTRADOR)){
+            return;
+        }else {
+            throw new ForbiddenAccessException("Não Autorizado");
         }
     }
 }

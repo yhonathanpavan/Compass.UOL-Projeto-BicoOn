@@ -19,7 +19,7 @@ INSERT INTO CLIENTE_PERFIS(CLIENTE_ID, PERFIS_ID) VALUES (1,1);
 
 INSERT INTO AVALIACAO (CLIENTE_ID, COMENTARIO, DATA, NOTA, PRESTADOR_ID) VALUES
 (1, 'Serviço excelente, ótima qualidade!', '2022-7-3', 5, 1),
-(2, 'Serviço meia boca, corroeu o cano da pia!', '2022-7-3', 2, 1);
+(2, 'Serviço péssimo, corroeu o cano da pia!', '2022-7-3', 2, 1);
 
 INSERT INTO CATEGORIA (NOME) VALUES
 ('Encanador'),

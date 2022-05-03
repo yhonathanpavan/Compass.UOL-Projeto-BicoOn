@@ -64,8 +64,10 @@ public class PrestadorServiceImpl implements PrestadorService{
     public PrestadorDto atualizarPrestador(Long id, PrestadorFormDto prestadorFormDto) {
         verificaExistenciaPrestador(id);
         verificaLogado(id);
+        List<Servico> servicos = servicoRepository.findServicosByPrestadorId(id);
         Prestador prestador = mapper.map(prestadorFormDto, Prestador.class);
         prestador.setId(id);
+        prestador.setServico(servicos);
         prestador.setSenha(new BCryptPasswordEncoder().encode(prestador.getSenha()));
         prestadorRepository.save(prestador);
 

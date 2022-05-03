@@ -129,7 +129,7 @@ class ClienteServiceTest {
 
         Cliente resposta = service.verificaExistenciaCliente(ID);
 
-        assertEquals(ClienteBuilder.getCliente(), resposta);
+        assertEquals(ClienteBuilder.getCliente().getId(), resposta.getId());
     }
 
     @Test

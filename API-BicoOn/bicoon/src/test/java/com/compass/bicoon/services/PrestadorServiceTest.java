@@ -2,6 +2,7 @@ package com.compass.bicoon.services;
 
 import com.compass.bicoon.builder.AvaliacaoBuilder;
 import com.compass.bicoon.builder.PrestadorBuilder;
+import com.compass.bicoon.builder.ServicoBuilder;
 import com.compass.bicoon.constants.Sexo;
 import com.compass.bicoon.dto.avaliacao.AvaliacaoDto;
 import com.compass.bicoon.dto.prestador.PrestadorDto;
@@ -9,6 +10,7 @@ import com.compass.bicoon.dto.servico.ServicoDto;
 import com.compass.bicoon.entities.Prestador;
 import com.compass.bicoon.exceptions.objectNotFound.ObjectNotFoundException;
 import com.compass.bicoon.repository.PrestadorRepository;
+import com.compass.bicoon.repository.ServicoRepository;
 import com.compass.bicoon.services.autenticacao.AutenticacaoService;
 import com.compass.bicoon.services.prestador.PrestadorServiceImpl;
 import com.compass.bicoon.services.token.TokenService;
@@ -43,6 +45,9 @@ class PrestadorServiceTest {
 
     @Mock
     PrestadorRepository prestadorRepository;
+
+    @Mock
+    ServicoRepository servicoRepository;
 
     @Mock
     TokenService tokenService;
@@ -106,6 +111,7 @@ class PrestadorServiceTest {
 
     @Test
     void deveAtualizarCorretamenteUmPrestador(){
+        when(servicoRepository.findServicosByPrestadorId(anyLong())).thenReturn(Arrays.asList(ServicoBuilder.getServico()));
         when(prestadorRepository.findById(anyLong())).thenReturn(Optional.of(PrestadorBuilder.getPrestador()));
         when(tokenService.getIdLogado()).thenReturn(1L);
         when(tokenService.getTipoUsuarioLogado()).thenReturn(Prestador.class.toString());

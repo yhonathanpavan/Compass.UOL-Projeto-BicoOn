@@ -11,4 +11,7 @@ public interface ServicoRepository extends JpaRepository<Servico, Long> {
 
     @Query(value = "SELECT p.id FROM servico s RIGHT JOIN prestador p ON s.prestador_id = p.id WHERE s.id = ?1", nativeQuery = true)
     Long findPrestadorId (Long id);
+
+    @Query(value = "SELECT * FROM servico s RIGHT JOIN prestador p ON s.prestador_id = p.id WHERE p.id = ?1", nativeQuery = true)
+    List<Servico> findServicosByPrestadorId (Long id);
 }
