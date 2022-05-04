@@ -1,17 +1,21 @@
 package com.compass.bicoon.services;
 
 import com.compass.bicoon.builder.AvaliacaoBuilder;
+import com.compass.bicoon.builder.CategoriaBuilder;
 import com.compass.bicoon.builder.PrestadorBuilder;
 import com.compass.bicoon.builder.ServicoBuilder;
 import com.compass.bicoon.constants.Sexo;
 import com.compass.bicoon.dto.avaliacao.AvaliacaoDto;
 import com.compass.bicoon.dto.prestador.PrestadorDto;
 import com.compass.bicoon.dto.servico.ServicoDto;
+import com.compass.bicoon.entities.Cliente;
 import com.compass.bicoon.entities.Prestador;
 import com.compass.bicoon.exceptions.objectNotFound.ObjectNotFoundException;
+import com.compass.bicoon.repository.CategoriaRepository;
 import com.compass.bicoon.repository.PrestadorRepository;
 import com.compass.bicoon.repository.ServicoRepository;
 import com.compass.bicoon.services.autenticacao.AutenticacaoService;
+import com.compass.bicoon.services.categoria.CategoriaService;
 import com.compass.bicoon.services.prestador.PrestadorServiceImpl;
 import com.compass.bicoon.services.token.TokenService;
 import org.junit.jupiter.api.BeforeEach;
@@ -23,6 +27,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.method.P;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -52,6 +57,12 @@ class PrestadorServiceTest {
     @Mock
     TokenService tokenService;
 
+    @Mock
+    CategoriaRepository categoriaRepository;
+
+    @Mock
+    CategoriaService categoriaService;
+
     @Spy
     ModelMapper mapper;
 
@@ -68,6 +79,23 @@ class PrestadorServiceTest {
         when(prestadorRepository.save(any(Prestador.class))).thenReturn(PrestadorBuilder.getPrestador());
         service.cadastrarPrestador(PrestadorBuilder.getPrestadorFormDto());
         verify(prestadorRepository, times(1)).save(any(Prestador.class));
+    }
+
+    @Test
+    void deveVerificarCorretamenteQuandoCriarUmServico(){
+        when(prestadorRepository.findById(1L)).thenReturn(Optional.of(PrestadorBuilder.getPrestador()));
+        when(categoriaRepository.findById(1L)).thenReturn(Optional.of(CategoriaBuilder.getCategoria()));
+
+        when(prestadorRepository.save(any())).thenReturn(PrestadorBuilder.getPrestador());
+        when(servicoRepository.save(any())).thenReturn(ServicoBuilder.getServico());
+        when(tokenService.getIdLogado()).thenReturn(PrestadorBuilder.getPrestador().getId());
+        when(tokenService.getTipoUsuarioLogado()).thenReturn(Prestador.class.toString());
+        when(tokenService.getTipoPerfilLogado()).thenReturn("");
+
+        service.cadastrarServico(ID, ServicoBuilder.getServicoForm());
+
+        verify(servicoRepository, times(1)).save(any());
+        verify(prestadorRepository, times(1)).save(any());
     }
 
     @Test

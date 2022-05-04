@@ -6,6 +6,7 @@ import com.compass.bicoon.dto.prestador.PrestadorDto;
 import com.compass.bicoon.dto.prestador.PrestadorFormDto;
 import com.compass.bicoon.entities.Avaliacao;
 import com.compass.bicoon.entities.Prestador;
+import com.compass.bicoon.entities.Servico;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 
@@ -29,6 +30,9 @@ public class PrestadorBuilder {
         List<Avaliacao> AVALIACOES = new ArrayList();
         AVALIACOES.add(AvaliacaoBuilder.getAvaliacao());
 
+        List<Servico> SERVICOS = new ArrayList();
+        SERVICOS.add(ServicoBuilder.getServico());
+
         return Prestador.builder()
                 .id(ID)
                 .nome(NOME)
@@ -39,7 +43,7 @@ public class PrestadorBuilder {
                 .telefone(TELEFONE)
                 .disponivel(DISPONIVEL)
                 .avaliacao(AVALIACOES)
-                .servico(Arrays.asList(ServicoBuilder.getServico()))
+                .servico(SERVICOS)
                 .build();
     }
 
