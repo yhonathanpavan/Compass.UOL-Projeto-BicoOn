@@ -1,0 +1,930 @@
+{
+	"info": {
+		"_postman_id": "375f70d8-7ef2-4275-9c6a-ae2b96e48726",
+		"name": "API - BicoOn",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"item": [
+				{
+					"name": "Realizar Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"robson@email.com\",\r\n    \"senha\":\"1234\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/bicoon/auth",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"bicoon",
+								"auth"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cliente (Clientes)",
+			"item": [
+				{
+					"name": "Cadastrar Cliente",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJBUEkgQmljb09uIiwic3ViIjoiMiIsImNsYXNzZSI6ImNsYXNzIGNvbS5jb21wYXNzLmJpY29vbi5lbnRpdGllcy5DbGllbnRlIiwiaWF0IjoxNjUxMjA0MjQzLCJleHAiOjE2NTEyOTA2NDN9.a32-tpfVYahQVKqkJ6mbYdvREMde_yhiIFGH_8EcoRg",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Robson\",\r\n    \"email\":\"robson@email.com\",\r\n    \"senha\":\"1234\",\r\n    \"cidade\": \"Artur Nogueira\",\r\n    \"sexo\": \"MASCULINO\"\r\n}"
+						},
+						"url": {
+							"raw": "{{cliente}}",
+							"host": [
+								"{{cliente}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Detalhar Cliente",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{cliente}}/9",
+							"host": [
+								"{{cliente}}"
+							],
+							"path": [
+								"9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar Cliente",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Robson\",\r\n    \"cidade\": \"Mogi Guaçu\",\r\n    \"email\":\"robson@email.com\",\r\n    \"senha\":\"1234\",\r\n    \"sexo\": \"MASCULINO\"\r\n}"
+						},
+						"url": {
+							"raw": "{{cliente}}/9",
+							"host": [
+								"{{cliente}}"
+							],
+							"path": [
+								"9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar Cliente",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{cliente}}/9",
+							"host": [
+								"{{cliente}}"
+							],
+							"path": [
+								"9"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Filtrar Clientes por Cidade (adm)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{cliente}}?cidade=São+Paulo",
+							"host": [
+								"{{cliente}}"
+							],
+							"query": [
+								{
+									"key": "cidade",
+									"value": "São+Paulo"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar Clientes (adm)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{cliente}}",
+							"host": [
+								"{{cliente}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Avaliacao (Clientes)",
+			"item": [
+				{
+					"name": "Adicionar Avaliação",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"comentario\": \"Ótimo serviço\",\r\n    \"nota\": \"5\"\r\n}"
+						},
+						"url": {
+							"raw": "{{avaliacao}}/clientes/9/prestadores/1",
+							"host": [
+								"{{avaliacao}}"
+							],
+							"path": [
+								"clientes",
+								"9",
+								"prestadores",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar Avaliação (adm)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"comentario\": \"Comentário Atualizado\",\r\n    \"nota\": \"4\"\r\n}"
+						},
+						"url": {
+							"raw": "{{avaliacao}}/1",
+							"host": [
+								"{{avaliacao}}"
+							],
+							"path": [
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar Avaliação (adm)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{avaliacao}}/2",
+							"host": [
+								"{{avaliacao}}"
+							],
+							"path": [
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Prestador (Prestadores)",
+			"item": [
+				{
+					"name": "Cadastra Prestador",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"Lucas\",\r\n    \"telefone\": \"(19)99999-9999\",\r\n    \"cidade\":\"Araras\",\r\n    \"email\":\"lucas@email.com\",\r\n    \"senha\":\"1234\",\r\n    \"sexo\":\"MASCULINO\"\r\n    \r\n}"
+						},
+						"url": {
+							"raw": "{{prestadores}}",
+							"host": [
+								"{{prestadores}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Lista Avaliações de Um Prestador",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{prestadores}}/1/avaliacoes",
+							"host": [
+								"{{prestadores}}"
+							],
+							"path": [
+								"1",
+								"avaliacoes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Prestadores",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{prestadores}}",
+							"host": [
+								"{{prestadores}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Busca Pelo id",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{prestadores}}/1",
+							"host": [
+								"{{prestadores}}"
+							],
+							"path": [
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Filtra Por Cidade e Categoria",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{prestadores}}?cidade=Pindamonhangaba&categoria=Babá",
+							"host": [
+								"{{prestadores}}"
+							],
+							"query": [
+								{
+									"key": "cidade",
+									"value": "Pindamonhangaba"
+								},
+								{
+									"key": "categoria",
+									"value": "Babá"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Lista Servicos de um Prestador",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{prestadores}}/1/servicos",
+							"host": [
+								"{{prestadores}}"
+							],
+							"path": [
+								"1",
+								"servicos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualiza Prestador",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n     \"nome\": \"Jose Carlos\",\r\n    \"telefone\": \"19 99999-8922\",\r\n    \"cidade\":\"Pindamonhangaba\",\r\n    \"email\":\"zecarlos@email.com\",\r\n    \"senha\":\"123456\",\r\n    \"sexo\": \"MASCULINO\"\r\n}"
+						},
+						"url": {
+							"raw": "{{prestadores}}/1",
+							"host": [
+								"{{prestadores}}"
+							],
+							"path": [
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Cadastrar Servico no Prestador",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"descricao\":\"Faço tudo, limpo, arrumo qualquer coisa\",\r\n    \"categoria\":\"Babá\"\r\n}"
+						},
+						"url": {
+							"raw": "{{prestadores}}/1/servicos",
+							"host": [
+								"{{prestadores}}"
+							],
+							"path": [
+								"1",
+								"servicos"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualiza disponibilidade do Prestador",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"disponivel\": \"false\"\r\n}"
+						},
+						"url": {
+							"raw": "{{prestadores}}/1/disponibilidade",
+							"host": [
+								"{{prestadores}}"
+							],
+							"path": [
+								"1",
+								"disponibilidade"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Prestador",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{prestadores}}/1",
+							"host": [
+								"{{prestadores}}"
+							],
+							"path": [
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Servico (Prestadores)",
+			"item": [
+				{
+					"name": "Atualiza um serviço",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"categoria\": \"Babá\",\r\n    \"descricao\": \"Cuido de crianças de até 10 anos, levo brinquedos\"\r\n}"
+						},
+						"url": {
+							"raw": "{{servicos}}/1",
+							"host": [
+								"{{servicos}}"
+							],
+							"path": [
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deleta um serviço",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{servicos}}/2",
+							"host": [
+								"{{servicos}}"
+							],
+							"path": [
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar serviços (adm)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{servicos}}",
+							"host": [
+								"{{servicos}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Categoria (Administrador)",
+			"item": [
+				{
+					"name": "Cadastrar uma categoria",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\":\"Marido de Aluguel\"\r\n}"
+						},
+						"url": {
+							"raw": "{{categorias}}",
+							"host": [
+								"{{categorias}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar categorias",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{categorias}}",
+							"host": [
+								"{{categorias}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deletar uma categoria",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJBUEkgQmljb09uIiwic3ViIjoiMSIsImlhdCI6MTY1MDk5NDQ3NiwiZXhwIjoxNjUxMDgwODc2fQ.ObnCq29Jk6NpDYxqjk4wYLVuzl-tawQw8aqXiOjJh_A",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{categorias}}/1",
+							"host": [
+								"{{categorias}}"
+							],
+							"path": [
+								"1"
+							],
+							"query": [
+								{
+									"key": "Authorization",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Atualizar uma categoria",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\":\"Marido de Aluguel\"\r\n}"
+						},
+						"url": {
+							"raw": "{{categorias}}/1",
+							"host": [
+								"{{categorias}}"
+							],
+							"path": [
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Monitoramento (Administrador)",
+			"item": [
+				{
+					"name": "Lista os endpoints disponíveis",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/actuator",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"actuator"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
