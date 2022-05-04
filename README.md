@@ -86,7 +86,7 @@ $ code .
 ## 📃 Swagger
 
 Para acessar a documentação BicoOn, baixe o arquivo e siga as etapas:
-1. [BicoOnApi](https://github.com/yhonathanpavan/Compass.UOL-Projeto-BicoOn/blob/master/BicoOnApi.yml)
+1. [BicoOnApi](https://github.com/yhonathanpavan/Compass.UOL-Projeto-BicoOn/tree/master/Documentação-Swagger)
 2. Com o [Swagger Editor](https://editor.swagger.io/?_ga=2.185135209.135771497.1650906792-744667863.1647286784)
 3. Em seguida importe, clique em File, Import File e selecione o arquivo BicoOnApi. 
 4. Por fim, execute o aplicação BicoOnApplication, após isso a documentação estará pronta para uso. 
@@ -94,7 +94,7 @@ Para acessar a documentação BicoOn, baixe o arquivo e siga as etapas:
 ## 🧑‍🚀 Postman
 
 Para acessar a collection BicoOn, baixe o arquivo e siga as etapas:
-1. [BicoOnCollection](https://github.com/yhonathanpavan/Compass.UOL-Projeto-BicoOn/blob/master/Coleção-Postman/API%20-%20BicoOn.postman_collection.json)
+1. [BicoOnCollection](https://github.com/yhonathanpavan/Compass.UOL-Projeto-BicoOn/tree/master/Coleção-Postman)
 2. Abra a plataforma [Postman](https://www.postman.com/product/what-is-postman/)
 3. Em seguida importe, clique em Import e selecione o arquivo BicoOnCollection.
 4. Por fim, execute o aplicação BicoOnApplication, após isso a plataforma estará pronta para uso. 
