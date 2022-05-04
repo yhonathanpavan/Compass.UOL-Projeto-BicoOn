@@ -94,7 +94,7 @@ Para acessar a documentação BicoOn, baixe o arquivo e siga as etapas:
 ## 🧑‍🚀 Postman
 
 Para acessar a collection BicoOn, baixe o arquivo e siga as etapas:
-1. [BicoOnCollection](https://github.com/yhonathanpavan/Compass.UOL-Projeto-BicoOn/blob/master/BicoOnCollection.json)
+1. [BicoOnCollection](https://github.com/yhonathanpavan/Compass.UOL-Projeto-BicoOn/blob/master/Coleção-Postman/API%20-%20BicoOn.postman_collection.json)
 2. Abra a plataforma [Postman](https://www.postman.com/product/what-is-postman/)
 3. Em seguida importe, clique em Import e selecione o arquivo BicoOnCollection.
 4. Por fim, execute o aplicação BicoOnApplication, após isso a plataforma estará pronta para uso. 
