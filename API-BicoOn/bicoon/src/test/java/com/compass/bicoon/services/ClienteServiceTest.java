@@ -55,6 +55,9 @@ class ClienteServiceTest {
     void deveListarClientesCorretamente() {
 
         when(clienteRepository.findAll((Pageable) any())).thenReturn(ClienteBuilder.getClientePaginacao());
+        when(tokenService.getIdLogado()).thenReturn(1L);
+        when(tokenService.getTipoUsuarioLogado()).thenReturn(Cliente.class.toString());
+        when(tokenService.getTipoPerfilLogado()).thenReturn("ROLE_ADMINISTRADOR");
 
         Pageable paginacao = PageRequest.of(0, 100);
 
@@ -69,6 +72,10 @@ class ClienteServiceTest {
 
         when(clienteRepository.findAll((Pageable) any())).thenReturn(ClienteBuilder.getClientePaginacao());
         when(clienteRepository.findByCidade(any(), (Pageable) any())).thenReturn(ClienteBuilder.getClientePaginacao());
+        when(tokenService.getIdLogado()).thenReturn(1L);
+        when(tokenService.getTipoUsuarioLogado()).thenReturn(Cliente.class.toString());
+        when(tokenService.getTipoPerfilLogado()).thenReturn("ROLE_ADMINISTRADOR");
+
 
         Pageable paginacao = PageRequest.of(0, 100);
 
@@ -81,6 +88,10 @@ class ClienteServiceTest {
     @Test
     void deveListarUmClientePeloIdCorretamente() {
         when(clienteRepository.findById(anyLong())).thenReturn(Optional.of(ClienteBuilder.getCliente()));
+        when(tokenService.getIdLogado()).thenReturn(1L);
+        when(tokenService.getTipoUsuarioLogado()).thenReturn(Cliente.class.toString());
+        when(tokenService.getTipoPerfilLogado()).thenReturn("ROLE_ADMINISTRADOR");
+
 
         ClienteDto resposta = service.listarPorId(ID);
 
