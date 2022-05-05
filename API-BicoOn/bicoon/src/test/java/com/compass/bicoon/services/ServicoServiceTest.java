@@ -4,6 +4,7 @@ import com.compass.bicoon.builder.CategoriaBuilder;
 import com.compass.bicoon.builder.ServicoBuilder;
 import com.compass.bicoon.dto.servico.ServicoDto;
 import com.compass.bicoon.entities.Servico;
+import com.compass.bicoon.exceptions.forbiddenAccess.ForbiddenAccessException;
 import com.compass.bicoon.exceptions.objectNotFound.ObjectNotFoundException;
 import com.compass.bicoon.repository.CategoriaRepository;
 import com.compass.bicoon.repository.ServicoRepository;
@@ -114,6 +115,16 @@ class ServicoServiceTest {
         verify(repository, times(1)).deleteById(anyLong());
     }
 
+    @Test
+    void deveDarPerfilNaoAutorizado(){
+        when(tokenService.getTipoPerfilLogado()).thenReturn("ADMINISTRADOR");
 
+        try{
+            service.verificaPermissao();
+        }catch(Exception ex){
+            assertEquals(ForbiddenAccessException.class, ex.getClass());
+            assertEquals("Não Autorizado", ex.getMessage());
+        }
+    }
 
 }

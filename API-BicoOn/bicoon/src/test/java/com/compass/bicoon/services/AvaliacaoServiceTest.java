@@ -5,6 +5,7 @@ import com.compass.bicoon.builder.ClienteBuilder;
 import com.compass.bicoon.builder.PrestadorBuilder;
 import com.compass.bicoon.dto.avaliacao.AvaliacaoFormDto;
 import com.compass.bicoon.entities.Avaliacao;
+import com.compass.bicoon.exceptions.forbiddenAccess.ForbiddenAccessException;
 import com.compass.bicoon.exceptions.objectNotFound.ObjectNotFoundException;
 import com.compass.bicoon.repository.AvaliacaoRepository;
 import com.compass.bicoon.repository.ClienteRepository;
@@ -126,6 +127,18 @@ class AvaliacaoServiceTest {
         }catch(Exception ex){
             assertEquals(ObjectNotFoundException.class, ex.getClass());
             assertEquals("Avaliação não encontrada", ex.getMessage());
+        }
+    }
+
+    @Test
+    void deveDarPerfilNaoAutorizado(){
+        when(tokenService.getTipoPerfilLogado()).thenReturn("ADMINISTRADOR");
+
+        try{
+            service.verificaPermissao();
+        }catch(Exception ex){
+            assertEquals(ForbiddenAccessException.class, ex.getClass());
+            assertEquals("Não Autorizado", ex.getMessage());
         }
     }
 }

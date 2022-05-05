@@ -98,7 +98,7 @@ public class AvaliacaoServiceImpl implements AvaliacaoService{
         throw new ObjectNotFoundException("Avaliação não encontrada");
     }
 
-    private void verificaPermissao() {
+    public void verificaPermissao() {
         if(tokenService.getTipoPerfilLogado().equals(ADMINISTRADOR)){
             return;
         }else {

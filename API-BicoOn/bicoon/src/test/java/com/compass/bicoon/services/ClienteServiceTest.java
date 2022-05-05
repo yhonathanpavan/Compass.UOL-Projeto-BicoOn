@@ -3,6 +3,7 @@ package com.compass.bicoon.services;
 import com.compass.bicoon.builder.ClienteBuilder;
 import com.compass.bicoon.dto.cliente.ClienteDto;
 import com.compass.bicoon.entities.Cliente;
+import com.compass.bicoon.exceptions.forbiddenAccess.ForbiddenAccessException;
 import com.compass.bicoon.exceptions.objectNotFound.ObjectNotFoundException;
 import com.compass.bicoon.repository.ClienteRepository;
 import com.compass.bicoon.services.cliente.ClienteServiceImpl;
@@ -150,6 +151,18 @@ class ClienteServiceTest {
         }catch(Exception ex){
             assertEquals(ObjectNotFoundException.class, ex.getClass());
             assertEquals("Cliente não encontrado", ex.getMessage());
+        }
+    }
+
+    @Test
+    void deveDarPerfilNaoAutorizado(){
+        when(tokenService.getTipoPerfilLogado()).thenReturn("ADMINISTRADOR");
+
+        try{
+            service.verificaPermissao();
+        }catch(Exception ex){
+            assertEquals(ForbiddenAccessException.class, ex.getClass());
+            assertEquals("Não Autorizado", ex.getMessage());
         }
     }
 }
